@@ -104,6 +104,7 @@ void Game_Init(void)
 
 void Game_Update(void)
 {
+	// Pause & Resume game
 
 	float dt = CP_System_GetDt();
 	//player 1 controls
