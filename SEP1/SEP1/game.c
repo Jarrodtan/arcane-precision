@@ -2,6 +2,7 @@
 #include "cprocessing.h" //dog
 #include "mainmenu.h"
 #include "stdlib.h"
+#include "stdbool.h"
 #include <math.h>
 #include <stdio.h>
 #define WINDOW_WIDTH 1600.0f
@@ -18,6 +19,8 @@ float mana;
 float random_float;
 int cooldown;
 int hitboxSpawn;
+bool game_pause = 1;
+
  //wnemy
 struct manabar {
 	float x;
@@ -106,7 +109,8 @@ void Game_Update(void)
 {
 	// Pause & Resume game
 	if (CP_Input_KeyTriggered(KEY_SPACE)) {
-
+		CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
+		CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, 500.0f, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f);
 	}
 
 	float dt = CP_System_GetDt();
