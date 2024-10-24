@@ -14,7 +14,7 @@ CP_Color manaBarColor;
 CP_Color manaColor;
 CP_Color manaHitboxColor;
 CP_Vector player1_position;
-CP_Font myFont_1;
+CP_Image pause_sign;
 
 float territoryDiameter;
 float diameter;
@@ -68,7 +68,7 @@ struct hearts playerHearts;
 
 void Game_Init(void)
 {
-	myFont_1 = CP_Font_Load("Assets/Exo2-Regular.ttf");
+	pause_sign = CP_Image_Load("Assets/Pause Sign.png");
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	manaBarColor = CP_Color_Create(0, 0, 150, 255);
 	manaColor = CP_Color_Create(0,0,255,255);
@@ -80,6 +80,7 @@ void Game_Init(void)
 	hitboxSpawn = 0;
 	random_float = CP_Random_RangeFloat(WINDOW_WIDTH / 2.0f, (WINDOW_WIDTH / 10.0f) * 8.0f);
 	game_pause = false;
+	playerAttack.Spawned = 0;
 
 	//player1
 	player1.diameter = diameter;
@@ -119,7 +120,7 @@ void Game_Update(void)
 	// Pause & Resume game
 	if (CP_Input_KeyTriggered(KEY_SPACE)) {
 		if (game_pause == true) {
-		game_pause = false;
+			game_pause = false;
 		}
 		else {
 			game_pause = true;
@@ -133,14 +134,86 @@ void Game_Update(void)
 
 
 	if (game_pause == true) {
-		CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-		CP_Graphics_DrawRect(WINDOW_WIDTH / 4.0f, WINDOW_HEIGHT / 4.0f, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f);
-		CP_Font_Set(myFont_1);
-		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-		CP_Font_DrawText("Game Pause", WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f);
-		
+		//draw player 1
+		CP_Settings_Fill(CP_Color_Create(255, 0, 255, 255));
+		CP_Graphics_DrawCircle(player1.position.x, player1.position.y, diameter);
+
+		CP_Settings_Fill(CP_Color_Create(255, 255, 0, 255)); // Yellow for attack
+		CP_Graphics_DrawCircle(playerAttack.position.x, playerAttack.position.y, playerAttack.diameter);
+
+		//ManaBar
+		CP_Settings_Fill(manaBarColor);
+		CP_Graphics_DrawRect(maxManabar.x, maxManabar.y, maxManabar.width, maxManabar.height);
+
+		//Current Mana
+		if (cooldown == 0) {
+			CP_Settings_Fill(manaColor);
+			CP_Graphics_DrawRect(currentManabar.x, currentManabar.y, (currentManabar.width) * (mana / 100), currentManabar.height);
+		}
+		else {
+			CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
+			if (CP_Input_MouseClicked()) {
+				CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+			}
+			CP_Graphics_DrawRect(currentManabar.x, currentManabar.y, (currentManabar.width * (mana / 100)), currentManabar.height);
+		}
+
+		//Mana Hitbox
+		if (hitboxSpawn == 1) {
+			CP_Settings_Fill(manaHitboxColor);
+			CP_Graphics_DrawRect(manaHitbox.x, manaHitbox.y, manaHitbox.width, manaHitbox.height);
+		}
+
+		//Mana cursor
+		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+		CP_Graphics_DrawRect(currentManabar.x + (currentManabar.width * (mana / 100)) - 10, currentManabar.y, 10, currentManabar.height);
+
+		//hearts
+		//additional hearts
+		switch (player1.lives)
+		{
+		case 4:
+			drawHearts(playerHearts.x, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 50, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x + 50, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 100, playerHearts.y, playerHearts.size);
+			break;
+		case 5:
+			drawHearts(playerHearts.x, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 50, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x + 50, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 100, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x + 100, playerHearts.y, playerHearts.size);
+			break;
+		case 6:
+			drawHearts(playerHearts.x, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 50, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x + 50, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 100, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x + 100, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 150, playerHearts.y, playerHearts.size);
+			break;
+		case 7:
+			drawHearts(playerHearts.x, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 50, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x + 50, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 100, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x + 100, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 150, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x + 150, playerHearts.y, playerHearts.size);
+			break;
+		default:
+			drawHearts(playerHearts.x, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 50, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x + 50, playerHearts.y, playerHearts.size);
+		}
+
+		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 100));
+		CP_Graphics_DrawRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+		CP_Image_Draw(pause_sign, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f, 300.0f, 300.0f, 255);
+		CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 50));
 	}
-	
+
 	else if (game_pause == false) {
 		//player 1 controls
 		if (player1.active == 1) {
