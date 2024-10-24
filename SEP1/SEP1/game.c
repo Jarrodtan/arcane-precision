@@ -14,6 +14,7 @@ CP_Color manaBarColor;
 CP_Color manaColor;
 CP_Color manaHitboxColor;
 CP_Vector player1_position;
+CP_Font myFont_1;
 
 float territoryDiameter;
 float diameter;
@@ -23,7 +24,7 @@ float random_float;
 int cooldown;
 int hitboxSpawn;
 
-bool game_pause = false;
+bool game_pause;
 
 //enemy
 struct manabar {
@@ -67,6 +68,7 @@ struct hearts playerHearts;
 
 void Game_Init(void)
 {
+	myFont_1 = CP_Font_Load("Assets/Exo2-Regular.ttf");
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	manaBarColor = CP_Color_Create(0, 0, 150, 255);
 	manaColor = CP_Color_Create(0,0,255,255);
@@ -77,6 +79,7 @@ void Game_Init(void)
 	cooldown = 0;
 	hitboxSpawn = 0;
 	random_float = CP_Random_RangeFloat(WINDOW_WIDTH / 2.0f, (WINDOW_WIDTH / 10.0f) * 8.0f);
+	game_pause = false;
 
 	//player1
 	player1.diameter = diameter;
@@ -112,174 +115,185 @@ void Game_Init(void)
 void Game_Update(void)
 {
 	float dt = CP_System_GetDt();
-	//player 1 controls
-	if (player1.active == 1) {
-		if (CP_Input_KeyDown(KEY_W))
-		{
-			player1.position.y -= PLAYER_SPEED * dt;
-		}
-		else if (CP_Input_KeyDown(KEY_S))
-		{
-			player1.position.y += PLAYER_SPEED * dt;
-		}
-		else if (CP_Input_KeyDown(KEY_A))
-		{
-			player1.position.x -= PLAYER_SPEED * dt;
-		}
-		else if (CP_Input_KeyDown(KEY_D))
-		{
-			player1.position.x += PLAYER_SPEED * dt;
-		}
-	}
-	//re-sets mana hitbox position for randomness
-	manaHitbox.x = random_float;
-	
-	//Attack Mechanic, hold left click to build mana, let go at hitbox to attack.
-	if (CP_Input_MouseClicked()) //randomizes hitbox position when mouse clicked in frame
-	{
-		random_float = CP_Random_RangeFloat(WINDOW_WIDTH/ 1.3f, (WINDOW_WIDTH / 10.0f));
-	}
-	 else if (CP_Input_MouseDown(MOUSE_BUTTON_LEFT) && mana < 100 && cooldown == 0)
-	{
-		hitboxSpawn = 1;
-		mana += 1.0f;
-	}
-	if (CP_Input_MouseReleased(MOUSE_BUTTON_LEFT) && mana >= 0) 
-	{
-		cooldown = 1;
-		hitboxSpawn = 0;
-		if (AreIntersecting((currentManabar.width * (mana / 100.0f)),
-			manaHitbox.x, manaHitbox.width) && mana > 0.0f)
-		{
-			//spawn player attack flying towards mouse direction till collision with wall
-			// Calculate direction from player to mouse
-			CP_Vector mousePos = CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY());
-			CP_Vector attackDirection = CP_Vector_Normalize(CP_Vector_Subtract(mousePos, player1.position));
-
-			// Initialize the player's attack
-			playerAttack.position = player1.position;
-			playerAttack.speed = 500.0f; // speed of the attack
-			playerAttack.isFriendly = 1; // indicate that it's a player attack
-			playerAttack.Spawned = 1;
-			playerAttack.diameter = 30.0f;
-			playerAttack.direction = attackDirection;
-
-			printf("Attack Spawned! Heading towards mouse direction.\n");
-		}
-	}
-	if (cooldown == 1 && mana > 0) {
-		mana -= 1.0f;
-	
-	}
-	else if (mana == 0) {
-		cooldown = 0;
-	}
-
-
-	CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 50));
-
-	//draw player 1
-	CP_Settings_Fill(CP_Color_Create(255, 0, 255, 255));
-	CP_Graphics_DrawCircle(player1.position.x, player1.position.y, diameter);
-
-	if (playerAttack.Spawned == 1)
-	{
-		playerAttack.position = CP_Vector_Add(playerAttack.position, CP_Vector_Scale(playerAttack.direction, playerAttack.speed * dt));
-		CP_Settings_Fill(CP_Color_Create(255, 255, 0, 255)); // Yellow for attack
-		CP_Graphics_DrawCircle(playerAttack.position.x, playerAttack.position.y, playerAttack.diameter);
-
-		if (playerAttack.position.x < 0 || playerAttack.position.x > WINDOW_WIDTH ||
-			playerAttack.position.y < 0 || playerAttack.position.y > WINDOW_HEIGHT)
-		{
-			playerAttack.Spawned = 0; // deactivate the attack
-			printf("Attack destroyed after hitting the wall.\n");
-		}
-	}
-
-	//ManaBar
-	CP_Settings_Fill(manaBarColor);
-	CP_Graphics_DrawRect(maxManabar.x,maxManabar.y,maxManabar.width,maxManabar.height);
-
-	//Current Mana
-	if (cooldown == 0) {
-	CP_Settings_Fill(manaColor);
-	CP_Graphics_DrawRect(currentManabar.x, currentManabar.y, (currentManabar.width)*(mana/100), currentManabar.height);
-	}
-	else {
-		CP_Settings_Fill(CP_Color_Create(255,0,0,255));
-		if (CP_Input_MouseClicked()) {
-			CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-		}
-		CP_Graphics_DrawRect(currentManabar.x, currentManabar.y, (currentManabar.width*(mana / 100)), currentManabar.height);
-	}
-
-	//Mana Hitbox
-	if (hitboxSpawn == 1) {
-	CP_Settings_Fill(manaHitboxColor);
-	CP_Graphics_DrawRect(manaHitbox.x, manaHitbox.y, manaHitbox.width, manaHitbox.height);
-	}
-
-	//Mana cursor
-	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-	CP_Graphics_DrawRect(currentManabar.x+(currentManabar.width*(mana/100))-10, currentManabar.y, 10, currentManabar.height);
-
-	//hearts
-	//additional hearts
-	switch (player1.lives) 
-	{
-	case 4: 
-		drawHearts(playerHearts.x, playerHearts.y, playerHearts.size);
-		drawHearts(playerHearts.x - 50, playerHearts.y, playerHearts.size);
-		drawHearts(playerHearts.x + 50, playerHearts.y, playerHearts.size);
-		drawHearts(playerHearts.x - 100, playerHearts.y, playerHearts.size);
-		break;
-	case 5: 
-		drawHearts(playerHearts.x, playerHearts.y, playerHearts.size);
-		drawHearts(playerHearts.x - 50, playerHearts.y, playerHearts.size);
-		drawHearts(playerHearts.x + 50, playerHearts.y, playerHearts.size);
-		drawHearts(playerHearts.x - 100, playerHearts.y, playerHearts.size);
-		drawHearts(playerHearts.x + 100, playerHearts.y, playerHearts.size);
-		break;
-	case 6:
-		drawHearts(playerHearts.x, playerHearts.y, playerHearts.size);
-		drawHearts(playerHearts.x - 50, playerHearts.y, playerHearts.size);
-		drawHearts(playerHearts.x + 50, playerHearts.y, playerHearts.size);
-		drawHearts(playerHearts.x - 100, playerHearts.y, playerHearts.size);
-		drawHearts(playerHearts.x + 100, playerHearts.y, playerHearts.size);
-		drawHearts(playerHearts.x - 150, playerHearts.y, playerHearts.size);
-		break;
-	case 7:
-		drawHearts(playerHearts.x, playerHearts.y, playerHearts.size);
-		drawHearts(playerHearts.x - 50, playerHearts.y, playerHearts.size);
-		drawHearts(playerHearts.x + 50, playerHearts.y, playerHearts.size);
-		drawHearts(playerHearts.x - 100, playerHearts.y, playerHearts.size);
-		drawHearts(playerHearts.x + 100, playerHearts.y, playerHearts.size);
-		drawHearts(playerHearts.x - 150, playerHearts.y, playerHearts.size);
-		drawHearts(playerHearts.x + 150, playerHearts.y, playerHearts.size);
-		break;
-	default:
-		drawHearts(playerHearts.x, playerHearts.y, playerHearts.size);
-		drawHearts(playerHearts.x - 50, playerHearts.y, playerHearts.size);
-		drawHearts(playerHearts.x + 50, playerHearts.y, playerHearts.size);
-	}
 
 	// Pause & Resume game
 	if (CP_Input_KeyTriggered(KEY_SPACE)) {
-		game_pause = (game_pause == false);
+		if (game_pause == true) {
+		game_pause = false;
+		}
+		else {
+			game_pause = true;
+		}
 	}
-
-	if (game_pause == true) {
-		CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-		CP_Graphics_DrawRect(WINDOW_WIDTH / 4.0f, WINDOW_HEIGHT / 4.0f, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f);
-		printf("pause");
-	}
-
 	//return to mainmenu
 	if (CP_Input_KeyTriggered(KEY_Q))
 	{
 		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
 	}
 
+
+	if (game_pause == true) {
+		CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
+		CP_Graphics_DrawRect(WINDOW_WIDTH / 4.0f, WINDOW_HEIGHT / 4.0f, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f);
+		CP_Font_Set(myFont_1);
+		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+		CP_Font_DrawText("Game Pause", WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f);
+		
+	}
+	
+	else if (game_pause == false) {
+		//player 1 controls
+		if (player1.active == 1) {
+			if (CP_Input_KeyDown(KEY_W))
+			{
+				player1.position.y -= PLAYER_SPEED * dt;
+			}
+			else if (CP_Input_KeyDown(KEY_S))
+			{
+				player1.position.y += PLAYER_SPEED * dt;
+			}
+			else if (CP_Input_KeyDown(KEY_A))
+			{
+				player1.position.x -= PLAYER_SPEED * dt;
+			}
+			else if (CP_Input_KeyDown(KEY_D))
+			{
+				player1.position.x += PLAYER_SPEED * dt;
+			}
+		}
+		//re-sets mana hitbox position for randomness
+		manaHitbox.x = random_float;
+
+		//Attack Mechanic, hold left click to build mana, let go at hitbox to attack.
+		if (CP_Input_MouseClicked()) //randomizes hitbox position when mouse clicked in frame
+		{
+			random_float = CP_Random_RangeFloat(WINDOW_WIDTH / 1.3f, (WINDOW_WIDTH / 10.0f));
+		}
+		else if (CP_Input_MouseDown(MOUSE_BUTTON_LEFT) && mana < 100 && cooldown == 0)
+		{
+			hitboxSpawn = 1;
+			mana += 1.0f;
+		}
+		if (CP_Input_MouseReleased(MOUSE_BUTTON_LEFT) && mana >= 0)
+		{
+			cooldown = 1;
+			hitboxSpawn = 0;
+			if (AreIntersecting((currentManabar.width * (mana / 100.0f)),
+				manaHitbox.x, manaHitbox.width) && mana > 0.0f)
+			{
+				//spawn player attack flying towards mouse direction till collision with wall
+				// Calculate direction from player to mouse
+				CP_Vector mousePos = CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY());
+				CP_Vector attackDirection = CP_Vector_Normalize(CP_Vector_Subtract(mousePos, player1.position));
+
+				// Initialize the player's attack
+				playerAttack.position = player1.position;
+				playerAttack.speed = 500.0f; // speed of the attack
+				playerAttack.isFriendly = 1; // indicate that it's a player attack
+				playerAttack.Spawned = 1;
+				playerAttack.diameter = 30.0f;
+				playerAttack.direction = attackDirection;
+
+				printf("Attack Spawned! Heading towards mouse direction.\n");
+			}
+		}
+		if (cooldown == 1 && mana > 0) {
+			mana -= 1.0f;
+
+		}
+		else if (mana == 0) {
+			cooldown = 0;
+		}
+
+
+		CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 50));
+
+		//draw player 1
+		CP_Settings_Fill(CP_Color_Create(255, 0, 255, 255));
+		CP_Graphics_DrawCircle(player1.position.x, player1.position.y, diameter);
+
+		if (playerAttack.Spawned == 1)
+		{
+			playerAttack.position = CP_Vector_Add(playerAttack.position, CP_Vector_Scale(playerAttack.direction, playerAttack.speed * dt));
+			CP_Settings_Fill(CP_Color_Create(255, 255, 0, 255)); // Yellow for attack
+			CP_Graphics_DrawCircle(playerAttack.position.x, playerAttack.position.y, playerAttack.diameter);
+
+			if (playerAttack.position.x < 0 || playerAttack.position.x > WINDOW_WIDTH ||
+				playerAttack.position.y < 0 || playerAttack.position.y > WINDOW_HEIGHT)
+			{
+				playerAttack.Spawned = 0; // deactivate the attack
+				printf("Attack destroyed after hitting the wall.\n");
+			}
+		}
+
+		//ManaBar
+		CP_Settings_Fill(manaBarColor);
+		CP_Graphics_DrawRect(maxManabar.x, maxManabar.y, maxManabar.width, maxManabar.height);
+
+		//Current Mana
+		if (cooldown == 0) {
+			CP_Settings_Fill(manaColor);
+			CP_Graphics_DrawRect(currentManabar.x, currentManabar.y, (currentManabar.width) * (mana / 100), currentManabar.height);
+		}
+		else {
+			CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
+			if (CP_Input_MouseClicked()) {
+				CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+			}
+			CP_Graphics_DrawRect(currentManabar.x, currentManabar.y, (currentManabar.width * (mana / 100)), currentManabar.height);
+		}
+
+		//Mana Hitbox
+		if (hitboxSpawn == 1) {
+			CP_Settings_Fill(manaHitboxColor);
+			CP_Graphics_DrawRect(manaHitbox.x, manaHitbox.y, manaHitbox.width, manaHitbox.height);
+		}
+
+		//Mana cursor
+		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+		CP_Graphics_DrawRect(currentManabar.x + (currentManabar.width * (mana / 100)) - 10, currentManabar.y, 10, currentManabar.height);
+
+		//hearts
+		//additional hearts
+		switch (player1.lives)
+		{
+		case 4:
+			drawHearts(playerHearts.x, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 50, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x + 50, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 100, playerHearts.y, playerHearts.size);
+			break;
+		case 5:
+			drawHearts(playerHearts.x, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 50, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x + 50, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 100, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x + 100, playerHearts.y, playerHearts.size);
+			break;
+		case 6:
+			drawHearts(playerHearts.x, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 50, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x + 50, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 100, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x + 100, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 150, playerHearts.y, playerHearts.size);
+			break;
+		case 7:
+			drawHearts(playerHearts.x, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 50, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x + 50, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 100, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x + 100, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 150, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x + 150, playerHearts.y, playerHearts.size);
+			break;
+		default:
+			drawHearts(playerHearts.x, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x - 50, playerHearts.y, playerHearts.size);
+			drawHearts(playerHearts.x + 50, playerHearts.y, playerHearts.size);
+		}
+
+	}
 }
 
 void Game_Exit(void)
