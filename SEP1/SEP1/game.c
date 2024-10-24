@@ -1,5 +1,5 @@
 #include "utils.h"
-#include "cprocessing.h"
+#include "cprocessing.h" //dog
 #include "mainmenu.h"
 #include "stdlib.h"
 #include <math.h>
@@ -18,7 +18,7 @@ float mana;
 float random_float;
 int cooldown;
 int hitboxSpawn;
-
+ //wnemy
 struct manabar {
 	float x;
 	float y;
