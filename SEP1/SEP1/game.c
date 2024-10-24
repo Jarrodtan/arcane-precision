@@ -1,27 +1,31 @@
 #include "utils.h"
-#include "cprocessing.h" //dog
+#include "cprocessing.h"
 #include "mainmenu.h"
 #include "stdlib.h"
 #include "stdbool.h"
 #include <math.h>
 #include <stdio.h>
+
 #define WINDOW_WIDTH 1600.0f
 #define WINDOW_HEIGHT 900.0f
 #define PLAYER_SPEED 400.0f
-float territoryDiameter;
-float diameter;
+
 CP_Color manaBarColor;
 CP_Color manaColor;
 CP_Color manaHitboxColor;
 CP_Vector player1_position;
+
+float territoryDiameter;
+float diameter;
 float base_Mana;
 float mana;
 float random_float;
 int cooldown;
 int hitboxSpawn;
-bool game_pause = 1;
 
- //wnemy
+bool game_pause = false;
+
+//enemy
 struct manabar {
 	float x;
 	float y;
@@ -107,12 +111,6 @@ void Game_Init(void)
 
 void Game_Update(void)
 {
-	// Pause & Resume game
-	if (CP_Input_KeyTriggered(KEY_SPACE)) {
-		CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-		CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, 500.0f, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f);
-	}
-
 	float dt = CP_System_GetDt();
 	//player 1 controls
 	if (player1.active == 1) {
@@ -263,6 +261,17 @@ void Game_Update(void)
 		drawHearts(playerHearts.x, playerHearts.y, playerHearts.size);
 		drawHearts(playerHearts.x - 50, playerHearts.y, playerHearts.size);
 		drawHearts(playerHearts.x + 50, playerHearts.y, playerHearts.size);
+	}
+
+	// Pause & Resume game
+	if (CP_Input_KeyTriggered(KEY_SPACE)) {
+		game_pause = (game_pause == false);
+	}
+
+	if (game_pause == true) {
+		CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
+		CP_Graphics_DrawRect(WINDOW_WIDTH / 4.0f, WINDOW_HEIGHT / 4.0f, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f);
+		printf("pause");
 	}
 
 	//return to mainmenu
