@@ -105,6 +105,9 @@ void Game_Init(void)
 void Game_Update(void)
 {
 	// Pause & Resume game
+	if (CP_Input_KeyTriggered(KEY_SPACE)) {
+
+	}
 
 	float dt = CP_System_GetDt();
 	//player 1 controls
