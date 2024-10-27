@@ -31,14 +31,13 @@ int IsCircleClicked(float circle_center_x, float circle_center_y, float diameter
     return 0;
 }
 
-int AreIntersecting(float w1, float s2_x, float w2)
+int AreIntersecting(float s1_x, float w1, float s2_x, float w2)
 {
-      // Check if one rectangle is completely to the left of the other
-    if (w1 >= s2_x-w2 && w1 <= s2_x) {
-        return 1; // No intersection
+    if (s1_x+w1 >= s2_x && s1_x <= s2_x+w2) {
+        return 1;
     }
     else {
-        return 0; // There is an intersection
+        return 0;
     }
 }
 
