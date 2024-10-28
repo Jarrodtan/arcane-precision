@@ -1,19 +1,19 @@
 #include "utils.h"
 #include "cprocessing.h"
 #include "mainmenu.h"
-#include "stdlib.h"
 #include "stdbool.h"
 #include <math.h>
 #include <stdio.h>
+#include "stdlib.h"
 
 #define WINDOW_WIDTH 1600.0f
 #define WINDOW_HEIGHT 900.0f
-#define PLAYER_SPEED 400.0f
+extern bool isNewGame;
 
 CP_Color manaBarColor;
 CP_Color manaColor;
 CP_Color manaHitboxColor;
-CP_Vector player1_position;
+CP_Vector player_position;
 CP_Image pause_sign;
 
 float territoryDiameter;
@@ -23,10 +23,9 @@ float mana;
 float random_float;
 int cooldown;
 int hitboxSpawn;
-
+int roomsPassed; //for increasing difficulty
 bool game_pause;
 
-//enemy
 struct manabar {
 	float x;
 	float y;
@@ -39,8 +38,14 @@ struct player {
 	float diameter;
 	int direction;
 	int active;
+	float moveSpeed;
 	int maxLives;
 	int currentLives;
+	float manaBuildSpeed;
+	float cooldownSpeed;
+	float attackDamage;
+	float attackSize;
+	float attackSpeed;
 };
 
 struct attack {
@@ -60,7 +65,7 @@ struct hearts {
 	float spacing;
 };
 
-struct player player1;
+struct player player;
 struct manabar maxManabar;
 struct manabar currentManabar;
 struct manabar manaHitbox;
@@ -68,16 +73,17 @@ struct attack playerAttack;
 struct attack enemyAttack;
 struct hearts playerHearts;
 
+
 void static draw_screen(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 50));
 
 	//draw player 1
 	CP_Settings_Fill(CP_Color_Create(255, 0, 255, 255));
-	CP_Graphics_DrawCircle(player1.position.x, player1.position.y, player1.diameter);
+	CP_Graphics_DrawCircle(player.position.x, player.position.y, player.diameter);
 
 	//ManaBar
-	maxManabar.x = player1.position.x - player1.diameter +2;
-	maxManabar.y = player1.position.y + 50;
+	maxManabar.x = player.position.x - player.diameter +2;
+	maxManabar.y = player.position.y + 50;
 	CP_Settings_Fill(manaBarColor);
 	CP_Graphics_DrawRect(maxManabar.x, maxManabar.y, maxManabar.width, maxManabar.height);
 
@@ -110,7 +116,7 @@ void static draw_screen(void) {
 
 	// Max hearts per row
 	int heartsPerRow = 5;
-	for (int i = 0; i < player1.maxLives; i++) {
+	for (int i = 0; i < player.maxLives; i++) {
 		int row = i / heartsPerRow;
 		int col = i % heartsPerRow;
 
@@ -139,18 +145,43 @@ void Game_Init(void)
 	game_pause = false;
 	playerAttack.Spawned = 0;
 
-	//player1
-	player1.diameter = 60.0f;
-	player1.position = CP_Vector_Set(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-	player1.direction = 1;
-	player1.active = 1;
-	player1.maxLives = 3;
-	player1.currentLives = player1.maxLives;
+	//player
+	player.diameter = 60.0f;
+	player.position = CP_Vector_Set(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+	player.direction = 1;
+	player.active = 1;
+	if (isNewGame == true) 
+	{
+	player.moveSpeed = 400.0f;
+	player.maxLives = 3;
+	player.currentLives = player.maxLives;
+	player.manaBuildSpeed = 1.0f;
+	player.cooldownSpeed = 1.0f;
+	player.attackSize = 30.0f;
+	player.attackDamage = 1;
+	player.attackSpeed = 500.0f;
+	}
+	else 
+	{
+		playerStats stats = { player.moveSpeed,player.maxLives, player.currentLives,
+	player.manaBuildSpeed,player.cooldownSpeed, player.attackDamage,
+	player.attackSize, player.attackSpeed };
+
+		loadPlayerStats(&stats);
+		player.moveSpeed = stats.moveSpeed;
+		player.maxLives = stats.maxLives;
+		player.currentLives = stats.currentLives;
+		player.manaBuildSpeed = stats.manaBuildSpeed;
+		player.cooldownSpeed = stats.cooldownSpeed;
+		player.attackDamage = stats.attackDamage;
+		player.attackSize = stats.attackSize;
+		player.attackSpeed = stats.attackSpeed;
+	}
 
 	//max Manabar
-	maxManabar.x = player1.position.x - diameter +2;
-	maxManabar.y = player1.position.y + 50;
-	maxManabar.width = player1.diameter*2;
+	maxManabar.x = player.position.x - diameter +2;
+	maxManabar.y = player.position.y + 50;
+	maxManabar.width = player.diameter*2;
 	maxManabar.height = 20;
 
 	//current Manabar
@@ -192,16 +223,22 @@ void Game_Update(void)
 	//return to mainmenu (To be removed)
 	if (CP_Input_KeyTriggered(KEY_Q))
 	{
+		playerStats stats = { player.moveSpeed,player.maxLives, player.currentLives,
+		player.manaBuildSpeed,player.cooldownSpeed, player.attackDamage,
+		player.attackSize, player.attackSpeed,roomsPassed};
+		savePlayerStats(&stats);
 		CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
 	}
 	//testing lives
-	if (CP_Input_KeyTriggered(KEY_N))
+	if (CP_Input_KeyTriggered(KEY_EQUAL))
 	{
-		player1.maxLives += 1;
+		player.maxLives += 1;
+		player.attackSize += 10;
 	}
-	else if (CP_Input_KeyTriggered(KEY_M))
+	else if (CP_Input_KeyTriggered(KEY_MINUS))
 	{
-		player1.maxLives -= 1;
+		player.maxLives -= 1;
+		player.attackSize -= 10;
 	}
 
 	if (game_pause == true) {
@@ -220,27 +257,27 @@ void Game_Update(void)
 
 	else if (game_pause == false) {
 		//player 1 controls
-		if (player1.active == 1) {
+		if (player.active == 1) {
 			if (CP_Input_KeyDown(KEY_W))
 			{
-				player1.position.y -= PLAYER_SPEED * dt;
+				player.position.y -= player.moveSpeed * dt;
 			}
 			else if (CP_Input_KeyDown(KEY_S))
 			{
-				player1.position.y += PLAYER_SPEED * dt;
+				player.position.y += player.moveSpeed * dt;
 			}
 			else if (CP_Input_KeyDown(KEY_A))
 			{
-				player1.position.x -= PLAYER_SPEED * dt;
+				player.position.x -= player.moveSpeed * dt;
 			}
 			else if (CP_Input_KeyDown(KEY_D))
 			{
-				player1.position.x += PLAYER_SPEED * dt;
+				player.position.x += player.moveSpeed * dt;
 			}
 		}
 
 		//re-sets mana hitbox position for randomness
-		manaHitbox.x = maxManabar.x + random_float;
+		manaHitbox.x = maxManabar.x+ random_float;
 
 		//Attack Mechanic, hold left click to build mana, let go at hitbox to attack.
 		if (CP_Input_MouseClicked()) //randomizes hitbox position when mouse clicked in frame
@@ -250,7 +287,7 @@ void Game_Update(void)
 		else if (CP_Input_MouseDown(MOUSE_BUTTON_LEFT) && mana < 100 && cooldown == 0)
 		{
 			hitboxSpawn = 1;
-			mana += 1.0f;
+			mana += player.manaBuildSpeed;
 		}
 		if (CP_Input_MouseReleased(MOUSE_BUTTON_LEFT) && mana >= 0 && cooldown == 0)
 		{
@@ -262,22 +299,22 @@ void Game_Update(void)
 				//spawn player attack flying towards mouse direction till collision with wall
 				// Calculate direction from player to mouse
 				CP_Vector mousePos = CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY());
-				CP_Vector attackDirection = CP_Vector_Normalize(CP_Vector_Subtract(mousePos, player1.position));
+				CP_Vector attackDirection = CP_Vector_Normalize(CP_Vector_Subtract(mousePos, player.position));
 
 				// Initialize the player's attack
-				playerAttack.position = player1.position;
-				playerAttack.speed = 500.0f; // speed of the attack
+				playerAttack.position = player.position;
+				playerAttack.speed = player.attackSpeed; // speed of the attack
 				playerAttack.isFriendly = 1; // indicate that it's a player attack
 				playerAttack.Spawned = 1;
-				playerAttack.diameter = 30.0f;
+				playerAttack.diameter = player.attackSize;
 				playerAttack.direction = attackDirection;
 			}
 		}
 		if (cooldown == 1 && mana > 0) {
-			mana -= 1.0f;
+			mana -= player.cooldownSpeed;
 
 		}
-		else if (mana == 0) {
+		else if (mana <= 0) {
 			cooldown = 0;
 		}
 

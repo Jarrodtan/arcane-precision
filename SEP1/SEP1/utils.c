@@ -1,5 +1,24 @@
 #include <math.h>
 #include "cprocessing.h"
+#include <stdio.h>
+#include "stdlib.h"
+#include "stdbool.h"
+
+bool isNewGame;
+
+typedef struct {
+    float moveSpeed;
+    int maxLives;
+    int currentLives;
+    float manaBuildSpeed;
+    float cooldownSpeed;
+    float attackDamage;
+    float attackSize;
+    float attackSpeed;
+    int roomsPassed;
+}playerStats;
+
+const char* saveFilePath = "player_save.dat";
 
 int IsAreaClicked(float area_center_x, float area_center_y, float area_width, float area_height, float click_x, float click_y)
 {
@@ -54,4 +73,36 @@ void drawHearts(float x, float y, float size) {
     CP_Graphics_AddVertex(x + size, y); // Right corner
     CP_Graphics_AddVertex(x, y + size * 1.5f); // Bottom point
     CP_Graphics_EndShape();
+}
+
+
+void savePlayerStats(playerStats* stats) {
+    FILE* file = fopen(saveFilePath, "wb");
+    if (file == NULL) {
+        printf("Error: Could not open file for saving.\n");
+        return;
+    }
+
+    fwrite(stats, sizeof(playerStats), 1, file);
+    fclose(file);
+
+    printf("Player stats saved!\n");
+}
+
+// Function to load player stats from a file
+void loadPlayerStats(playerStats* stats) {
+    
+    FILE* file = fopen(saveFilePath, "rb");
+    if (file == NULL) {
+        printf("Error: Could not open file for loading.\n");
+        return;
+    }
+
+    fread(stats, sizeof(playerStats), 1, file);
+    fclose(file);
+
+    printf("%f\n", stats->attackDamage);
+    printf("%f\n", stats->attackSize);
+    printf("%f\n", stats->attackSpeed);
+    printf("Player stats loaded!\n");
 }
