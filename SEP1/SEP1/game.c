@@ -209,7 +209,7 @@ void Game_Update(void)
 	float dt = CP_System_GetDt();
 
 	// Pause & Resume game
-	if (CP_Input_KeyTriggered(KEY_SPACE)) {
+	if (CP_Input_KeyTriggered(KEY_ESCAPE)) {
 		switch (game_pause) {
 		case true:
 			game_pause = false;
@@ -251,7 +251,9 @@ void Game_Update(void)
 		//dim background and show pause sign
 		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 100));
 		CP_Graphics_DrawRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-		CP_Image_Draw(pause_sign, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f, 300.0f, 300.0f, 255);
+		CP_Settings_Fill(CP_Color_Create(1, 50, 32, 255));
+		CP_Graphics_DrawRect(WINDOW_WIDTH / 4.0f, WINDOW_HEIGHT / 4.0f, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f);
+		CP_Image_Draw(pause_sign, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f, 150.0f, 150.0f, 255);
 		CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 50));
 	}
 
