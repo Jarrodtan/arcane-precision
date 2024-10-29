@@ -103,6 +103,8 @@ void static draw_screen(void) {
 	}
 
 	//Mana Hitbox
+	//re-sets mana hitbox position for randomness
+	manaHitbox.x = maxManabar.x + random_float;
 	manaHitbox.y = maxManabar.y;
 	if (hitboxSpawn == 1) {
 		CP_Settings_Fill(manaHitboxColor);
@@ -278,8 +280,6 @@ void Game_Update(void)
 			}
 		}
 
-		//re-sets mana hitbox position for randomness
-		manaHitbox.x = maxManabar.x+ random_float;
 
 		//Attack Mechanic, hold left click to build mana, let go at hitbox to attack.
 		if (CP_Input_MouseClicked()) //randomizes hitbox position when mouse clicked in frame
