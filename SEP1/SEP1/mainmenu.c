@@ -1,12 +1,14 @@
 #include "cprocessing.h"
 #include "utils.h"
 #include "game.h"
+#include "startmenu.h"
 #include "stdbool.h"
 #define WINDOW_WIDTH 1600
 #define WINDOW_HEIGHT 900
 CP_Font myFont;
 float textSize;
 bool isNewGame;
+
 void Main_Menu_Init(void)
 {
     CP_Settings_RectMode(CP_POSITION_CENTER);
@@ -49,17 +51,17 @@ void Main_Menu_Update(void)
         CP_Engine_SetNextGameState(Game_Init, Game_Update, Game_Exit);
     }
 
-    //Exit button
+    //Back button
     CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
     CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 1.5f,
         WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);
     CP_Font_Set(myFont);
     CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-    CP_Font_DrawText("Exit", WINDOW_WIDTH / 2.10f, WINDOW_HEIGHT / 1.48f);
+    CP_Font_DrawText("Back", WINDOW_WIDTH / 2.10f, WINDOW_HEIGHT / 1.48f);
     if (IsAreaClicked(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 1.5f,
         WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
     {
-        CP_Engine_Terminate();
+        CP_Engine_SetNextGameState(Start_Menu_Init, Start_Menu_Update, Start_Menu_Exit);
     }
 }
 
