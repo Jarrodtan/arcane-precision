@@ -9,7 +9,6 @@ float textSize;
 bool isNewGame;
 void Main_Menu_Init(void)
 {
-    CP_Graphics_ClearBackground(CP_Color_Create(50, 50, 50, 0));
     CP_Settings_RectMode(CP_POSITION_CENTER);
     myFont = CP_Font_Load("Assets/Exo2-Regular.ttf");
     textSize = 50.0f;
@@ -20,6 +19,7 @@ void Main_Menu_Init(void)
 
 void Main_Menu_Update(void)
 {
+    CP_Graphics_ClearBackground(CP_Color_Create(50, 50, 50, 0));
     //New game button
     CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
     CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 3.0f,
