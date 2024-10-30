@@ -35,22 +35,7 @@ int IsAreaClicked(float area_center_x, float area_center_y, float area_width, fl
     return 0;
 }
 
-int IsCircleClicked(float circle_center_x, float circle_center_y, float diameter, float click_x, float click_y)
-{
-    if (click_x < (circle_center_x + diameter / 2) && click_x >(circle_center_x - diameter / 2) && click_y < (circle_center_y + diameter / 2) && click_y >(circle_center_y - diameter / 2))
-    {
-        if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT))
-        {
-            return 1;
-        }
-    }
-    else {
-        return 0;
-    }
-    return 0;
-}
-
-int AreIntersecting(float s1_x, float w1, float s2_x, float w2)
+int rectAreIntersecting(float s1_x, float w1, float s2_x, float w2)
 {
     if (s1_x+w1 >= s2_x && s1_x <= s2_x+w2) {
         return 1;
@@ -77,7 +62,7 @@ void drawHearts(float x, float y, float size) {
 
 
 void savePlayerStats(playerStats* stats) {
-    FILE* file = fopen(saveFilePath, "wb");
+    FILE *file = fopen(saveFilePath, "wb");
     if (file == NULL) {
         printf("Error: Could not open file for saving.\n");
         return;
@@ -92,7 +77,7 @@ void savePlayerStats(playerStats* stats) {
 // Function to load player stats from a file
 void loadPlayerStats(playerStats* stats) {
     
-    FILE* file = fopen(saveFilePath, "rb");
+    FILE *file = fopen(saveFilePath, "rb");
     if (file == NULL) {
         printf("Error: Could not open file for loading.\n");
         return;
