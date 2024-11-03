@@ -4,7 +4,7 @@
 #include "stdlib.h"
 #include "stdbool.h"
 
-bool isNewGame;
+bool newGame;
 
 typedef struct {
     float moveSpeed;
@@ -18,7 +18,9 @@ typedef struct {
     int roomsPassed;
 }playerStats;
 
-const char* saveFilePath = "player_save.dat";
+const char* saveFile1 = "save1.dat";
+const char* saveFile2 = "save2.dat";
+
 
 int IsAreaClicked(float area_center_x, float area_center_y, float area_width, float area_height, float click_x, float click_y)
 {
@@ -61,8 +63,8 @@ void drawHearts(float x, float y, float size) {
 }
 
 
-void savePlayerStats(playerStats* stats) {
-    FILE *file = fopen(saveFilePath, "wb");
+void savePlayerStats(playerStats* stats, const char* saveFileName) {
+    FILE *file = fopen(saveFileName, "wb");
     if (file == NULL) {
         printf("Error: Could not open file for saving.\n");
         return;
@@ -75,9 +77,9 @@ void savePlayerStats(playerStats* stats) {
 }
 
 // Function to load player stats from a file
-void loadPlayerStats(playerStats* stats) {
+void loadPlayerStats(playerStats* stats, const char* saveFileName) {
     
-    FILE *file = fopen(saveFilePath, "rb");
+    FILE *file = fopen(saveFileName, "rb");
     if (file == NULL) {
         printf("Error: Could not open file for loading.\n");
         return;
@@ -85,9 +87,14 @@ void loadPlayerStats(playerStats* stats) {
 
     fread(stats, sizeof(playerStats), 1, file);
     fclose(file);
-
-    printf("%f\n", stats->attackDamage);
-    printf("%f\n", stats->attackSize);
-    printf("%f\n", stats->attackSpeed);
     printf("Player stats loaded!\n");
+}
+int checkSaveExists(const char* saveFileName)
+{
+FILE* file = fopen(saveFileName, "rb");
+if (file != NULL) {
+    fclose(file);
+    return 1;
+}
+return 0;
 }

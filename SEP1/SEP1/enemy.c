@@ -7,6 +7,7 @@
 #include <stdio.h>
 #define WINDOW_WIDTH 1600.0f
 #define WINDOW_HEIGHT 900.0f
+extern float dt;
 
 struct enemy {
 	CP_Vector position;
@@ -100,7 +101,7 @@ float dt = CP_System_GetDt()
 
 void enemy_code(CP_Vector player) {
 	static float shootTimer = 0.0f;
-	float dt = CP_System_GetDt();
+	//float dt = CP_System_GetDt();
 
 	// Initialize enemy properties
 	enemyStationary.diameter = 50;

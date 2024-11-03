@@ -9,7 +9,11 @@
 
 #define WINDOW_WIDTH 1600.0f
 #define WINDOW_HEIGHT 900.0f
+extern int saveSlot;
 extern bool isNewGame;
+extern const char* saveFile1;
+extern const char* saveFile2;
+float dt;
 
 CP_Color manaBarColor;
 CP_Color manaColor;
@@ -173,14 +177,16 @@ void static draw_screen(void) {
 
 float slowTime(void) //returns dt value for slowing down time
 {
-	float dt = CP_System_GetDt();
+	dt = CP_System_GetDt();
 	if (CP_Input_KeyDown(KEY_SPACE))
 	{
 		isSlowed = true;
 		return dt * slowTimeScale;
 	}
+	else {
 	isSlowed = false;
 	return dt;
+	}
 }
 
 void drawSpellMenu(float x, float y) //create spell selection menu. Will require more work
@@ -267,8 +273,15 @@ void Game_Init(void)
 		playerStats stats = { player.moveSpeed,player.maxLives, player.currentLives,
 	player.manaBuildSpeed,player.cooldownSpeed, player.attackDamage,
 	player.attackSize, player.attackSpeed };
-
-		loadPlayerStats(&stats);
+		switch (saveSlot)
+		{
+		case 1:
+		loadPlayerStats(&stats, saveFile1);
+			break;
+		case 2:
+			loadPlayerStats(&stats, saveFile2);
+			break;
+		}
 		player.moveSpeed = stats.moveSpeed;
 		player.maxLives = stats.maxLives;
 		player.currentLives = stats.currentLives;
@@ -357,15 +370,7 @@ void Game_Init(void)
 
 void Game_Update(void)
 {
-	float dt = slowTime();
-	//skill selection
-	if (isSlowed)
-	{
-		if (CP_Input_KeyDown(KEY_A)) selectedSpell = 0; //default (fireball)
-		else if (CP_Input_KeyDown(KEY_D)) selectedSpell = 1; //ice 
-		drawSpellMenu(player.position.x, player.position.y);
-	}
-
+	dt = slowTime();
 	// Pause & Resume game
 	if (CP_Input_KeyTriggered(KEY_ESCAPE)) {
 		switch (game_pause) {
@@ -429,7 +434,15 @@ void Game_Update(void)
 			playerStats stats = { player.moveSpeed,player.maxLives, player.currentLives,
 			player.manaBuildSpeed,player.cooldownSpeed, player.attackDamage,
 			player.attackSize, player.attackSpeed,roomsPassed };
-			savePlayerStats(&stats);
+			switch (saveSlot)
+			{
+			case 1:
+				savePlayerStats(&stats,saveFile1);
+				break;
+			case 2:
+				savePlayerStats(&stats, saveFile2);
+				break;
+			}
 			CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
 		}
 		CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 50));
@@ -467,7 +480,13 @@ void Game_Update(void)
 				}
 			}
 		}
-
+		//skill selection
+		if (isSlowed)
+		{
+			if (CP_Input_KeyDown(KEY_A)) selectedSpell = 0; //default (fireball)
+			else if (CP_Input_KeyDown(KEY_D)) selectedSpell = 1; //ice 
+			drawSpellMenu(player.position.x, player.position.y);
+		}
 
 		//Attack Mechanic, hold left click to build mana, let go at hitbox to attack.
 		if (CP_Input_MouseClicked()) //randomizes hitbox position when mouse clicked in frame

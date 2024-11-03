@@ -7,7 +7,11 @@
 #define WINDOW_HEIGHT 900
 CP_Font myFont;
 float textSize;
+int saveSlot;
 bool isNewGame;
+
+extern const char *saveFile1;
+extern const char *saveFile2;
 
 void Main_Menu_Init(void)
 {
@@ -28,11 +32,22 @@ void Main_Menu_Update(void)
         WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);
     CP_Font_Set(myFont);
     CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-    CP_Font_DrawText("New Game", WINDOW_WIDTH / 2.29f, WINDOW_HEIGHT / 2.91f);
+    CP_Font_DrawText("Save 1", WINDOW_WIDTH / 2.29f, WINDOW_HEIGHT / 2.91f);
     if (IsAreaClicked(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 3.0f,
         WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
     {
-        isNewGame = true;
+
+        switch (checkSaveExists(saveFile1))
+        {
+        case 1:
+            isNewGame = false;
+            break;
+        case 0:
+            isNewGame = true;
+            break;
+        }
+        saveSlot = 1;
+        printf("%d", checkSaveExists(saveFile1));
         CP_Engine_SetNextGameState(Game_Init, Game_Update, Game_Exit);
     }    
 
@@ -43,11 +58,21 @@ void Main_Menu_Update(void)
         WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);
     CP_Font_Set(myFont);
     CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-    CP_Font_DrawText("Load Game", WINDOW_WIDTH / 2.30f, WINDOW_HEIGHT / 1.95f);
+    CP_Font_DrawText("Save 2", WINDOW_WIDTH / 2.30f, WINDOW_HEIGHT / 1.95f);
     if (IsAreaClicked(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f,
         WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
     {
-        isNewGame = false;
+
+        switch (checkSaveExists(saveFile2))
+        {
+        case 1:
+            isNewGame = false;
+            break;
+        case 0:
+            isNewGame = true;
+            break;
+        }
+        saveSlot = 2;
         CP_Engine_SetNextGameState(Game_Init, Game_Update, Game_Exit);
     }
 
