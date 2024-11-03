@@ -8,6 +8,7 @@
 #define WINDOW_WIDTH 1600.0f
 #define WINDOW_HEIGHT 900.0f
 extern float dt;
+extern int roomsPassed;
 
 struct enemy {
 	CP_Vector position;

@@ -14,6 +14,7 @@ extern bool isNewGame;
 extern const char* saveFile1;
 extern const char* saveFile2;
 float dt;
+int lastEntered;
 
 CP_Color manaBarColor;
 CP_Color manaColor;
@@ -82,7 +83,6 @@ struct walls {
 	float y;
 	float width;
 	float height;
-	bool isDoor;
 };
 
 struct player player;
@@ -114,11 +114,48 @@ void static draw_screen(void) {
 	CP_Graphics_DrawRect(rightWall.x, rightWall.y, rightWall.width, rightWall.height);
 
 	//Doors for rooms
-	CP_Settings_Fill(CP_Color_Create(255, 255, 200, 255));
-	CP_Graphics_DrawRect(topDoor.x, topDoor.y, topDoor.width, topDoor.height);
-	CP_Graphics_DrawRect(botDoor.x, botDoor.y, botDoor.width, botDoor.height);
-	CP_Graphics_DrawRect(leftDoor.x, leftDoor.y, leftDoor.width, leftDoor.height);
-	CP_Graphics_DrawRect(rightDoor.x, rightDoor.y, rightDoor.width, rightDoor.height);
+	switch (lastEntered)
+	{
+	case 1:
+		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
+		CP_Graphics_DrawRect(botDoor.x, botDoor.y, botDoor.width, botDoor.height);
+		CP_Settings_Fill(CP_Color_Create(255, 255, 200, 255));
+		CP_Graphics_DrawRect(topDoor.x, topDoor.y, topDoor.width, topDoor.height);
+		CP_Graphics_DrawRect(leftDoor.x, leftDoor.y, leftDoor.width, leftDoor.height);
+		CP_Graphics_DrawRect(rightDoor.x, rightDoor.y, rightDoor.width, rightDoor.height);
+		break;
+	case 2:
+		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
+		CP_Graphics_DrawRect(leftDoor.x, leftDoor.y, leftDoor.width, leftDoor.height);
+		CP_Settings_Fill(CP_Color_Create(255, 255, 200, 255));
+		CP_Graphics_DrawRect(topDoor.x, topDoor.y, topDoor.width, topDoor.height);
+		CP_Graphics_DrawRect(botDoor.x, botDoor.y, botDoor.width, botDoor.height);
+		CP_Graphics_DrawRect(rightDoor.x, rightDoor.y, rightDoor.width, rightDoor.height);
+		break;
+	case 3:
+		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
+		CP_Graphics_DrawRect(topDoor.x, topDoor.y, topDoor.width, topDoor.height);
+		CP_Settings_Fill(CP_Color_Create(255, 255, 200, 255));
+		CP_Graphics_DrawRect(leftDoor.x, leftDoor.y, leftDoor.width, leftDoor.height);
+		CP_Graphics_DrawRect(botDoor.x, botDoor.y, botDoor.width, botDoor.height);
+		CP_Graphics_DrawRect(rightDoor.x, rightDoor.y, rightDoor.width, rightDoor.height);
+		break;
+	case 4:
+		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
+		CP_Graphics_DrawRect(rightDoor.x, rightDoor.y, rightDoor.width, rightDoor.height);
+		CP_Settings_Fill(CP_Color_Create(255, 255, 200, 255));
+		CP_Graphics_DrawRect(topDoor.x, topDoor.y, topDoor.width, topDoor.height);
+		CP_Graphics_DrawRect(botDoor.x, botDoor.y, botDoor.width, botDoor.height);
+		CP_Graphics_DrawRect(leftDoor.x, leftDoor.y, leftDoor.width, leftDoor.height);
+		break;
+	default:
+		CP_Settings_Fill(CP_Color_Create(255, 255, 200, 255));
+		CP_Graphics_DrawRect(rightDoor.x, rightDoor.y, rightDoor.width, rightDoor.height);
+		CP_Graphics_DrawRect(topDoor.x, topDoor.y, topDoor.width, topDoor.height);
+		CP_Graphics_DrawRect(botDoor.x, botDoor.y, botDoor.width, botDoor.height);
+		CP_Graphics_DrawRect(leftDoor.x, leftDoor.y, leftDoor.width, leftDoor.height);
+		break;
+	}
 
 	//draw player 1
 	CP_Settings_Fill(CP_Color_Create(255, 0, 255, 255));
@@ -239,6 +276,7 @@ void drawSpellMenu(float x, float y) //create spell selection menu. Will require
 
 void Game_Init(void)
 {
+	printf("rooms passed: %d\n",roomsPassed);
 	pause_sign = CP_Image_Load("Assets/Pause Sign.png");
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	manaBarColor = CP_Color_Create(0, 0, 150, 255);
@@ -254,7 +292,24 @@ void Game_Init(void)
 
 	//player
 	player.diameter = 60.0f;
+	switch (lastEntered)
+	{
+	case 1:
+		player.position = CP_Vector_Set(WINDOW_WIDTH / 2, (WINDOW_HEIGHT / 8)*7);
+		break;
+	case 2:
+		player.position = CP_Vector_Set(WINDOW_WIDTH / 8 , WINDOW_HEIGHT / 2);
+		break;
+	case 3:
+		player.position = CP_Vector_Set(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 8);
+		break;
+	case 4:
+		player.position = CP_Vector_Set((WINDOW_WIDTH / 8)*7, WINDOW_HEIGHT / 2);
+		break;
+	default:
 	player.position = CP_Vector_Set(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+	break;
+	}
 	player.direction = 1;
 	player.active = 1;
 	if (isNewGame == true) 
@@ -321,50 +376,72 @@ void Game_Init(void)
 	topWall.y = 0;
 	topWall.width = WINDOW_WIDTH;
 	topWall.height = 10;
-	topWall.isDoor = false;
 
 	rightWall.x = WINDOW_WIDTH;
 	rightWall.y = 0;
 	rightWall.width = -10;
 	rightWall.height = WINDOW_HEIGHT;
-	rightWall.isDoor = false;
 
 	botWall.x = WINDOW_WIDTH;
 	botWall.y = WINDOW_HEIGHT;
 	botWall.width = -WINDOW_WIDTH;
 	botWall.height = -10;
-	botWall.isDoor = false;
 
 	leftWall.x = 0;
 	leftWall.y = WINDOW_HEIGHT;
 	leftWall.width = 10;
 	leftWall.height = -WINDOW_HEIGHT;
-	leftWall.isDoor = false;
 
 	//doors
 	topDoor.x = (WINDOW_WIDTH / 2) - 100;
 	topDoor.y = 0;
 	topDoor.width = 200;
 	topDoor.height = 10;
-	topDoor.isDoor = true;
 
-	botDoor.x = WINDOW_WIDTH;
-	botDoor.y = (WINDOW_HEIGHT / 2) - 100;
-	botDoor.width = -10;
-	botDoor.height = 200;
-	botDoor.isDoor = true;
-
-	leftDoor.x = (WINDOW_WIDTH / 2) - 100;
-	leftDoor.y = WINDOW_HEIGHT;
-	leftDoor.width = 200;
-	leftDoor.height = -10;
-	leftDoor.isDoor = true;
-
-	rightDoor.x = 0;
+	rightDoor.x = WINDOW_WIDTH-10;
 	rightDoor.y = (WINDOW_HEIGHT / 2) - 100;
 	rightDoor.width = 10;
 	rightDoor.height = 200;
-	rightDoor.isDoor = true;
+
+	botDoor.x = (WINDOW_WIDTH / 2) - 100;
+	botDoor.y = WINDOW_HEIGHT-10;
+	botDoor.width = 200;
+	botDoor.height = 10;
+
+	leftDoor.x = 0;
+	leftDoor.y = (WINDOW_HEIGHT / 2) - 100;
+	leftDoor.width = 10;
+	leftDoor.height = 200;
+}
+
+//intereactions with doors
+void doorInteraction(void)
+{
+	if (doorIntersect(player.position.x, player.position.y, player.diameter, topDoor.x, topDoor.y, topDoor.width, topDoor.height) == 1 && lastEntered != 3)
+	{
+		//set last entered and next spawn point
+		lastEntered = 1;
+		roomsPassed++;
+		Game_Init();
+	}
+	if (doorIntersect(player.position.x, player.position.y, player.diameter, rightDoor.x, rightDoor.y, rightDoor.width, rightDoor.height) == 1 && lastEntered != 4)
+	{
+		lastEntered = 2;
+		roomsPassed++;
+		Game_Init();
+	}
+	if (doorIntersect(player.position.x, player.position.y, player.diameter, botDoor.x, botDoor.y, botDoor.width, botDoor.height) == 1 && lastEntered != 1)
+	{
+		lastEntered = 3;
+		roomsPassed++;
+		Game_Init();
+	}
+	if (doorIntersect(player.position.x, player.position.y, player.diameter, leftDoor.x, leftDoor.y, leftDoor.width, leftDoor.height) == 1 && lastEntered != 2)
+	{
+		lastEntered = 4;
+		roomsPassed++;
+		Game_Init();
+	}
 }
 
 
@@ -382,7 +459,6 @@ void Game_Update(void)
 			break;
 		}
 	}
-
 	//testing lives
 	if (CP_Input_KeyTriggered(KEY_EQUAL))
 	{
@@ -502,7 +578,7 @@ void Game_Update(void)
 		{
 			cooldown = 1;
 			hitboxSpawn = 0;
-			if (rectAreIntersecting(currentManabar.x + (currentManabar.width * (mana / 100)) - 10, 10,
+			if (manaAreIntersecting(currentManabar.x + (currentManabar.width * (mana / 100)) - 10, 10,
 				manaHitbox.x, manaHitbox.width) == 1)
 			{
 				//spawn player attack flying towards mouse direction till collision with wall
@@ -541,6 +617,7 @@ void Game_Update(void)
 		}
 		draw_screen();
 		enemy_code(player.position);
+		doorInteraction();
 	}
 }
 

@@ -47,7 +47,6 @@ void Main_Menu_Update(void)
             break;
         }
         saveSlot = 1;
-        printf("%d", checkSaveExists(saveFile1));
         CP_Engine_SetNextGameState(Game_Init, Game_Update, Game_Exit);
     }    
 

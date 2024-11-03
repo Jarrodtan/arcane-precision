@@ -24,7 +24,7 @@ const char* saveFile2 = "save2.dat";
 
 int IsAreaClicked(float area_center_x, float area_center_y, float area_width, float area_height, float click_x, float click_y)
 {
-    if (click_x < (area_center_x + area_width / 2) && click_x >(area_center_x - area_width / 2) && click_y < (area_center_y + area_height / 2) && click_y >(area_center_y - area_height / 2))
+    if (click_x < (area_center_x + area_width / 2) && click_x >(area_center_x - area_width / 2) && click_y < (area_center_y + area_height / 2) && click_y > (area_center_y - area_height / 2))
     {
         if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT))
         {
@@ -37,7 +37,7 @@ int IsAreaClicked(float area_center_x, float area_center_y, float area_width, fl
     return 0;
 }
 
-int rectAreIntersecting(float s1_x, float w1, float s2_x, float w2)
+int manaAreIntersecting(float s1_x, float w1, float s2_x, float w2)
 {
     if (s1_x+w1 >= s2_x && s1_x <= s2_x+w2) {
         return 1;
@@ -45,6 +45,18 @@ int rectAreIntersecting(float s1_x, float w1, float s2_x, float w2)
     else {
         return 0;
     }
+}
+
+int doorIntersect(float p_x, float p_y, float p_dia, float door_x, float door_y, float door_width, float door_height)
+{
+    float player_diameter = (p_dia / 2)+10;
+
+    if (p_x + player_diameter >= door_x && p_x - player_diameter <= door_x + door_width && 
+        p_y + player_diameter >= door_y && p_y - player_diameter <= door_y + door_height)
+    {
+        return 1;
+    }
+    return 0;
 }
 
 void drawHearts(float x, float y, float size) {
@@ -89,6 +101,7 @@ void loadPlayerStats(playerStats* stats, const char* saveFileName) {
     fclose(file);
     printf("Player stats loaded!\n");
 }
+
 int checkSaveExists(const char* saveFileName)
 {
 FILE* file = fopen(saveFileName, "rb");
