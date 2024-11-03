@@ -26,6 +26,12 @@ int cooldown;
 int hitboxSpawn;
 int roomsPassed; //for increasing difficulty
 extern int difficulty;
+
+//time manip
+float slowTimeScale = 0.1f;
+bool isSlowed = false;
+int selectedSpell = 0;
+
 bool game_pause;
 
 struct manabar {
@@ -165,6 +171,66 @@ void static draw_screen(void) {
 
 }
 
+float slowTime(void) //returns dt value for slowing down time
+{
+	float dt = CP_System_GetDt();
+	if (CP_Input_KeyDown(KEY_SPACE))
+	{
+		isSlowed = true;
+		return dt * slowTimeScale;
+	}
+	isSlowed = false;
+	return dt;
+}
+
+void drawSpellMenu(float x, float y) //create spell selection menu. Will require more work
+{
+	//dim the game to show time is slowed
+	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 70));
+	CP_Graphics_DrawRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+	//spell menu dimensions
+	float spellSelectWidth = 100.0f;
+	float spellSelectHeight = 50.0f;
+	float spacing = 20.0f;
+	float startX = x - spellSelectWidth - (spacing / 2);
+	float startY = y + player.diameter / 2 + 60.0f;
+
+	//highlight which spell is selected
+	CP_Color highlightColor = CP_Color_Create(255, 255, 0, 255);
+	if (selectedSpell == 0)
+	{
+		CP_Settings_Fill(highlightColor);
+		CP_Graphics_DrawRect(startX - 5, startY - 5, spellSelectWidth + 10, spellSelectHeight + 10); //create highlight of chosen spell
+	}
+	else if (selectedSpell == 1)
+	{
+		CP_Settings_Fill(highlightColor);
+		CP_Graphics_DrawRect(startX + spellSelectWidth + spacing - 5, startY - 5, spellSelectWidth + 10, spellSelectHeight + 10); //create highlight of chosen spell
+	}
+
+
+	//draw rect 1
+	CP_Settings_Fill(CP_Color_Create(255, 100, 100, 255));
+	CP_Graphics_DrawRect(startX, startY, spellSelectWidth, spellSelectHeight);
+
+	//draw rect 2
+	CP_Settings_Fill(CP_Color_Create(100, 100, 255, 255));
+	CP_Graphics_DrawRect(startX + spellSelectWidth + spacing, startY, spellSelectWidth, spellSelectHeight);
+
+	//text (needs work)
+	CP_Settings_TextSize(20.0f);
+	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+	float textX1 = startX + spellSelectWidth / 2 - 15; //need to change
+	float textY1 = startY + spellSelectHeight / 2 - 8; //not aligned
+	CP_Font_DrawText("Fireball", textX1, textY1);
+
+	float textX2 = startX + spellSelectWidth + spacing + spellSelectWidth / 2 - 10;//need to change
+	float textY2 = startY + spellSelectHeight / 2 - 8;//not aligned
+	CP_Font_DrawText("Ice", textX2, textY2);
+
+}
+
 void Game_Init(void)
 {
 	pause_sign = CP_Image_Load("Assets/Pause Sign.png");
@@ -291,7 +357,14 @@ void Game_Init(void)
 
 void Game_Update(void)
 {
-	float dt = CP_System_GetDt();
+	float dt = slowTime();
+	//skill selection
+	if (isSlowed)
+	{
+		if (CP_Input_KeyDown(KEY_A)) selectedSpell = 0; //default (fireball)
+		else if (CP_Input_KeyDown(KEY_D)) selectedSpell = 1; //ice 
+		drawSpellMenu(player.position.x, player.position.y);
+	}
 
 	// Pause & Resume game
 	if (CP_Input_KeyTriggered(KEY_ESCAPE)) {
