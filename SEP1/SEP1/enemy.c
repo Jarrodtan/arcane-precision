@@ -9,6 +9,7 @@
 #define WINDOW_HEIGHT 900.0f
 extern float dt;
 extern int roomsPassed;
+extern struct player player;
 
 struct enemy {
 	CP_Vector position;
@@ -22,13 +23,13 @@ struct enemyAttack {
 	CP_Vector position;
 	float diameter;
 	CP_Vector direction;
-	float damage;
+	int damage;
 	float speed;
 	int isFriendly;
 	int Spawned;
 };
 
-int difficulty = 1;
+float difficulty = 1;
 float bulletdt = 1;
 CP_Vector bulletMoveD;
 CP_Vector bulletMoveN;
@@ -100,10 +101,12 @@ float dt = CP_System_GetDt()
 //------------------------------------------------------------------------------------------------
 */
 
-void enemy_code(CP_Vector player) {
+void enemy_code() {
 	static float shootTimer = 0.0f;
 	//float dt = CP_System_GetDt();
-
+	if (roomsPassed % 5 == 0) {
+	difficulty = (roomsPassed/5)+1;
+	}
 	// Initialize enemy properties
 	enemyStationary.diameter = 50;
 	enemyStationary.position = CP_Vector_Set(WINDOW_WIDTH / 1.5f, WINDOW_HEIGHT / 2.0f);
@@ -116,7 +119,7 @@ void enemy_code(CP_Vector player) {
 	CP_Graphics_DrawCircle(enemyStationary.position.x, enemyStationary.position.y, enemyStationary.diameter);
 
 	// Update shooting timer
-	shootTimer += dt;
+	shootTimer += dt*difficulty;
 
 	// Check if 5 seconds have passed
 	if (shootTimer >= 5.0f) {
@@ -131,12 +134,14 @@ void enemy_code(CP_Vector player) {
 		bulletdt = 5.0f;  // Initialize bullet timer
 
 		// Calculate bullet direction towards player
-		bulletMoveD.x = player.x - bullet.position.x;
-		bulletMoveD.y = player.y - bullet.position.y;
+		bulletMoveD.x = player.position.x - bullet.position.x;
+		bulletMoveD.y = player.position.y - bullet.position.y;
 		bulletMoveN = CP_Vector_Normalize(bulletMoveD);
 
 		bullet.direction.x = bulletMoveN.x * difficulty;
 		bullet.direction.y = bulletMoveN.y * difficulty;
+
+
 	}
 	// Update bullet position over time
 	if (bulletdt > 0) {
@@ -148,12 +153,18 @@ void enemy_code(CP_Vector player) {
 		// Draw bullet
 		CP_Settings_Fill(CP_Color_Create(242, 103, 75, 255));
 		CP_Graphics_DrawCircle(bullet.position.x, bullet.position.y, bullet.diameter);
+
+		if (AreCirclesIntersecting(player.position.x, player.position.y, player.diameter, bullet.position.x, bullet.position.y, bullet.diameter) == 1)
+		{
+			take_damage(&player, bullet.damage);
+		}
+
 	}
 
 	// Enemy movement logic
-	enemyMelee.speed = 10.0f;
-	enemyMoveD.x = player.x - enemyMelee.position.x;
-	enemyMoveD.y = player.y - enemyMelee.position.y;
+	enemyMelee.speed = 10.0f*difficulty;
+	enemyMoveD.x = player.position.x - enemyMelee.position.x;
+	enemyMoveD.y = player.position.y - enemyMelee.position.y;
 	enemyMoveN = CP_Vector_Normalize(enemyMoveD);
 
 	enemyMelee.direction.x = (enemyMoveN.x * 5) + (rand() % 3 - 1);  // Add randomness to movement

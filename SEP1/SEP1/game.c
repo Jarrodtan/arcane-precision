@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "game.h"
 #include "cprocessing.h"
 #include "mainmenu.h"
 #include "enemy.h"
@@ -44,21 +45,6 @@ struct manabar {
 	float y;
 	float width;
 	float height;
-};
-
-struct player {
-	CP_Vector position;
-	float diameter;
-	int direction;
-	int active;
-	float moveSpeed;
-	int maxLives;
-	int currentLives;
-	float manaBuildSpeed;
-	float cooldownSpeed;
-	float attackDamage;
-	float attackSize;
-	float attackSpeed;
 };
 
 struct playerAttack {
@@ -116,7 +102,7 @@ void static draw_screen(void) {
 	//Doors for rooms
 	switch (lastEntered)
 	{
-	case 1:
+	case 1: //blocks bottom door when player entered top door
 		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 		CP_Graphics_DrawRect(botDoor.x, botDoor.y, botDoor.width, botDoor.height);
 		CP_Settings_Fill(CP_Color_Create(255, 255, 200, 255));
@@ -124,7 +110,7 @@ void static draw_screen(void) {
 		CP_Graphics_DrawRect(leftDoor.x, leftDoor.y, leftDoor.width, leftDoor.height);
 		CP_Graphics_DrawRect(rightDoor.x, rightDoor.y, rightDoor.width, rightDoor.height);
 		break;
-	case 2:
+	case 2: //blocks left door when player entered right door
 		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 		CP_Graphics_DrawRect(leftDoor.x, leftDoor.y, leftDoor.width, leftDoor.height);
 		CP_Settings_Fill(CP_Color_Create(255, 255, 200, 255));
@@ -132,7 +118,7 @@ void static draw_screen(void) {
 		CP_Graphics_DrawRect(botDoor.x, botDoor.y, botDoor.width, botDoor.height);
 		CP_Graphics_DrawRect(rightDoor.x, rightDoor.y, rightDoor.width, rightDoor.height);
 		break;
-	case 3:
+	case 3:  //blocks top door when player entered bottom door
 		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 		CP_Graphics_DrawRect(topDoor.x, topDoor.y, topDoor.width, topDoor.height);
 		CP_Settings_Fill(CP_Color_Create(255, 255, 200, 255));
@@ -140,7 +126,7 @@ void static draw_screen(void) {
 		CP_Graphics_DrawRect(botDoor.x, botDoor.y, botDoor.width, botDoor.height);
 		CP_Graphics_DrawRect(rightDoor.x, rightDoor.y, rightDoor.width, rightDoor.height);
 		break;
-	case 4:
+	case 4:  //blocks right door when player entered left door
 		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 		CP_Graphics_DrawRect(rightDoor.x, rightDoor.y, rightDoor.width, rightDoor.height);
 		CP_Settings_Fill(CP_Color_Create(255, 255, 200, 255));
@@ -148,7 +134,7 @@ void static draw_screen(void) {
 		CP_Graphics_DrawRect(botDoor.x, botDoor.y, botDoor.width, botDoor.height);
 		CP_Graphics_DrawRect(leftDoor.x, leftDoor.y, leftDoor.width, leftDoor.height);
 		break;
-	default:
+	default: //dont block any doors
 		CP_Settings_Fill(CP_Color_Create(255, 255, 200, 255));
 		CP_Graphics_DrawRect(rightDoor.x, rightDoor.y, rightDoor.width, rightDoor.height);
 		CP_Graphics_DrawRect(topDoor.x, topDoor.y, topDoor.width, topDoor.height);
@@ -158,8 +144,21 @@ void static draw_screen(void) {
 	}
 
 	//draw player 1
+	if (player.invincibilityTimer > 0) 
+	{
+		if ((int)(player.invincibilityTimer * 10) % 2 == 0) {
+			CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));  // Black color
+		}
+		else {
+			CP_Settings_Fill(CP_Color_Create(255, 0, 255, 255));  // Original color
+		}
+	}
+	else {
+	// Normal color when not invincible
 	CP_Settings_Fill(CP_Color_Create(255, 0, 255, 255));
+	}
 	CP_Graphics_DrawCircle(player.position.x, player.position.y, player.diameter);
+
 
 	//ManaBar
 	maxManabar.x = player.position.x - player.diameter +2;
@@ -198,7 +197,7 @@ void static draw_screen(void) {
 
 	// Max hearts per row
 	int heartsPerRow = 5;
-	for (int i = 0; i < player.maxLives; i++) {
+	for (int i = 0; i < player.lives; i++) {
 		int row = i / heartsPerRow;
 		int col = i % heartsPerRow;
 
@@ -273,10 +272,35 @@ void drawSpellMenu(float x, float y) //create spell selection menu. Will require
 	CP_Font_DrawText("Ice", textX2, textY2);
 
 }
-
+void take_damage(struct player* p, int damage) {
+	if (p->invincibilityTimer <= 0) {  // Only take damage if not invincible
+		if (p->lives > 0) {
+			p->lives -= damage;
+			if (p->lives <= 0) {
+				p->lives = 0;
+				printf("Player defeated!\n");
+			}
+			else {
+				printf("Player damaged! Lives remaining: %d\n", p->lives);
+			}
+			// Activate invincibility frames
+			p->invincibilityTimer += p->invincibilityDuration;
+			printf("%f", p->invincibilityDuration);
+			printf("%f",p->invincibilityTimer);
+		}
+	}
+}
+void update_player(float dt) {
+	// Decrease the invincibility timer if it's active
+	if (player.invincibilityTimer > 0.0f) {
+		player.invincibilityTimer -= dt;
+		if (player.invincibilityTimer <= 0) {
+			player.invincibilityTimer = 0;  // Reset to zero once it expires
+		}
+	}
+}
 void Game_Init(void)
 {
-	printf("rooms passed: %d\n",roomsPassed);
 	pause_sign = CP_Image_Load("Assets/Pause Sign.png");
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	manaBarColor = CP_Color_Create(0, 0, 150, 255);
@@ -312,39 +336,43 @@ void Game_Init(void)
 	}
 	player.direction = 1;
 	player.active = 1;
+	player.invincibilityTimer = 0.0f;
+	player.invincibilityDuration = 1.5f;
 	if (isNewGame == true) 
 	{
 	player.moveSpeed = 400.0f;
-	player.maxLives = 3;
-	player.currentLives = player.maxLives;
+	player.lives = 3;
 	player.manaBuildSpeed = 1.0f;
 	player.cooldownSpeed = 1.0f;
 	player.attackSize = 30.0f;
 	player.attackDamage = 1;
 	player.attackSpeed = 500.0f;
+	player.score = 0;
+	roomsPassed = 0;
 	}
 	else 
 	{
-		playerStats stats = { player.moveSpeed,player.maxLives, player.currentLives,
+		playerStats stats = { player.moveSpeed,player.lives,
 	player.manaBuildSpeed,player.cooldownSpeed, player.attackDamage,
-	player.attackSize, player.attackSpeed };
+	player.attackSize, player.attackSpeed, player.score, roomsPassed};
 		switch (saveSlot)
 		{
 		case 1:
-		loadPlayerStats(&stats, saveFile1);
+			loadPlayerStats(&stats, saveFile1);
 			break;
 		case 2:
 			loadPlayerStats(&stats, saveFile2);
 			break;
 		}
 		player.moveSpeed = stats.moveSpeed;
-		player.maxLives = stats.maxLives;
-		player.currentLives = stats.currentLives;
+		player.lives = stats.lives;
 		player.manaBuildSpeed = stats.manaBuildSpeed;
 		player.cooldownSpeed = stats.cooldownSpeed;
 		player.attackDamage = stats.attackDamage;
 		player.attackSize = stats.attackSize;
 		player.attackSpeed = stats.attackSpeed;
+		player.score = stats.score;
+		roomsPassed = stats.roomsPassed;
 	}
 
 	//max Manabar
@@ -412,6 +440,28 @@ void Game_Init(void)
 	leftDoor.y = (WINDOW_HEIGHT / 2) - 100;
 	leftDoor.width = 10;
 	leftDoor.height = 200;
+
+	printf("rooms passed: %d\n", roomsPassed);
+	printf("score: %d\n", player.score);
+	printf("isNewGame? %d \n", isNewGame);
+}
+
+void saveGame(void)
+{
+	isNewGame = false;
+	playerStats stats = { player.moveSpeed,player.lives,
+				player.manaBuildSpeed,player.cooldownSpeed, player.attackDamage,
+				player.attackSize, player.attackSpeed,player.score, roomsPassed };
+	switch (saveSlot)
+	{
+	case 1:
+		savePlayerStats(&stats, saveFile1);
+		break;
+	case 2:
+		savePlayerStats(&stats, saveFile2);
+		break;
+
+	}
 }
 
 //intereactions with doors
@@ -422,24 +472,28 @@ void doorInteraction(void)
 		//set last entered and next spawn point
 		lastEntered = 1;
 		roomsPassed++;
+		saveGame();
 		Game_Init();
 	}
 	if (doorIntersect(player.position.x, player.position.y, player.diameter, rightDoor.x, rightDoor.y, rightDoor.width, rightDoor.height) == 1 && lastEntered != 4)
 	{
 		lastEntered = 2;
 		roomsPassed++;
+		saveGame();
 		Game_Init();
 	}
 	if (doorIntersect(player.position.x, player.position.y, player.diameter, botDoor.x, botDoor.y, botDoor.width, botDoor.height) == 1 && lastEntered != 1)
 	{
 		lastEntered = 3;
 		roomsPassed++;
+		saveGame();
 		Game_Init();
 	}
 	if (doorIntersect(player.position.x, player.position.y, player.diameter, leftDoor.x, leftDoor.y, leftDoor.width, leftDoor.height) == 1 && lastEntered != 2)
 	{
 		lastEntered = 4;
 		roomsPassed++;
+		saveGame();
 		Game_Init();
 	}
 }
@@ -462,13 +516,15 @@ void Game_Update(void)
 	//testing lives
 	if (CP_Input_KeyTriggered(KEY_EQUAL))
 	{
-		player.maxLives += 1;
+		player.lives += 1;
 		player.attackSize += 10;
+		player.score += 10;
 	}
 	else if (CP_Input_KeyTriggered(KEY_MINUS))
 	{
-		player.maxLives -= 1;
+		player.lives -= 1;
 		player.attackSize -= 10;
+		player.score -= 10;
 	}
 
 	if (game_pause == true) {
@@ -507,18 +563,7 @@ void Game_Update(void)
 		if (IsAreaClicked(WINDOW_WIDTH / 1.99f, WINDOW_HEIGHT / 2.2f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f,
 			CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
 		{
-			playerStats stats = { player.moveSpeed,player.maxLives, player.currentLives,
-			player.manaBuildSpeed,player.cooldownSpeed, player.attackDamage,
-			player.attackSize, player.attackSpeed,roomsPassed };
-			switch (saveSlot)
-			{
-			case 1:
-				savePlayerStats(&stats,saveFile1);
-				break;
-			case 2:
-				savePlayerStats(&stats, saveFile2);
-				break;
-			}
+			
 			CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
 		}
 		CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 50));
@@ -616,7 +661,8 @@ void Game_Update(void)
 			}
 		}
 		draw_screen();
-		enemy_code(player.position);
+		enemy_code(player);
+		update_player(dt);
 		doorInteraction();
 	}
 }

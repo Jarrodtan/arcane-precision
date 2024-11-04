@@ -8,13 +8,13 @@ bool newGame;
 
 typedef struct {
     float moveSpeed;
-    int maxLives;
-    int currentLives;
+    int lives;
     float manaBuildSpeed;
     float cooldownSpeed;
     float attackDamage;
     float attackSize;
     float attackSpeed;
+    int score;
     int roomsPassed;
 }playerStats;
 
@@ -74,6 +74,19 @@ void drawHearts(float x, float y, float size) {
     CP_Graphics_EndShape();
 }
 
+int AreCirclesIntersecting(float c1_x, float c1_y, float r1, float c2_x, float c2_y, float r2)
+{
+    float distance = CP_Math_Distance(c1_x, c1_y, c2_x, c2_y);
+    if (distance <= (r1 / 2 + r2 / 2))
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+    return 0;
+}
 
 void savePlayerStats(playerStats* stats, const char* saveFileName) {
     FILE *file = fopen(saveFileName, "wb");
@@ -84,8 +97,6 @@ void savePlayerStats(playerStats* stats, const char* saveFileName) {
 
     fwrite(stats, sizeof(playerStats), 1, file);
     fclose(file);
-
-    printf("Player stats saved!\n");
 }
 
 // Function to load player stats from a file
@@ -99,7 +110,6 @@ void loadPlayerStats(playerStats* stats, const char* saveFileName) {
 
     fread(stats, sizeof(playerStats), 1, file);
     fclose(file);
-    printf("Player stats loaded!\n");
 }
 
 int checkSaveExists(const char* saveFileName)

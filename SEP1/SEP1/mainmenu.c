@@ -26,17 +26,30 @@ void Main_Menu_Init(void)
 void Main_Menu_Update(void)
 {
     CP_Graphics_ClearBackground(CP_Color_Create(50, 50, 50, 0));
-    //New game button
-    CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
-    CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 3.0f,
-        WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);
+
+
+    //save slot1
     CP_Font_Set(myFont);
-    CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-    CP_Font_DrawText("Save 1", WINDOW_WIDTH / 2.29f, WINDOW_HEIGHT / 2.91f);
+    switch (checkSaveExists(saveFile1))
+    {
+    case 1:
+        CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
+        CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 3.0f,
+            WINDOW_WIDTH / 4.0f, WINDOW_HEIGHT / 12.0f);
+        CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+        CP_Font_DrawText("Load existing save", WINDOW_WIDTH / 2.52f, WINDOW_HEIGHT / 2.91f);
+        break;
+    case 0:
+        CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
+        CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 3.0f,
+            WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);    
+        CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+        CP_Font_DrawText("New game", WINDOW_WIDTH / 2.29f, WINDOW_HEIGHT / 2.91f);
+        break;
+    }
     if (IsAreaClicked(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 3.0f,
         WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
     {
-
         switch (checkSaveExists(saveFile1))
         {
         case 1:
@@ -51,13 +64,25 @@ void Main_Menu_Update(void)
     }    
 
 
-    //Load game button
-    CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
-    CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f,
-        WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);
+    //save slot 2
     CP_Font_Set(myFont);
-    CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-    CP_Font_DrawText("Save 2", WINDOW_WIDTH / 2.30f, WINDOW_HEIGHT / 1.95f);
+    switch (checkSaveExists(saveFile2))
+    {
+    case 1:
+        CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
+        CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f,
+            WINDOW_WIDTH / 3.0f, WINDOW_HEIGHT / 12.0f);
+        CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+        CP_Font_DrawText("Load existing save", WINDOW_WIDTH / 2.52f, WINDOW_HEIGHT / 1.95f);
+        break;
+    case 0:
+        CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
+        CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f,
+            WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);
+        CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+        CP_Font_DrawText("New game", WINDOW_WIDTH / 2.30f, WINDOW_HEIGHT / 1.95f);
+        break;
+    }
     if (IsAreaClicked(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f,
         WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
     {
