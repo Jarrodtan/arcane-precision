@@ -175,6 +175,19 @@ void enemy_code() {
 	enemyMelee.position = CP_Vector_Add(enemyMelee.position, CP_Vector_Scale(enemyMelee.direction, enemyMelee.speed * dt));
 	CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255));
 	CP_Graphics_DrawCircle(enemyMelee.position.x, enemyMelee.position.y, enemyMelee.diameter);
+	
+	//player takes dmg when in contact with enemy
+	if (AreCirclesIntersecting(player.position.x, player.position.y, player.diameter, enemyMelee.position.x, enemyMelee.position.y, enemyMelee.diameter) == 1)
+	{
+		take_damage(&player, bullet.damage);
+		//add player repel mechanic
+	}
+	if (AreCirclesIntersecting(player.position.x, player.position.y, player.diameter, enemyStationary.position.x, enemyStationary.position.y, enemyStationary.diameter) == 1)
+	{
+		take_damage(&player, bullet.damage);
+		//no repel, same as obstacle collision
+		//player will continue taking damage if in contact with enemy
+	}
 }
 
 
