@@ -1,6 +1,8 @@
 #include "cprocessing.h"
 #include "utils.h"
 #include "mainmenu.h"
+#include "credits.h"
+#include "leaderboard.h"
 
 #define WINDOW_WIDTH 1600
 #define WINDOW_HEIGHT 900
@@ -35,6 +37,19 @@ void Start_Menu_Update(void)
         CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
     }
 
+    //Leaderboard button
+    CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
+    CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f,
+        WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);
+    CP_Font_Set(myFont);
+    CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+    CP_Font_DrawText("Leaderboard", WINDOW_WIDTH / 2.35f, WINDOW_HEIGHT / 1.95f);
+    if (IsAreaClicked(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f,
+        WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
+    {
+        CP_Engine_SetNextGameState(Leaderboard_Init, Leaderboard_Update, Leaderboard_Exit);
+    }
+
     //Exit button
     CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
     CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 1.5f,
@@ -46,6 +61,19 @@ void Start_Menu_Update(void)
         WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
     {
         CP_Engine_Terminate();
+    }
+
+    //Credits button
+    CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
+    CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 1.2f,
+        WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);
+    CP_Font_Set(myFont);
+    CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+    CP_Font_DrawText("Credits", WINDOW_WIDTH / 2.18f, WINDOW_HEIGHT / 1.18f);
+    if (IsAreaClicked(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 1.2f,
+        WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
+    {
+        CP_Engine_SetNextGameState(Credits_Init, Credits_Update, Credits_Exit);
     }
 }
 

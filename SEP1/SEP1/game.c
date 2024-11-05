@@ -3,6 +3,7 @@
 #include "cprocessing.h"
 #include "mainmenu.h"
 #include "enemy.h"
+#include "gameover.h"
 #include "stdbool.h"
 #include <math.h>
 #include <stdio.h>
@@ -38,7 +39,7 @@ float slowTimeScale = 0.1f;
 bool isSlowed = false;
 int selectedSpell = 0;
 
-bool game_pause;
+bool game_pause, game_over;
 
 struct manabar {
 	float x;
@@ -312,6 +313,7 @@ void Game_Init(void)
 	hitboxSpawn = 0;
 	random_float = CP_Random_RangeFloat(20, maxManabar.width - manaHitbox.width);
 	game_pause = false;
+	game_over = false;
 	playerAttack.Spawned = 0;
 
 	//player
@@ -501,6 +503,11 @@ void doorInteraction(void)
 
 void Game_Update(void)
 {
+	// Testing Gameover sign
+	if (CP_Input_KeyTriggered(KEY_ENTER)) {
+		CP_Engine_SetNextGameState(gameover_Init, gameover_Update, gameover_Exit);
+	}
+
 	dt = slowTime();
 	// Pause & Resume game
 	if (CP_Input_KeyTriggered(KEY_ESCAPE)) {
