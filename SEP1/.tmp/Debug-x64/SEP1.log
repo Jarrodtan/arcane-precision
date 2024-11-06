@@ -1,4 +1,16 @@
-﻿  SEP1.vcxproj -> C:\Users\tohji\Desktop\SIT\Tri 1 2024\CSD1401 - Software Engineering Project 1\GAM\SEP1\bin\Debug-x64\SEP1.exe
-  3 File(s) copied
+﻿  credits.c
+  enemy.c
+  game.c
+C:\Users\Jarrod\Desktop\SIT\Year 1 Trimester 1\CSD1401 Software Engineering Project 1\team_syntaxerror_f24\SEP1\SEP1\enemy.c(108,30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Jarrod\Desktop\SIT\Year 1 Trimester 1\CSD1401 Software Engineering Project 1\team_syntaxerror_f24\SEP1\SEP1\enemy.c(159,4): warning C4013: 'take_damage' undefined; assuming extern returning int
+  gameover.c
+  leaderboard.c
+  main.c
+  mainmenu.c
+  startmenu.c
+  utils.c
+  Generating Code...
+  SEP1.vcxproj -> C:\Users\Jarrod\Desktop\SIT\Year 1 Trimester 1\CSD1401 Software Engineering Project 1\team_syntaxerror_f24\SEP1\bin\Debug-x64\SEP1.exe
+  4 File(s) copied
   1 File(s) copied
   1 File(s) copied
