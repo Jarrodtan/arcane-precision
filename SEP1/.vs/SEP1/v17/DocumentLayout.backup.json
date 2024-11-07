@@ -1,42 +1,18 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\",
+  "WorkspaceRootPath": "C:\\Users\\khore\\Desktop\\school stuff\\csd1401\\solo proj\\repo\\SEP1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\enemy.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|solutionrelative:SEP1\\enemy.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\leaderboard.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|solutionrelative:SEP1\\leaderboard.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\mainmenu.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|solutionrelative:SEP1\\mainmenu.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\game.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|solutionrelative:SEP1\\game.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\startmenu.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|solutionrelative:SEP1\\startmenu.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\credits.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|solutionrelative:SEP1\\credits.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\gameover.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|solutionrelative:SEP1\\gameover.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\utils.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|C:\\Users\\khore\\Desktop\\school stuff\\csd1401\\solo proj\\repo\\SEP1\\SEP1\\utils.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|solutionrelative:SEP1\\utils.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|solutionrelative:SEP1\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|C:\\Users\\khore\\Desktop\\school stuff\\csd1401\\solo proj\\repo\\SEP1\\SEP1\\game.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|solutionrelative:SEP1\\game.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|C:\\Users\\khore\\Desktop\\school stuff\\csd1401\\solo proj\\repo\\SEP1\\SEP1\\enemy.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|solutionrelative:SEP1\\enemy.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -45,127 +21,51 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 190,
+          "DockedWidth": 200,
           "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "credits.c",
-              "DocumentMoniker": "C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\credits.c",
-              "RelativeDocumentMoniker": "SEP1\\credits.c",
-              "ToolTip": "C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\credits.c",
-              "RelativeToolTip": "SEP1\\credits.c",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAACcAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-11-05T01:10:44.301Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "main.c",
-              "DocumentMoniker": "C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\main.c",
-              "RelativeDocumentMoniker": "SEP1\\main.c",
-              "ToolTip": "C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\main.c",
-              "RelativeToolTip": "SEP1\\main.c",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-10-30T00:38:50.366Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "utils.c",
-              "DocumentMoniker": "C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\utils.c",
-              "RelativeDocumentMoniker": "SEP1\\utils.c",
-              "ToolTip": "C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\utils.c",
-              "RelativeToolTip": "SEP1\\utils.c",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-10-30T00:38:52.06Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "enemy.c",
-              "DocumentMoniker": "C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\enemy.c",
+              "DocumentMoniker": "C:\\Users\\khore\\Desktop\\school stuff\\csd1401\\solo proj\\repo\\SEP1\\SEP1\\enemy.c",
               "RelativeDocumentMoniker": "SEP1\\enemy.c",
-              "ToolTip": "C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\enemy.c",
+              "ToolTip": "C:\\Users\\khore\\Desktop\\school stuff\\csd1401\\solo proj\\repo\\SEP1\\SEP1\\enemy.c",
               "RelativeToolTip": "SEP1\\enemy.c",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAAAJMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-10-30T00:38:54.191Z",
+              "WhenOpened": "2024-10-23T06:59:08.546Z",
+              "IsPinned": true,
               "EditorCaption": ""
-            }
-          ]
-        },
-        {
-          "DockedWidth": 210,
-          "SelectedChildIndex": 5,
-          "Children": [
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "gameover.c",
-              "DocumentMoniker": "C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\gameover.c",
-              "RelativeDocumentMoniker": "SEP1\\gameover.c",
-              "ToolTip": "C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\gameover.c",
-              "RelativeToolTip": "SEP1\\gameover.c",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAABIAAAAcAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-11-05T02:38:39.86Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "startmenu.c",
-              "DocumentMoniker": "C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\startmenu.c",
-              "RelativeDocumentMoniker": "SEP1\\startmenu.c",
-              "ToolTip": "C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\startmenu.c",
-              "RelativeToolTip": "SEP1\\startmenu.c",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADIAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-11-05T01:22:50.552Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "mainmenu.c",
-              "DocumentMoniker": "C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\mainmenu.c",
-              "RelativeDocumentMoniker": "SEP1\\mainmenu.c",
-              "ToolTip": "C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\mainmenu.c",
-              "RelativeToolTip": "SEP1\\mainmenu.c",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-10-30T00:38:51.072Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "game.c",
-              "DocumentMoniker": "C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\game.c",
-              "RelativeDocumentMoniker": "SEP1\\game.c",
-              "ToolTip": "C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\game.c",
-              "RelativeToolTip": "SEP1\\game.c",
-              "ViewState": "AgIAAPEBAAAAAAAAAAAAABgAAAATAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-10-30T00:38:52.944Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "leaderboard.c",
-              "DocumentMoniker": "C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\leaderboard.c",
-              "RelativeDocumentMoniker": "SEP1\\leaderboard.c",
-              "ToolTip": "C:\\Users\\Jarrod\\Desktop\\SIT\\Year 1 Trimester 1\\CSD1401 Software Engineering Project 1\\team_syntaxerror_f24\\SEP1\\SEP1\\leaderboard.c",
-              "RelativeToolTip": "SEP1\\leaderboard.c",
-              "ViewState": "AgIAAAcAAAAAAAAAAAAqwA4AAAAOAAAAAAAAAA==",
+              "Title": "game.c",
+              "DocumentMoniker": "C:\\Users\\khore\\Desktop\\school stuff\\csd1401\\solo proj\\repo\\SEP1\\SEP1\\game.c",
+              "RelativeDocumentMoniker": "SEP1\\game.c",
+              "ToolTip": "C:\\Users\\khore\\Desktop\\school stuff\\csd1401\\solo proj\\repo\\SEP1\\SEP1\\game.c",
+              "RelativeToolTip": "SEP1\\game.c",
+              "ViewState": "AgIAACUAAAAAAAAAAAAAAAEAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-11-05T01:48:24.398Z",
+              "WhenOpened": "2024-10-22T04:24:36.353Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "utils.c",
+              "DocumentMoniker": "C:\\Users\\khore\\Desktop\\school stuff\\csd1401\\solo proj\\repo\\SEP1\\SEP1\\utils.c",
+              "RelativeDocumentMoniker": "SEP1\\utils.c",
+              "ToolTip": "C:\\Users\\khore\\Desktop\\school stuff\\csd1401\\solo proj\\repo\\SEP1\\SEP1\\utils.c",
+              "RelativeToolTip": "SEP1\\utils.c",
+              "ViewState": "AgIAABoAAAAAAAAAAAAAADEAAABSAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2024-10-23T07:41:26.153Z",
               "EditorCaption": ""
             }
           ]

@@ -57,8 +57,10 @@ void enemy_code() {
 		difficulty = (roomsPassed / 5) + 1.0;
 	}
 	// Initialize enemy properties
+	enemyStationary.lives = 1 + difficulty;
 	enemyStationary.diameter = 50;
 	enemyStationary.position = CP_Vector_Set(WINDOW_WIDTH / 1.5f, WINDOW_HEIGHT / 2.0f);
+	enemyMelee.lives = 2 + difficulty;
 	enemyMelee.diameter = 50;
 
 	// Draw stationary enemy
@@ -129,4 +131,21 @@ void enemy_code() {
 	if (CP_Vector_Distance(player.position, enemyMelee.position) <= (player.diameter / 2) + (enemyMelee.diameter / 2)) {
 		take_damage(&player, 1);
 	}
+
+	//enemy takes dmg when in contact with player attack
+	if (AreCirclesIntersecting(enemyMelee.position.x, enemyMelee.position.y, enemyMelee.diameter, playerAttack.position.x, playerAttack.position.y, playerAttack.diameter) == 1)
+	{
+		//take_damage(&enemy, playerAttack.damage);
+		enemyMelee.lives -= playerAttack.damage;
+		//despawn player attack projectile
+		
+	}
+	if (AreCirclesIntersecting(enemyStationary.position.x, enemyStationary.position.y, enemyStationary.diameter, playerAttack.position.x, playerAttack.position.y, playerAttack.diameter) == 1)
+	{
+		//take_damage(&enemy, playerAttack.damage);
+		enemyStationary.lives -= playerAttack.damage;
+		//despawn player attack projectile
+		
+	}
+
 }
