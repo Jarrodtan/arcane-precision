@@ -1,19 +1,26 @@
 #include "cprocessing.h"
 #include "startmenu.h"
 #include "utils.h"
+#include "stdio.h"
+#include "string.h"
 
 #define WINDOW_WIDTH 1600.0f
 #define WINDOW_HEIGHT 900.0f
+#define MAX_NAME_LENGTH 10
 
 CP_Font myFont;
 CP_Image gameover_sign;
 
 float textSize;
+char playerName[MAX_NAME_LENGTH];// Array to hold the player's name
+int cursorPosition; // Position of the cursor in the input string
 
 void gameover_Init(void)
 {
+	playerName[0] = '\0'; // Set the first character to null terminator
+	cursorPosition = 0; 
 	gameover_sign = CP_Image_Load("Assets/Gameover.png");
-	CP_Settings_RectMode(CP_POSITION_CENTER);
+	CP_Settings_RectMode(CP_POSITION_CORNER);
 	myFont = CP_Font_Load("Assets/Exo2-Regular.ttf");
 	textSize = 50.0f;
 	CP_Settings_TextSize(textSize);
@@ -24,11 +31,65 @@ void gameover_Init(void)
 void gameover_Update(void)
 {
 	// Testing Gameover sign
-	CP_Image_Draw(gameover_sign, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 255);
+	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+	CP_Graphics_DrawRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+	CP_Image_Draw(gameover_sign, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.7f, 500.0f, 500.0f, 255);
 	
+	// Score: ______ (generated)
+	CP_Font_Set(myFont);
+	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+	CP_Font_DrawText("Score: ", WINDOW_WIDTH / 2.5f, WINDOW_HEIGHT / 1.55f);
+
+	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+	CP_Graphics_DrawRect(WINDOW_WIDTH / 2.08f, WINDOW_HEIGHT / 1.5f, WINDOW_WIDTH / 8.0f, WINDOW_HEIGHT / 15.0f);
+
+	// Name: ______ (player input)
+	CP_Font_Set(myFont);
+	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+	CP_Font_DrawText("Name: ", WINDOW_WIDTH / 2.5f, WINDOW_HEIGHT / 1.40f);
+	
+	// Draw the text box
+	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+	CP_Graphics_DrawRect(WINDOW_WIDTH / 2.08f, WINDOW_HEIGHT / 1.5f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 15.0f);
+
+	// Draw the player's name inside the text box
+	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+	// Adjust the y-position to be centered within the text box
+	float textYPosition = (WINDOW_HEIGHT / 1.5f) + (WINDOW_HEIGHT / 10.0f) / 2.0f;
+	CP_Font_DrawText(playerName, WINDOW_WIDTH / 2.08f, textYPosition);
+
+	// Check for key presses
+	if (CP_Input_KeyTriggered(KEY_BACKSPACE) && cursorPosition > 0) {
+		cursorPosition--;
+		playerName[cursorPosition] = '\0'; // Remove last character
+	}
+	else if (CP_Input_KeyTriggered(KEY_ENTER)) {
+		if (cursorPosition > 0) { // Check if the name is not empty
+			// Handle submission (e.g., save the name or proceed)
+			printf("Player Name: %s\n", playerName);
+			// Optionally, transition to another game state
+			// CP_Engine_SetNextGameState(SomeOtherState_Init, SomeOtherState_Update, SomeOtherState_Exit);
+		}
+		else {
+			printf("Please enter a name before submitting.\n");
+		}
+	}
+	else {
+		for (int i = 32; i < 127; i++) { // Only allow printable ASCII characters
+			if (CP_Input_KeyTriggered(i) && cursorPosition < MAX_NAME_LENGTH - 1) {
+				playerName[cursorPosition] = (char)i; // Store the character
+				cursorPosition++;
+				playerName[cursorPosition] = '\0'; // Null-terminate the string
+				break;
+			}
+		}
+	}
+
+
 	//Back button
 	CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
-	CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 1.2f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);
+	CP_Graphics_DrawRect(WINDOW_WIDTH / 2.4f, WINDOW_HEIGHT / 1.26f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);
 	CP_Font_Set(myFont);
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 	CP_Font_DrawText("Back", WINDOW_WIDTH / 2.13f, WINDOW_HEIGHT / 1.18f);
