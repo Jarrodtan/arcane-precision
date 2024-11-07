@@ -16,6 +16,7 @@ typedef struct {
     float attackSpeed;
     int score;
     int roomsPassed;
+    int lastEntered;
 }playerStats;
 
 const char* saveFile1 = "save1.dat";
@@ -87,6 +88,7 @@ int AreCirclesIntersecting(float c1_x, float c1_y, float r1, float c2_x, float c
     }
     return 0;
 }
+
 
 void savePlayerStats(playerStats* stats, const char* saveFileName) {
     FILE *file = fopen(saveFileName, "wb");

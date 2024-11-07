@@ -54,8 +54,7 @@ struct playerAttack {
 	CP_Vector direction;
 	float damage;
 	float speed;
-	int isFriendly;
-	int Spawned;
+	int isActive;
 };
 
 struct hearts {
@@ -76,7 +75,7 @@ struct player player;
 struct manabar maxManabar;
 struct manabar currentManabar;
 struct manabar manaHitbox;
-struct playerAttack playerAttack;
+struct playerAttack playerAttack[100];
 struct hearts playerHearts;
 struct walls topWall;
 struct walls botWall;
@@ -314,7 +313,6 @@ void Game_Init(void)
 	random_float = CP_Random_RangeFloat(20, maxManabar.width - manaHitbox.width);
 	game_pause = false;
 	game_over = false;
-	playerAttack.Spawned = 0;
 
 	//player
 	player.diameter = 60.0f;
@@ -351,12 +349,13 @@ void Game_Init(void)
 	player.attackSpeed = 500.0f;
 	player.score = 0;
 	roomsPassed = 0;
+	lastEntered = 0;
 	}
 	else 
 	{
 		playerStats stats = { player.moveSpeed,player.lives,
 	player.manaBuildSpeed,player.cooldownSpeed, player.attackDamage,
-	player.attackSize, player.attackSpeed, player.score, roomsPassed};
+	player.attackSize, player.attackSpeed, player.score, roomsPassed, lastEntered};
 		switch (saveSlot)
 		{
 		case 1:
@@ -375,6 +374,8 @@ void Game_Init(void)
 		player.attackSpeed = stats.attackSpeed;
 		player.score = stats.score;
 		roomsPassed = stats.roomsPassed;
+		lastEntered = stats.lastEntered;
+		printf("%d", lastEntered);
 	}
 
 	//max Manabar
@@ -453,7 +454,7 @@ void saveGame(void)
 	isNewGame = false;
 	playerStats stats = { player.moveSpeed,player.lives,
 				player.manaBuildSpeed,player.cooldownSpeed, player.attackDamage,
-				player.attackSize, player.attackSpeed,player.score, roomsPassed };
+				player.attackSize, player.attackSpeed,player.score, roomsPassed, lastEntered };
 	switch (saveSlot)
 	{
 	case 1:
@@ -500,9 +501,18 @@ void doorInteraction(void)
 	}
 }
 
+void initializeAttack(struct playerAttack* playerAttack, CP_Vector position, CP_Vector direction, float speed, int damage) {
+	playerAttack->position = position;
+	playerAttack->direction = direction;
+	playerAttack->speed = 400.0f;
+	playerAttack->damage = 1;
+	playerAttack->diameter = 30; // Set diameter for each bullet
+	playerAttack->isActive = 1;    // Mark bullet as active
+}
 
 void Game_Update(void)
 {
+	
 	// Testing Gameover sign
 	if (CP_Input_KeyTriggered(KEY_ENTER)) {
 		CP_Engine_SetNextGameState(gameover_Init, gameover_Update, gameover_Exit);
@@ -535,9 +545,12 @@ void Game_Update(void)
 	}
 
 	if (game_pause == true) {
-		if (playerAttack.Spawned == 1) {
+		for (int i = 0; i < 100; i++)
+		{
+		if (playerAttack[i].isActive == 1) {
 			CP_Settings_Fill(CP_Color_Create(255, 255, 0, 255));
-			CP_Graphics_DrawCircle(playerAttack.position.x, playerAttack.position.y, playerAttack.diameter);
+			CP_Graphics_DrawCircle(playerAttack[i].position.x, playerAttack[i].position.y, playerAttack[i].diameter);
+		}
 		}
 		draw_screen();
 
@@ -611,8 +624,14 @@ void Game_Update(void)
 		//skill selection
 		if (isSlowed)
 		{
-			if (CP_Input_KeyDown(KEY_A)) selectedSpell = 0; //default (fireball)
-			else if (CP_Input_KeyDown(KEY_D)) selectedSpell = 1; //ice 
+			if (CP_Input_GetMouseX() >= (player.position.x - 100.0f) - (10.0f) && CP_Input_GetMouseX() <= player.position.x &&
+				CP_Input_GetMouseY() >= ((player.position.y + player.diameter/2) + 60.0f) && 
+				CP_Input_GetMouseY() <= ((player.position.y + player.diameter / 2) + 110.0f)) 
+				selectedSpell = 0; //default (fireball)
+			else if (CP_Input_GetMouseX() >= player.position.x + 10.0f && CP_Input_GetMouseX() <= player.position.x + 110.0f &&
+				CP_Input_GetMouseY() >= ((player.position.y + player.diameter / 2) + 60.0f) &&
+				CP_Input_GetMouseY() <= ((player.position.y + player.diameter / 2) + 110.0f)) 
+				selectedSpell = 1; //ice 
 			drawSpellMenu(player.position.x, player.position.y);
 		}
 
@@ -639,12 +658,14 @@ void Game_Update(void)
 				CP_Vector attackDirection = CP_Vector_Normalize(CP_Vector_Subtract(mousePos, player.position));
 
 				// Initialize the player's attack
-				playerAttack.position = player.position;
-				playerAttack.speed = player.attackSpeed; // speed of the attack
-				playerAttack.isFriendly = 1; // indicate that it's a player attack
-				playerAttack.Spawned = 1;
-				playerAttack.diameter = player.attackSize;
-				playerAttack.direction = attackDirection;
+				for (int i = 0; i < 100; i++)
+				{
+					if (!playerAttack[i].isActive) {
+						// Initialize new bullet
+						initializeAttack(&playerAttack[i], player.position, CP_Vector_Scale(attackDirection, 1), 400.0f, 1);
+						break;
+					}
+				}
 			}
 		}
 		if (cooldown == 1 && mana > 0) {
@@ -654,18 +675,25 @@ void Game_Update(void)
 		else if (mana <= 0) {
 			cooldown = 0;
 		}
-
-		if (playerAttack.Spawned == 1)
+		for (int i = 0; i < 100; i++)
 		{
-			playerAttack.position = CP_Vector_Add(playerAttack.position, CP_Vector_Scale(playerAttack.direction, playerAttack.speed * dt));
+		if (playerAttack[i].isActive)
+		{
+			printf("%f", playerAttack[i].speed);
+			//move attack
+			playerAttack[i].position = CP_Vector_Add(playerAttack[i].position, CP_Vector_Scale(playerAttack[i].direction, playerAttack[i].speed * dt));
+			
+			//draw attack
 			CP_Settings_Fill(CP_Color_Create(255, 255, 0, 255)); // Yellow for attack
-			CP_Graphics_DrawCircle(playerAttack.position.x, playerAttack.position.y, playerAttack.diameter);
+			CP_Graphics_DrawCircle(playerAttack[i].position.x, playerAttack[i].position.y, playerAttack[i].diameter);
 
-			if (playerAttack.position.x - (playerAttack.diameter/2) < 10 || playerAttack.position.x + (playerAttack.diameter / 2) > WINDOW_WIDTH-10 ||
-				playerAttack.position.y - (playerAttack.diameter / 2) < 10 || playerAttack.position.y + (playerAttack.diameter / 2) > WINDOW_HEIGHT-10)
+			//deactivate when attack goes off-screen
+			if (playerAttack[i].position.x - (playerAttack[i].diameter / 2) < 10 || playerAttack[i].position.x + (playerAttack[i].diameter / 2) > WINDOW_WIDTH - 10 ||
+				playerAttack[i].position.y - (playerAttack[i].diameter / 2) < 10 || playerAttack[i].position.y + (playerAttack[i].diameter / 2) > WINDOW_HEIGHT - 10)
 			{
-				playerAttack.Spawned = 0;
+				playerAttack[i].isActive = 0;
 			}
+		}
 		}
 		draw_screen();
 		enemy_code(player);
@@ -676,7 +704,10 @@ void Game_Update(void)
 
 void Game_Exit(void)
 {
-	playerAttack.Spawned = 0;
+	for (int i = 0; i < 100; i++)
+	{
+	playerAttack[i].isActive = 0;
+	}
 	game_pause = false;
 	hitboxSpawn = 0;
 	cooldown = 0;
