@@ -13,6 +13,7 @@
 extern float dt;
 extern int roomsPassed;
 extern struct player player;
+extern struct playerAttack playerAttack;
 
 struct enemy {
 	CP_Vector position;
@@ -50,6 +51,7 @@ void initialize_bullet(struct enemyAttack* bullet, CP_Vector position, CP_Vector
 	bullet->diameter = 30; // Set diameter for each bullet
 	bullet->active = 1;    // Mark bullet as active
 }
+
 
 void enemy_code() {
 	static float shootTimer = 0.0f;
@@ -106,8 +108,8 @@ void enemy_code() {
 			}
 
 			// Deactivate bullet if it goes off-screen
-			if (bullets[i].position.x < 10 || bullets[i].position.x > WINDOW_WIDTH-10 ||
-				bullets[i].position.y < 10 || bullets[i].position.y > WINDOW_HEIGHT-10) {
+			if (bullets[i].position.x - bullets[i].diameter / 2 < 10 || bullets[i].position.x + bullets[i].diameter / 2 > WINDOW_WIDTH-10 ||
+				bullets[i].position.y - bullets[i].diameter / 2 < 10 || bullets[i].position.y + bullets[i].diameter / 2 > WINDOW_HEIGHT-10) {
 				bullets[i].active = 0;
 			}
 		}
@@ -135,16 +137,14 @@ void enemy_code() {
 	//enemy takes dmg when in contact with player attack
 	if (AreCirclesIntersecting(enemyMelee.position.x, enemyMelee.position.y, enemyMelee.diameter, playerAttack.position.x, playerAttack.position.y, playerAttack.diameter) == 1)
 	{
-		//take_damage(&enemy, playerAttack.damage);
 		enemyMelee.lives -= playerAttack.damage;
-		//despawn player attack projectile
+		
 		
 	}
 	if (AreCirclesIntersecting(enemyStationary.position.x, enemyStationary.position.y, enemyStationary.diameter, playerAttack.position.x, playerAttack.position.y, playerAttack.diameter) == 1)
 	{
-		//take_damage(&enemy, playerAttack.damage);
+	
 		enemyStationary.lives -= playerAttack.damage;
-		//despawn player attack projectile
 		
 	}
 

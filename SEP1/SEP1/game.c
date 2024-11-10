@@ -48,14 +48,6 @@ struct manabar {
 	float height;
 };
 
-struct playerAttack {
-	CP_Vector position;
-	float diameter;
-	CP_Vector direction;
-	float damage;
-	float speed;
-	int isActive;
-};
 
 struct hearts {
 	float x;
@@ -280,8 +272,6 @@ void take_damage(struct player* p, int damage) {
 			}
 			// Activate invincibility frames
 			p->invincibilityTimer += p->invincibilityDuration;
-			printf("%f", p->invincibilityDuration);
-			printf("%f",p->invincibilityTimer);
 		}
 	}
 }
@@ -370,7 +360,6 @@ void Game_Init(void)
 		player.score = stats.score;
 		roomsPassed = stats.roomsPassed;
 		lastEntered = stats.lastEntered;
-		printf("%d", lastEntered);
 	}
 
 	//max Manabar
@@ -440,8 +429,6 @@ void Game_Init(void)
 	leftDoor.height = 200;
 
 	printf("rooms passed: %d\n", roomsPassed);
-	printf("score: %d\n", player.score);
-	printf("isNewGame? %d \n", isNewGame);
 }
 
 void saveGame(void)
@@ -525,21 +512,22 @@ void Game_Update(void)
 			break;
 		}
 	}
-	//testing lives
+	//debug increment health and score
 	if (CP_Input_KeyTriggered(KEY_EQUAL))
 	{
 		player.lives += 1;
-		player.attackSize += 10;
 		player.score += 10;
-	}
+		printf("score: %d\n", player.score);
+	}//debug decrement health and score
 	else if (CP_Input_KeyTriggered(KEY_MINUS))
 	{
 		player.lives -= 1;
-		player.attackSize -= 10;
 		player.score -= 10;
+		printf("score: %d\n", player.score);
 	}
 
 	if (game_pause == true) {
+		//limit of 100 projectiles
 		for (int i = 0; i < 100; i++)
 		{
 		if (playerAttack[i].isActive == 1) {
@@ -661,7 +649,6 @@ void Game_Update(void)
 		{
 		if (playerAttack[i].isActive)
 		{
-			printf("%f", playerAttack[i].speed);
 			//move attack
 			playerAttack[i].position = CP_Vector_Add(playerAttack[i].position, CP_Vector_Scale(playerAttack[i].direction, playerAttack[i].speed * dt));
 			

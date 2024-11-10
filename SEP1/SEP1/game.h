@@ -17,6 +17,15 @@ struct player {
     int score;
 };
 
+struct playerAttack {
+    CP_Vector position;
+    float diameter;
+    CP_Vector direction;
+    float damage;
+    float speed;
+    int isActive;
+};
+
 void Game_Init(void);
 
 void Game_Update(void);

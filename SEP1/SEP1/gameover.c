@@ -3,10 +3,13 @@
 #include "utils.h"
 #include "stdio.h"
 #include "string.h"
+#include "game.h"
+
 
 #define WINDOW_WIDTH 1600.0f
 #define WINDOW_HEIGHT 900.0f
 #define MAX_NAME_LENGTH 10
+#define MAX_LEADERBOARD 10
 
 CP_Font myFont;
 CP_Image gameover_sign;
@@ -14,11 +17,17 @@ CP_Image gameover_sign;
 float textSize;
 char playerName[MAX_NAME_LENGTH];// Array to hold the player's name
 int cursorPosition; // Position of the cursor in the input string
+extern struct player player;
+char highscore[256];
+extern const char* leaderboardSave;
+leaderboard ldrboard[MAX_LEADERBOARD];
+int count;
 
 void gameover_Init(void)
 {
 	playerName[0] = '\0'; // Set the first character to null terminator
-	cursorPosition = 0; 
+	sprintf_s(highscore, sizeof(highscore), "score: %d", player.score);
+	cursorPosition = 0;
 	gameover_sign = CP_Image_Load("Assets/Gameover.png");
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	myFont = CP_Font_Load("Assets/Exo2-Regular.ttf");
@@ -26,10 +35,12 @@ void gameover_Init(void)
 	CP_Settings_TextSize(textSize);
 	CP_TEXT_ALIGN_HORIZONTAL horizontal = CP_TEXT_ALIGN_H_CENTER;
 	CP_TEXT_ALIGN_VERTICAL vertical = CP_TEXT_ALIGN_V_MIDDLE;
-}
 
+	count = loadLeaderboard(ldrboard, "leaderboard.dat");
+}
 void gameover_Update(void)
 {
+	//highscore[1] = player.score;
 	// Testing Gameover sign
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 	CP_Graphics_DrawRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -39,7 +50,7 @@ void gameover_Update(void)
 	// Score: ______ (generated)
 	CP_Font_Set(myFont);
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-	CP_Font_DrawText("Score: ", WINDOW_WIDTH / 2.5f, WINDOW_HEIGHT / 1.55f);
+	CP_Font_DrawText(highscore, WINDOW_WIDTH / 2.5f, WINDOW_HEIGHT / 1.55f);
 
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 	CP_Graphics_DrawRect(WINDOW_WIDTH / 2.08f, WINDOW_HEIGHT / 1.5f, WINDOW_WIDTH / 8.0f, WINDOW_HEIGHT / 15.0f);
@@ -69,7 +80,6 @@ void gameover_Update(void)
 			// Handle submission (e.g., save the name or proceed)
 			printf("Player Name: %s\n", playerName);
 			// Optionally, transition to another game state
-			// CP_Engine_SetNextGameState(SomeOtherState_Init, SomeOtherState_Update, SomeOtherState_Exit);
 		}
 		else {
 			printf("Please enter a name before submitting.\n");
@@ -96,6 +106,7 @@ void gameover_Update(void)
 	if (IsAreaClicked(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 1.2f,
 		WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
 	{
+		updateLeaderboard(ldrboard, &count, playerName, player.score, leaderboardSave);
 		CP_Engine_SetNextGameState(Start_Menu_Init, Start_Menu_Update, Start_Menu_Exit);
 	}
 }

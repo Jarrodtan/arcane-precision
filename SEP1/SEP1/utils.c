@@ -3,8 +3,11 @@
 #include <stdio.h>
 #include "stdlib.h"
 #include "stdbool.h"
+#include "string.h"
 
 bool newGame;
+#define MAX_LEADERBOARD 10
+#define MAX_NAME_LENGTH 255
 
 typedef struct {
     float moveSpeed;
@@ -19,8 +22,14 @@ typedef struct {
     int lastEntered;
 }playerStats;
 
+typedef struct {
+    char playerName[MAX_NAME_LENGTH + 1];
+    int score;
+}leaderboard;
+
 const char* saveFile1 = "save1.dat";
 const char* saveFile2 = "save2.dat";
+const char* leaderboardSave = "leaderboard.dat";
 
 
 int IsAreaClicked(float area_center_x, float area_center_y, float area_width, float area_height, float click_x, float click_y)
@@ -88,7 +97,72 @@ int AreCirclesIntersecting(float c1_x, float c1_y, float r1, float c2_x, float c
     }
     return 0;
 }
+// Function to save the leaderboard to a file
+void saveLeaderboard(const leaderboard ldrboard[], int count, const char* ldrSave)
+{
+    FILE* file = fopen(ldrSave, "wb");
+    if (file == NULL) {
+        printf("Error: Could not open file for saving.\n");
+        return;
+    }
 
+    fwrite(ldrboard, sizeof(leaderboard), count, file);
+    fclose(file);
+}
+
+// Function to load the leaderboard from a file
+int loadLeaderboard(leaderboard ldrboard[], const char* ldrSave)
+{
+    FILE* file = fopen(ldrSave, "rb");
+    if (file == NULL) {
+        printf("Error: Could not open file for loading.\n");
+        return 0;
+    }
+
+    int count = 0;
+    while (fread(&ldrboard[count], sizeof(leaderboard), 1, file) == 1 && count < MAX_LEADERBOARD) {
+        count++;
+    }
+    fclose(file);
+    return count;
+}
+
+
+// Comparator for sorting leaderboard by score in descending order
+int compareScores(const void* a, const void* b) {
+    leaderboard* playerA = (leaderboard*)a;
+    leaderboard* playerB = (leaderboard*)b;
+    return playerB->score - playerA->score;
+}
+
+// Function to update the leaderboard with a new score
+void updateLeaderboard(leaderboard ldrboard[], int* count, const char* playerName, int playerScore, const char* ldrSave)
+{
+    // Add the new score to the leaderboard
+    if (*count < MAX_LEADERBOARD) {
+        strncpy_s(ldrboard[*count].playerName, MAX_NAME_LENGTH + 1, playerName, MAX_NAME_LENGTH);
+        ldrboard[*count].playerName[MAX_NAME_LENGTH] = '\0'; // Ensure null-termination
+        ldrboard[*count].score = playerScore;
+        (*count)++;
+    }
+    else {
+        // If the leaderboard is full, only add if the score is high enough
+        if (playerScore > ldrboard[MAX_LEADERBOARD - 1].score) {
+            strncpy_s(ldrboard[MAX_LEADERBOARD - 1].playerName, MAX_NAME_LENGTH + 1, playerName, MAX_NAME_LENGTH);            ldrboard[MAX_LEADERBOARD - 1].playerName[MAX_NAME_LENGTH] = '\0'; // Ensure null-termination
+            ldrboard[MAX_LEADERBOARD - 1].score = playerScore;
+        }
+    }
+
+    // Sort leaderboard and keep only top 10
+    qsort(ldrboard, *count, sizeof(leaderboard), compareScores);
+    if (*count > MAX_LEADERBOARD)
+    {
+        *count = MAX_LEADERBOARD;
+    }
+
+    // Save the updated leaderboard
+    saveLeaderboard(ldrboard, *count, ldrSave);
+}
 
 void savePlayerStats(playerStats* stats, const char* saveFileName) {
     FILE *file = fopen(saveFileName, "wb");
