@@ -106,7 +106,15 @@ void gameover_Update(void)
 	if (IsAreaClicked(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 1.2f,
 		WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
 	{
-		updateLeaderboard(ldrboard, &count, playerName, player.score, leaderboardSave);
+		switch (cursorPosition)
+		{
+		case 0:
+			updateLeaderboard(ldrboard, &count, "ANON", player.score, leaderboardSave);
+			break;
+		default: 
+			updateLeaderboard(ldrboard, &count, playerName, player.score, leaderboardSave);
+			break;
+		}
 		CP_Engine_SetNextGameState(Start_Menu_Init, Start_Menu_Update, Start_Menu_Exit);
 	}
 }

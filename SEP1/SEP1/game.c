@@ -1,9 +1,11 @@
 #include "utils.h"
 #include "game.h"
-#include "cprocessing.h"
 #include "mainmenu.h"
 #include "enemy.h"
 #include "gameover.h"
+#include "roomLayout.h"
+#include "pause.h"
+#include "cprocessing.h"
 #include "stdbool.h"
 #include <math.h>
 #include <stdio.h>
@@ -11,57 +13,34 @@
 
 #define WINDOW_WIDTH 1600.0f
 #define WINDOW_HEIGHT 900.0f
-extern int saveSlot;
 extern bool isNewGame;
+extern bool game_pause;
 extern const char* saveFile1;
 extern const char* saveFile2;
-float dt;
-int lastEntered;
+extern int saveSlot;
+extern int difficulty;
 
 CP_Color manaBarColor;
 CP_Color manaColor;
 CP_Color manaHitboxColor;
 CP_Vector player_position;
-CP_Image pause_sign;
+extern CP_Image pause_sign;
 
-float territoryDiameter;
-float diameter;
 float base_Mana;
 float mana;
 float random_float;
 int cooldown;
 int hitboxSpawn;
 int roomsPassed; //for increasing difficulty
-extern int difficulty;
+float dt;
+int lastEntered;
+bool game_over;
 
 //time manip
 float slowTimeScale = 0.1f;
 bool isSlowed = false;
 int selectedSpell = 0;
 
-bool game_pause, game_over;
-
-struct manabar {
-	float x;
-	float y;
-	float width;
-	float height;
-};
-
-
-struct hearts {
-	float x;
-	float y;
-	float size;
-	float spacing;
-};
-
-struct walls {
-	float x;
-	float y;
-	float width;
-	float height;
-};
 
 struct player player;
 struct manabar maxManabar;
@@ -69,139 +48,14 @@ struct manabar currentManabar;
 struct manabar manaHitbox;
 struct playerAttack playerAttack[100];
 struct hearts playerHearts;
-struct walls topWall;
-struct walls botWall;
-struct walls leftWall; 
-struct walls rightWall;
-struct walls topDoor;
-struct walls botDoor;
-struct walls leftDoor;
-struct walls rightDoor;
+extern struct walls topWall;
+extern struct walls botWall;
+extern struct walls leftWall; 
+extern struct walls rightWall;
 extern struct enemy enemyStationary;
 extern struct enemy enemyMelee;
 extern struct enemyAttack bullet;
 
-void static draw_screen(void) {
-	CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 50));
-
-	//Walls for room
-	CP_Settings_Fill(CP_Color_Create(100, 30, 50, 255));
-	CP_Graphics_DrawRect(topWall.x,topWall.y,topWall.width,topWall.height);
-	CP_Graphics_DrawRect(botWall.x, botWall.y, botWall.width, botWall.height);
-	CP_Graphics_DrawRect(leftWall.x, leftWall.y, leftWall.width, leftWall.height);
-	CP_Graphics_DrawRect(rightWall.x, rightWall.y, rightWall.width, rightWall.height);
-
-	//Doors for rooms
-	switch (lastEntered)
-	{
-	case 1: //blocks bottom door when player entered top door
-		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
-		CP_Graphics_DrawRect(botDoor.x, botDoor.y, botDoor.width, botDoor.height);
-		CP_Settings_Fill(CP_Color_Create(255, 255, 200, 255));
-		CP_Graphics_DrawRect(topDoor.x, topDoor.y, topDoor.width, topDoor.height);
-		CP_Graphics_DrawRect(leftDoor.x, leftDoor.y, leftDoor.width, leftDoor.height);
-		CP_Graphics_DrawRect(rightDoor.x, rightDoor.y, rightDoor.width, rightDoor.height);
-		break;
-	case 2: //blocks left door when player entered right door
-		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
-		CP_Graphics_DrawRect(leftDoor.x, leftDoor.y, leftDoor.width, leftDoor.height);
-		CP_Settings_Fill(CP_Color_Create(255, 255, 200, 255));
-		CP_Graphics_DrawRect(topDoor.x, topDoor.y, topDoor.width, topDoor.height);
-		CP_Graphics_DrawRect(botDoor.x, botDoor.y, botDoor.width, botDoor.height);
-		CP_Graphics_DrawRect(rightDoor.x, rightDoor.y, rightDoor.width, rightDoor.height);
-		break;
-	case 3:  //blocks top door when player entered bottom door
-		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
-		CP_Graphics_DrawRect(topDoor.x, topDoor.y, topDoor.width, topDoor.height);
-		CP_Settings_Fill(CP_Color_Create(255, 255, 200, 255));
-		CP_Graphics_DrawRect(leftDoor.x, leftDoor.y, leftDoor.width, leftDoor.height);
-		CP_Graphics_DrawRect(botDoor.x, botDoor.y, botDoor.width, botDoor.height);
-		CP_Graphics_DrawRect(rightDoor.x, rightDoor.y, rightDoor.width, rightDoor.height);
-		break;
-	case 4:  //blocks right door when player entered left door
-		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
-		CP_Graphics_DrawRect(rightDoor.x, rightDoor.y, rightDoor.width, rightDoor.height);
-		CP_Settings_Fill(CP_Color_Create(255, 255, 200, 255));
-		CP_Graphics_DrawRect(topDoor.x, topDoor.y, topDoor.width, topDoor.height);
-		CP_Graphics_DrawRect(botDoor.x, botDoor.y, botDoor.width, botDoor.height);
-		CP_Graphics_DrawRect(leftDoor.x, leftDoor.y, leftDoor.width, leftDoor.height);
-		break;
-	default: //dont block any doors
-		CP_Settings_Fill(CP_Color_Create(255, 255, 200, 255));
-		CP_Graphics_DrawRect(rightDoor.x, rightDoor.y, rightDoor.width, rightDoor.height);
-		CP_Graphics_DrawRect(topDoor.x, topDoor.y, topDoor.width, topDoor.height);
-		CP_Graphics_DrawRect(botDoor.x, botDoor.y, botDoor.width, botDoor.height);
-		CP_Graphics_DrawRect(leftDoor.x, leftDoor.y, leftDoor.width, leftDoor.height);
-		break;
-	}
-
-	//draw player 1
-	if (player.invincibilityTimer > 0) 
-	{
-		if ((int)(player.invincibilityTimer * 10) % 2 == 0) {
-			CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));  // Black color
-		}
-		else {
-			CP_Settings_Fill(CP_Color_Create(255, 0, 255, 255));  // Original color
-		}
-	}
-	else {
-	// Normal color when not invincible
-	CP_Settings_Fill(CP_Color_Create(255, 0, 255, 255));
-	}
-	CP_Graphics_DrawCircle(player.position.x, player.position.y, player.diameter);
-
-
-	//ManaBar
-	maxManabar.x = player.position.x - player.diameter +2;
-	maxManabar.y = player.position.y + 50;
-	CP_Settings_Fill(manaBarColor);
-	CP_Graphics_DrawRect(maxManabar.x, maxManabar.y, maxManabar.width, maxManabar.height);
-
-	//Current Mana
-	currentManabar.x = maxManabar.x;
-	currentManabar.y = maxManabar.y;
-	if (cooldown == 0) {
-		CP_Settings_Fill(manaColor);
-		CP_Graphics_DrawRect(currentManabar.x, currentManabar.y, (currentManabar.width) * (mana / 100), currentManabar.height);
-	}
-	else {
-		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
-		if (CP_Input_MouseClicked()) {
-			CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-		}
-		CP_Graphics_DrawRect(currentManabar.x, currentManabar.y, (currentManabar.width * (mana / 100)), currentManabar.height);
-	}
-
-	//Mana Hitbox
-	//re-sets mana hitbox position for randomness
-	manaHitbox.x = maxManabar.x + random_float;
-	manaHitbox.y = maxManabar.y;
-	if (hitboxSpawn == 1) {
-		CP_Settings_Fill(manaHitboxColor);
-		CP_Graphics_DrawRect(manaHitbox.x, manaHitbox.y, manaHitbox.width, manaHitbox.height);
-	}
-
-	//Mana cursor
-	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-	CP_Graphics_DrawRect(currentManabar.x + (currentManabar.width * (mana / 100)) - 5, currentManabar.y, 5, currentManabar.height);
-
-
-	// Max hearts per row
-	int heartsPerRow = 5;
-	for (int i = 0; i < player.lives; i++) {
-		int row = i / heartsPerRow;
-		int col = i % heartsPerRow;
-
-		// Calculate the x and y positions for the heart based on row and column
-		float xPosition = playerHearts.x + col * playerHearts.spacing;
-		float yPosition = playerHearts.y + row * playerHearts.size * 2.5f;// adjusts spacing between rows
-
-		// Draw the heart at the calculated position
-		drawHearts(xPosition, yPosition, playerHearts.size);
-	}
-
-}
 
 float slowTime(void) //returns dt value for slowing down time
 {
@@ -284,6 +138,31 @@ void update_player(float dt) {
 		}
 	}
 }
+void saveGame(void)
+{
+	isNewGame = false;
+	playerStats stats = { player.moveSpeed,player.lives,
+				player.manaBuildSpeed,player.cooldownSpeed, player.attackDamage,
+				player.attackSize, player.attackSpeed,player.score, roomsPassed, lastEntered };
+	switch (saveSlot)
+	{
+	case 1:
+		savePlayerStats(&stats, saveFile1);
+		break;
+	case 2:
+		savePlayerStats(&stats, saveFile2);
+		break;
+
+	}
+}
+void initializeAttack(struct playerAttack* playerAttack, CP_Vector position, CP_Vector direction, float speed, int damage) {
+	playerAttack->position = position;
+	playerAttack->direction = direction;
+	playerAttack->speed = 400.0f;
+	playerAttack->damage = 1;
+	playerAttack->diameter = 30; // Set diameter for each bullet
+	playerAttack->isActive = 1;    // Mark bullet as active
+}
 void Game_Init(void)
 {
 	pause_sign = CP_Image_Load("Assets/Pause Sign.png");
@@ -363,7 +242,7 @@ void Game_Init(void)
 	}
 
 	//max Manabar
-	maxManabar.x = player.position.x - diameter +2;
+	maxManabar.x = player.position.x - player.diameter +2;
 	maxManabar.y = player.position.y + 50;
 	maxManabar.width = player.diameter*2;
 	maxManabar.height = 20;
@@ -386,112 +265,8 @@ void Game_Init(void)
 	playerHearts.size = 15.0f;
 	playerHearts.spacing = 50;
 
-	//walls
-	topWall.x = 0;
-	topWall.y = 0;
-	topWall.width = WINDOW_WIDTH;
-	topWall.height = 10;
-
-	rightWall.x = WINDOW_WIDTH;
-	rightWall.y = 0;
-	rightWall.width = -10;
-	rightWall.height = WINDOW_HEIGHT;
-
-	botWall.x = WINDOW_WIDTH;
-	botWall.y = WINDOW_HEIGHT;
-	botWall.width = -WINDOW_WIDTH;
-	botWall.height = -10;
-
-	leftWall.x = 0;
-	leftWall.y = WINDOW_HEIGHT;
-	leftWall.width = 10;
-	leftWall.height = -WINDOW_HEIGHT;
-
-	//doors
-	topDoor.x = (WINDOW_WIDTH / 2) - 100;
-	topDoor.y = 0;
-	topDoor.width = 200;
-	topDoor.height = 10;
-
-	rightDoor.x = WINDOW_WIDTH-10;
-	rightDoor.y = (WINDOW_HEIGHT / 2) - 100;
-	rightDoor.width = 10;
-	rightDoor.height = 200;
-
-	botDoor.x = (WINDOW_WIDTH / 2) - 100;
-	botDoor.y = WINDOW_HEIGHT-10;
-	botDoor.width = 200;
-	botDoor.height = 10;
-
-	leftDoor.x = 0;
-	leftDoor.y = (WINDOW_HEIGHT / 2) - 100;
-	leftDoor.width = 10;
-	leftDoor.height = 200;
-
 	printf("rooms passed: %d\n", roomsPassed);
 }
-
-void saveGame(void)
-{
-	isNewGame = false;
-	playerStats stats = { player.moveSpeed,player.lives,
-				player.manaBuildSpeed,player.cooldownSpeed, player.attackDamage,
-				player.attackSize, player.attackSpeed,player.score, roomsPassed, lastEntered };
-	switch (saveSlot)
-	{
-	case 1:
-		savePlayerStats(&stats, saveFile1);
-		break;
-	case 2:
-		savePlayerStats(&stats, saveFile2);
-		break;
-
-	}
-}
-
-//intereactions with doors
-void doorInteraction(void)
-{
-	if (doorIntersect(player.position.x, player.position.y, player.diameter, topDoor.x, topDoor.y, topDoor.width, topDoor.height) == 1 && lastEntered != 3)
-	{
-		//set last entered and next spawn point
-		lastEntered = 1;
-		roomsPassed++;
-		saveGame();
-		Game_Init();
-	}
-	if (doorIntersect(player.position.x, player.position.y, player.diameter, rightDoor.x, rightDoor.y, rightDoor.width, rightDoor.height) == 1 && lastEntered != 4)
-	{
-		lastEntered = 2;
-		roomsPassed++;
-		saveGame();
-		Game_Init();
-	}
-	if (doorIntersect(player.position.x, player.position.y, player.diameter, botDoor.x, botDoor.y, botDoor.width, botDoor.height) == 1 && lastEntered != 1)
-	{
-		lastEntered = 3;
-		roomsPassed++;
-		saveGame();
-		Game_Init();
-	}
-	if (doorIntersect(player.position.x, player.position.y, player.diameter, leftDoor.x, leftDoor.y, leftDoor.width, leftDoor.height) == 1 && lastEntered != 2)
-	{
-		lastEntered = 4;
-		roomsPassed++;
-		saveGame();
-		Game_Init();
-	}
-}
-
-void initializeAttack(struct playerAttack* playerAttack, CP_Vector position, CP_Vector direction, float speed, int damage) {
-	playerAttack->position = position;
-	playerAttack->direction = direction;
-	playerAttack->speed = 400.0f;
-	playerAttack->damage = 1;
-	playerAttack->diameter = 30; // Set diameter for each bullet
-	playerAttack->isActive = 1;    // Mark bullet as active
-}
-
 void Game_Update(void)
 {
 	
@@ -536,40 +311,8 @@ void Game_Update(void)
 		}
 		}
 		draw_screen();
-
-		//dim background and show pause sign
-		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 100));
-		CP_Graphics_DrawRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-		CP_Settings_Fill(CP_Color_Create(240, 230, 140, 255));
-		CP_Graphics_DrawRect(WINDOW_WIDTH / 4.0f, WINDOW_HEIGHT / 4.0f, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f);
-
-		CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
-		CP_Graphics_DrawRect(WINDOW_WIDTH / 2.4f, WINDOW_HEIGHT / 2.4f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);
-
-		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-		CP_Settings_TextSize(50.0f);
-		CP_Font_DrawText("Main Menu", WINDOW_WIDTH / 2.3f, WINDOW_HEIGHT / 2.11f);
-		CP_Image_Draw(pause_sign, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 3.0f, 100.0f, 100.0f, 255);
-
-		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-		CP_Settings_TextSize(50.0f);
-		CP_Font_DrawText("Press escape key to continue!", WINDOW_WIDTH / 3.0f, WINDOW_HEIGHT / 1.4f);
-
-		CP_Settings_TextSize(30.0f);
-		CP_Font_DrawText("Movement controls: W - Up | S - Down | A - Left | D - Right", WINDOW_WIDTH / 3.8f, WINDOW_HEIGHT / 1.8f);
-		CP_Font_DrawText("Attack controls: Mouse left click - Charge Mana", WINDOW_WIDTH / 3.8f, WINDOW_HEIGHT / 1.7f);
-		CP_Font_DrawText("Special ability: Space - Spell Selection", WINDOW_WIDTH / 3.8f, WINDOW_HEIGHT / 1.61f);
-		CP_Font_DrawText("Pause / Resume: Esc Key", WINDOW_WIDTH / 3.8f, WINDOW_HEIGHT / 1.53f);
-
-		//return to mainmenu
-		if (IsAreaClicked(WINDOW_WIDTH / 1.99f, WINDOW_HEIGHT / 2.2f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f,
-			CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
-		{
-			
-			CP_Engine_SetNextGameState(Main_Menu_Init, Main_Menu_Update, Main_Menu_Exit);
-		}
-		CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 50));
+		pause();
+	
 	}
 
 	else if (game_pause == false) {
@@ -683,7 +426,6 @@ void Game_Update(void)
 		}
 	}
 }
-
 void Game_Exit(void)
 {
 	for (int i = 0; i < 100; i++)

@@ -1,5 +1,6 @@
 #pragma once
 #include "cprocessing.h"
+
 struct player {
     CP_Vector position;
     float diameter;
@@ -17,6 +18,20 @@ struct player {
     int score;
 };
 
+struct manabar {
+    float x;
+    float y;
+    float width;
+    float height;
+};
+
+struct hearts {
+    float x;
+    float y;
+    float size;
+    float spacing;
+};
+
 struct playerAttack {
     CP_Vector position;
     float diameter;
@@ -27,7 +42,6 @@ struct playerAttack {
 };
 
 void Game_Init(void);
-
 void Game_Update(void);
-
 void Game_Exit(void);
+void saveGame(void);
