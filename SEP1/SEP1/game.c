@@ -10,9 +10,12 @@
 #include <math.h>
 #include <stdio.h>
 #include "stdlib.h"
+#include "obstacle.h"
+
 
 #define WINDOW_WIDTH 1600.0f
 #define WINDOW_HEIGHT 900.0f
+#define MAX_OBSTACLES 10
 extern bool isNewGame;
 extern bool game_pause;
 extern const char* saveFile1;
@@ -25,6 +28,14 @@ CP_Color manaColor;
 CP_Color manaHitboxColor;
 CP_Vector player_position;
 extern CP_Image pause_sign;
+extern CP_Vector obstacle[MAX_OBSTACLES];
+
+//// Obstacle spawn (Bev)
+//#define MAX_OBSTACLES (sizeof(obstacle) / sizeof(obstacle[0]))
+//CP_Vector obstacle[15]; // obstacle for random spawn
+extern int currentObstacleCount;
+extern int lastRoom; // Initialize to an invalid room number
+extern int obstacle_diameter;
 
 float base_Mana;
 float mana;
@@ -138,6 +149,26 @@ void update_player(float dt) {
 		}
 	}
 }
+
+ //initialising Object spawns for obstacle, and checking if they are too close to player
+//void InitializeObstacle(int index) {
+//    float xRange, yRange;
+//    float dx, dy, distance, bufferDistance;
+//    do {
+//        xRange = CP_Random_RangeFloat(150, 1300);
+//        yRange = CP_Random_RangeFloat(150, 700);
+//        dx = player_position.x - xRange;
+//        dy = player_position.y - yRange;
+//        distance = sqrt(dx * dx + dy * dy);
+//        bufferDistance = player.diameter + 100;
+//    } while (distance < bufferDistance); // Regenerate if too close
+//
+//    obstacle[index].x = xRange;
+//    obstacle[index].y = yRange;
+//}
+
+
+
 void saveGame(void)
 {
 	isNewGame = false;
@@ -177,6 +208,7 @@ void Game_Init(void)
 	random_float = CP_Random_RangeFloat(20, maxManabar.width - manaHitbox.width);
 	game_pause = false;
 	game_over = false;
+
 
 	//player
 	player.diameter = 60.0f;
@@ -266,14 +298,98 @@ void Game_Init(void)
 	playerHearts.spacing = 50;
 
 	printf("rooms passed: %d\n", roomsPassed);
+
+	//for object spawn
+	for (int i = 0; i < currentObstacleCount; i++) {
+		InitializeObstacle(i);
+	}
+
 }
+//bool CheckCollision(CP_Vector player_position, float playerDiameter, CP_Vector obstacle, int obstacleSize) {
+//	float playerRadius = playerDiameter / 2.0f;
+//	float playerLeft = player_position.x - playerRadius;
+//	float playerRight = player_position.x + playerRadius;
+//	float playerTop = player_position.y - playerRadius;
+//	float playerBottom = player_position.y + playerRadius;
+//
+//	float obstacleLeft = obstacle.x;
+//	float obstacleRight = obstacle.x + obstacleSize;
+//	float obstacleTop = obstacle.y;
+//	float obstacleBottom = obstacle.y + obstacleSize;
+//
+//	return playerRight > obstacleLeft && playerLeft < obstacleRight &&
+//		playerBottom > obstacleTop && playerTop < obstacleBottom;
+//}
+
+//void HandleCollision(CP_Vector* player_position, float playerDiameter, CP_Vector obstacle, int obstacleSize) {
+//	float playerRadius = playerDiameter / 2.0f;
+//	float playerLeft = player_position->x - playerRadius;
+//	float playerRight = player_position->x + playerRadius;
+//	float playerTop = player_position->y - playerRadius;
+//	float playerBottom = player_position->y + playerRadius;
+//
+//	float obstacleLeft = obstacle.x;
+//	float obstacleRight = obstacle.x + obstacleSize;
+//	float obstacleTop = obstacle.y;
+//	float obstacleBottom = obstacle.y + obstacleSize;
+//
+//	float overlapLeft = playerRight - obstacleLeft;
+//	float overlapRight = obstacleRight - playerLeft;
+//	float overlapTop = playerBottom - obstacleTop;
+//	float overlapBottom = obstacleBottom - playerTop;
+//
+//	bool fromLeft = overlapLeft < overlapRight;
+//	bool fromTop = overlapTop < overlapBottom;
+//
+//	float minOverlapX = fromLeft ? overlapLeft : overlapRight;
+//	float minOverlapY = fromTop ? overlapTop : overlapBottom;
+//
+//	if (minOverlapX < minOverlapY) {
+//		player_position->x += fromLeft ? -minOverlapX : minOverlapX;
+//	}
+//	else {
+//		player_position->y += fromTop ? -minOverlapY : minOverlapY;
+//	}
+//}
+
 void Game_Update(void)
 {
-	
 	// Testing Gameover sign
 	if (CP_Input_KeyTriggered(KEY_ENTER)) {
 		CP_Engine_SetNextGameState(gameover_Init, gameover_Update, gameover_Exit);
 	}
+
+	//// Update the number of obstacles based on the number of rooms
+	//// Check if the player has entered a new room
+	//if (lastRoom != roomsPassed) {
+	//	int newObstacleCount = CP_Random_RangeInt(3, 10);
+	//	// Initialize new obstacles if the count has increased
+	//	for (int i = currentObstacleCount; i < newObstacleCount; i++) {
+	//		InitializeObstacle(i);
+	//	}
+	//	currentObstacleCount = newObstacleCount;
+	//	lastRoom = roomsPassed; // Update the last room to the current room
+	//}
+	//// Check for collisions and handle them
+	//for (int i = 0; i < currentObstacleCount; i++) {
+	//	if (CheckCollision(player.position, player.diameter, obstacle[i], obstacle_diameter)) {
+	//		HandleCollision(&player.position, player.diameter, obstacle[i], obstacle_diameter);
+	//	}
+	//}
+	//// Obstacle Spawn
+	//for (int i = 0; i < currentObstacleCount; i++) {
+	//	CP_Graphics_DrawRect(obstacle[i].x, obstacle[i].y, obstacle_diameter, obstacle_diameter);
+	//}
+
+
+	UpdateObstacles(roomsPassed, player.position, player.diameter);
+	// Check for collisions and handle them
+	for (int i = 0; i < currentObstacleCount; i++) {
+		if (CheckCollision(player.position, player.diameter, obstacle[i], obstacle_diameter)) {
+			HandleCollision(&player.position, player.diameter, obstacle[i], obstacle_diameter);
+		}
+	}
+
 
 	dt = slowTime();
 	// Pause & Resume game
@@ -325,21 +441,21 @@ void Game_Update(void)
 				player.position.y -= player.moveSpeed * dt;
 				}
 			}
-			else if (CP_Input_KeyDown(KEY_S))
+			 if (CP_Input_KeyDown(KEY_S))
 			{
 				if (player.position.y + (player.diameter / 2)+5 <= botWall.y + botWall.height)
 				{
 				player.position.y += player.moveSpeed * dt;
 				}
 			}
-			else if (CP_Input_KeyDown(KEY_A))
+			 if (CP_Input_KeyDown(KEY_A))
 			{
 				if (player.position.x - (player.diameter / 2)-5 >= leftWall.x + leftWall.width)
 				{
 				player.position.x -= player.moveSpeed * dt;
 				}
 			}
-			else if (CP_Input_KeyDown(KEY_D))
+			 if (CP_Input_KeyDown(KEY_D))
 			{
 				if (player.position.x + (player.diameter / 2)+5 <= rightWall.x + rightWall.width)
 				{
