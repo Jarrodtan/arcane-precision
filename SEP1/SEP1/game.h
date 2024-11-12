@@ -36,7 +36,7 @@ struct playerAttack {
     CP_Vector position;
     float diameter;
     CP_Vector direction;
-    float damage;
+    int damage;
     float speed;
     int isActive;
 };
@@ -45,3 +45,4 @@ void Game_Init(void);
 void Game_Update(void);
 void Game_Exit(void);
 void saveGame(void);
+void take_damage(struct player* p, int damage);

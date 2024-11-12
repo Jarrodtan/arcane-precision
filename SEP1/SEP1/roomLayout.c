@@ -3,6 +3,7 @@
 #include "game.h"
 #include "roomLayout.h"
 #include "utils.h"
+#include "enemy.h"
 
 #define WINDOW_WIDTH 1600.0f
 #define WINDOW_HEIGHT 900.0f
@@ -34,6 +35,7 @@ extern float base_Mana;
 extern float mana;
 extern float random_float;
 extern int hitboxSpawn;
+extern int enemyNumber;
 
 void draw_Room()
 {
@@ -92,6 +94,9 @@ void draw_Room()
 //interactions with doors
 void doorInteraction(void)
 {
+		
+	if (enemyNumber <= 0) 
+	{
 	if (doorIntersect(player.position.x, player.position.y, player.diameter, topDoor.x, topDoor.y, topDoor.width, topDoor.height) == 1 && lastEntered != 3)
 	{
 		//set last entered and next spawn point
@@ -120,6 +125,7 @@ void doorInteraction(void)
 		roomsPassed++;
 		saveGame();
 		Game_Init();
+	}
 	}
 }
 

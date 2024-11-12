@@ -130,10 +130,6 @@ void take_damage(struct player* p, int damage) {
 			p->lives -= damage;
 			if (p->lives <= 0) {
 				p->lives = 0;
-				printf("Player defeated!\n");
-			}
-			else {
-				printf("Player damaged! Lives remaining: %d\n", p->lives);
 			}
 			// Activate invincibility frames
 			p->invincibilityTimer += p->invincibilityDuration;
@@ -149,25 +145,6 @@ void update_player(float dt) {
 		}
 	}
 }
-
- //initialising Object spawns for obstacle, and checking if they are too close to player
-//void InitializeObstacle(int index) {
-//    float xRange, yRange;
-//    float dx, dy, distance, bufferDistance;
-//    do {
-//        xRange = CP_Random_RangeFloat(150, 1300);
-//        yRange = CP_Random_RangeFloat(150, 700);
-//        dx = player_position.x - xRange;
-//        dy = player_position.y - yRange;
-//        distance = sqrt(dx * dx + dy * dy);
-//        bufferDistance = player.diameter + 100;
-//    } while (distance < bufferDistance); // Regenerate if too close
-//
-//    obstacle[index].x = xRange;
-//    obstacle[index].y = yRange;
-//}
-
-
 
 void saveGame(void)
 {
@@ -303,84 +280,15 @@ void Game_Init(void)
 	for (int i = 0; i < currentObstacleCount; i++) {
 		InitializeObstacle(i);
 	}
-
+	init_enemy();
 }
-//bool CheckCollision(CP_Vector player_position, float playerDiameter, CP_Vector obstacle, int obstacleSize) {
-//	float playerRadius = playerDiameter / 2.0f;
-//	float playerLeft = player_position.x - playerRadius;
-//	float playerRight = player_position.x + playerRadius;
-//	float playerTop = player_position.y - playerRadius;
-//	float playerBottom = player_position.y + playerRadius;
-//
-//	float obstacleLeft = obstacle.x;
-//	float obstacleRight = obstacle.x + obstacleSize;
-//	float obstacleTop = obstacle.y;
-//	float obstacleBottom = obstacle.y + obstacleSize;
-//
-//	return playerRight > obstacleLeft && playerLeft < obstacleRight &&
-//		playerBottom > obstacleTop && playerTop < obstacleBottom;
-//}
-
-//void HandleCollision(CP_Vector* player_position, float playerDiameter, CP_Vector obstacle, int obstacleSize) {
-//	float playerRadius = playerDiameter / 2.0f;
-//	float playerLeft = player_position->x - playerRadius;
-//	float playerRight = player_position->x + playerRadius;
-//	float playerTop = player_position->y - playerRadius;
-//	float playerBottom = player_position->y + playerRadius;
-//
-//	float obstacleLeft = obstacle.x;
-//	float obstacleRight = obstacle.x + obstacleSize;
-//	float obstacleTop = obstacle.y;
-//	float obstacleBottom = obstacle.y + obstacleSize;
-//
-//	float overlapLeft = playerRight - obstacleLeft;
-//	float overlapRight = obstacleRight - playerLeft;
-//	float overlapTop = playerBottom - obstacleTop;
-//	float overlapBottom = obstacleBottom - playerTop;
-//
-//	bool fromLeft = overlapLeft < overlapRight;
-//	bool fromTop = overlapTop < overlapBottom;
-//
-//	float minOverlapX = fromLeft ? overlapLeft : overlapRight;
-//	float minOverlapY = fromTop ? overlapTop : overlapBottom;
-//
-//	if (minOverlapX < minOverlapY) {
-//		player_position->x += fromLeft ? -minOverlapX : minOverlapX;
-//	}
-//	else {
-//		player_position->y += fromTop ? -minOverlapY : minOverlapY;
-//	}
-//}
 
 void Game_Update(void)
 {
 	// Testing Gameover sign
-	if (CP_Input_KeyTriggered(KEY_ENTER)) {
+	if (player.lives <= 0) {
 		CP_Engine_SetNextGameState(gameover_Init, gameover_Update, gameover_Exit);
 	}
-
-	//// Update the number of obstacles based on the number of rooms
-	//// Check if the player has entered a new room
-	//if (lastRoom != roomsPassed) {
-	//	int newObstacleCount = CP_Random_RangeInt(3, 10);
-	//	// Initialize new obstacles if the count has increased
-	//	for (int i = currentObstacleCount; i < newObstacleCount; i++) {
-	//		InitializeObstacle(i);
-	//	}
-	//	currentObstacleCount = newObstacleCount;
-	//	lastRoom = roomsPassed; // Update the last room to the current room
-	//}
-	//// Check for collisions and handle them
-	//for (int i = 0; i < currentObstacleCount; i++) {
-	//	if (CheckCollision(player.position, player.diameter, obstacle[i], obstacle_diameter)) {
-	//		HandleCollision(&player.position, player.diameter, obstacle[i], obstacle_diameter);
-	//	}
-	//}
-	//// Obstacle Spawn
-	//for (int i = 0; i < currentObstacleCount; i++) {
-	//	CP_Graphics_DrawRect(obstacle[i].x, obstacle[i].y, obstacle_diameter, obstacle_diameter);
-	//}
-
 
 	UpdateObstacles(roomsPassed, player.position, player.diameter);
 	// Check for collisions and handle them
@@ -524,7 +432,7 @@ void Game_Update(void)
 		}
 		}
 		draw_screen();
-		enemy_code(player);
+		enemy_code();
 		update_player(dt);
 		doorInteraction();
 		//skill selection
