@@ -48,6 +48,9 @@
     <ClCompile Include="roomLayout.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="obstacle.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -78,6 +81,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="roomLayout.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="obstacle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

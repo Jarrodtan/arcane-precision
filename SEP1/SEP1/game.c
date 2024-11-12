@@ -35,7 +35,7 @@ extern CP_Vector obstacle[MAX_OBSTACLES];
 //CP_Vector obstacle[15]; // obstacle for random spawn
 extern int currentObstacleCount;
 extern int lastRoom; // Initialize to an invalid room number
-extern int obstacle_diameter;
+extern float obstacle_diameter;
 
 float base_Mana;
 float mana;
