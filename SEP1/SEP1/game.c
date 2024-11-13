@@ -285,6 +285,7 @@ void Game_Init(void)
 		InitializeObstacle(i);
 	}
 	init_enemy();
+	roomLayout_init();
 }
 
 void Game_Update(void)

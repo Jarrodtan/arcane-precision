@@ -6,14 +6,11 @@
 #define WINDOW_WIDTH 1600.0f
 #define WINDOW_HEIGHT 900.0f
 
-CP_Font myFont;
-
+extern CP_Font myFont;
 float textSize;
-
 void Credits_Init(void)
 {
     CP_Settings_RectMode(CP_POSITION_CENTER);
-    myFont = CP_Font_Load("Assets/Exo2-Regular.ttf");
     textSize = 50.0f;
     CP_Settings_TextSize(textSize);
     CP_TEXT_ALIGN_HORIZONTAL horizontal = CP_TEXT_ALIGN_H_CENTER;

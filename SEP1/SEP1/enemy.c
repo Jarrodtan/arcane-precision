@@ -23,7 +23,6 @@ struct enemyAttack {
 	float speed;
 	int damage;
 	int active;
-	float shootTimer;
 };
 
 struct enemy {
@@ -34,6 +33,7 @@ struct enemy {
 	float speed;
 	int lives;
 	int active;
+	float shootTimer;
 	struct enemyAttack bullets[MAX_BULLETS];
 };
 
@@ -57,7 +57,6 @@ void initialize_bullet(struct enemyAttack* bullet, CP_Vector position, CP_Vector
 	bullet->damage = damage;
 	bullet->diameter = 30; // Set diameter for each bullet
 	bullet->active = 1;    // Mark bullet as active
-	bullet->shootTimer = 0.0f;
 }
 
 void initialize_enemyStationary(struct enemy* enemyStationary, CP_Vector position) {
@@ -69,6 +68,7 @@ void initialize_enemyStationary(struct enemy* enemyStationary, CP_Vector positio
 	enemyStationary->speed = 0.0f;
 	enemyStationary->lives = 1 + difficulty;
 	enemyStationary->active = 1;
+	enemyStationary->shootTimer = 0.0f;
 }
 void initialize_enemyMelee(struct enemy* enemyMelee, CP_Vector position) {
 	// Initialize enemy properties
@@ -79,6 +79,7 @@ void initialize_enemyMelee(struct enemy* enemyMelee, CP_Vector position) {
 	enemyMelee->speed = 10.0f * difficulty;
 	enemyMelee->lives = 2 + difficulty;
 	enemyMelee->active = 1;
+	
 }
 
 void init_enemy(void) 
@@ -104,7 +105,7 @@ void init_enemy(void)
 				//initialise stationary
 				initialize_enemyStationary(&enemies[i], enemyPosition);
 				enemies[i].bullets->active = 0;
-				enemies[i].bullets->shootTimer = 0.0f;
+				enemies[i].shootTimer = 0.0f;
 			}
 			else if (enemyType == 2) 
 			{
@@ -116,7 +117,8 @@ void init_enemy(void)
 }
 
 
-void enemy_code(void) {
+void enemy_code(void) 
+{
 	
 	// Update and draw all active enemies
 	for (int i = 0; i < MAX_ENEMIES; i++) 
@@ -129,25 +131,28 @@ void enemy_code(void) {
 				//enemy shooting
 				// -----------------------------------------------------------
 				// Update shooting timer
-				enemies[i].bullets[i].shootTimer += (dt * difficulty) + CP_Random_RangeInt(1, 3);
+				
+						enemies[i].shootTimer += (dt * difficulty) + CP_Random_RangeInt(1, 3);
+							printf("%f\n",enemies[i].shootTimer);
 
-				// Check if 5 seconds have passed to shoot
-				if (enemies[i].bullets[i].shootTimer >= 5.0f) {
-					enemies[i].bullets[i].shootTimer = 0.0f;
+						// Check if 5 seconds have passed to shoot
+						if (enemies[i].shootTimer >= 5.0f)
+						{
+							enemies[i].shootTimer = 0.0f;
+							// Calculate bullet direction towards player
+							bulletMoveD.x = player.position.x - enemies[i].position.x;
+							bulletMoveD.y = player.position.y - enemies[i].position.y;
+							bulletMoveN = CP_Vector_Normalize(bulletMoveD);
 
-					// Calculate bullet direction towards player
-					bulletMoveD.x = player.position.x - enemies[i].position.x;
-					bulletMoveD.y = player.position.y - enemies[i].position.y;
-					bulletMoveN = CP_Vector_Normalize(bulletMoveD);
-
-					// Find an available bullet slot in the array
-					for (int i = 0; i < MAX_BULLETS; i++) {
-						/*if (!bullets[i].active) {*/
-						if (!enemies[i].bullets[i].active) {
+						// Find an available bullet slot in the array
+						for (int j = 0; j < MAX_BULLETS; j++) {
+						if (enemies[i].bullets[j].active == 0) 
+						{
 							// Initialize new bullet
-							initialize_bullet(&enemies[i].bullets[i], enemies[i].position, CP_Vector_Scale(bulletMoveN, difficulty), 400.0f, 1);
-							break;
+							initialize_bullet(&enemies[i].bullets[j], enemies[i].position, CP_Vector_Scale(bulletMoveN, difficulty), 400.0f, 1);
+							
 						}
+						break;
 					}
 				}
 				
@@ -210,7 +215,8 @@ void enemy_code(void) {
 			}
 		
 			//enemy takes dmg when in contact with player attack
-			if (AreCirclesIntersecting(enemies[i].position.x, enemies[i].position.y, enemies[i].diameter, playerAttack.position.x, playerAttack.position.y, playerAttack.diameter) == 1 && playerAttack.isActive == 1)
+			if (AreCirclesIntersecting(enemies[i].position.x, enemies[i].position.y, enemies[i].diameter, playerAttack.position.x, playerAttack.position.y, playerAttack.diameter) == 1
+				&& playerAttack.isActive == 1 && enemies[i].active == 1)
 			{
 				playerAttack.isActive = 0;
 				enemies[i].lives -= playerAttack.damage;
@@ -218,8 +224,8 @@ void enemy_code(void) {
 				if (enemies[i].lives <= 0) 
 				{
 					enemies[i].active = 0;
-					enemies[i].position.x = -10;
-					enemies[i].position.y = -10;
+					/*enemies[i].position.x = -10;
+					enemies[i].position.y = -10;*/
 					player.score += 10;
 					enemyNumber--;
 					printf("enemy num minus: %d\n", enemyNumber);
@@ -228,6 +234,6 @@ void enemy_code(void) {
 			}
 
 
-		}
 	}
+}
 

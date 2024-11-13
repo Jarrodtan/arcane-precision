@@ -11,9 +11,8 @@
 #define MAX_NAME_LENGTH 10
 #define MAX_LEADERBOARD 10
 
-CP_Font myFont;
 CP_Image gameover_sign;
-
+extern CP_Font myFont;	
 float textSize;
 char playerName[MAX_NAME_LENGTH];// Array to hold the player's name
 int cursorPosition; // Position of the cursor in the input string
@@ -30,7 +29,6 @@ void gameover_Init(void)
 	cursorPosition = 0;
 	gameover_sign = CP_Image_Load("Assets/Gameover.png");
 	CP_Settings_RectMode(CP_POSITION_CORNER);
-	myFont = CP_Font_Load("Assets/Exo2-Regular.ttf");
 	textSize = 50.0f;
 	CP_Settings_TextSize(textSize);
 	CP_TEXT_ALIGN_HORIZONTAL horizontal = CP_TEXT_ALIGN_H_CENTER;

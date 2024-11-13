@@ -10,7 +10,7 @@ struct enemyAttack {
 	float speed;
 	int damage;
 	int active;
-	float shootTimer;
+
 };
 
 struct enemy {
@@ -21,6 +21,7 @@ struct enemy {
 	float speed;
 	int lives;
 	int active;
+	float shootTimer;
 	struct enemyAttack bullets[MAX_BULLETS];
 };
 

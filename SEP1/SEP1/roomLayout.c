@@ -36,6 +36,11 @@ extern float mana;
 extern float random_float;
 extern int hitboxSpawn;
 extern int enemyNumber;
+extern CP_Font myFont;
+char roomsDisplay[256];
+char scoreDisplay[256];
+float textSize;
+
 
 void draw_Room()
 {
@@ -129,6 +134,14 @@ void doorInteraction(void)
 	}
 }
 
+void roomLayout_init(void)
+{
+	sprintf_s(roomsDisplay, sizeof(roomsDisplay), "Room Passed: %d", roomsPassed);
+	sprintf_s(scoreDisplay, sizeof(scoreDisplay), "Score: %d", player.score);
+	textSize = 30.0f;
+	CP_Settings_TextSize(textSize);
+}
+
 void draw_screen(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 50));
 	draw_Room();
@@ -198,5 +211,9 @@ void draw_screen(void) {
 		// Draw the heart at the calculated position
 		drawHearts(xPosition, yPosition, playerHearts.size);
 	}
-
+	//display score and rooms passsed
+	CP_Font_Set(myFont);
+	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+	CP_Font_DrawText(roomsDisplay, WINDOW_WIDTH - 250, 50);
+	CP_Font_DrawText(scoreDisplay, WINDOW_WIDTH - 250, 100);
 }
