@@ -52,7 +52,8 @@ bool game_over;
 //time manip
 float slowTimeScale = 0.1f;
 bool isSlowed = false;
-int selectedSpell = 0;
+enum Spells { FIREBALL, ICESHARDS };
+enum Spells selectedSpell = FIREBALL;// Default spell
 
 
 struct player player;
@@ -83,7 +84,7 @@ float slowTime(void) //returns dt value for slowing down time
 	}
 }
 
-void drawSpellMenu(float x, float y) // create spell selection menu. Will require more work
+void drawSpellMenu(float x, float y, enum Spells selectedSpell) // create spell selection menu. Will require more work
 {
 	CP_Image fireballIcon = CP_Image_Load("Assets/Fire Icon.png");
 	CP_Image iceIcon = CP_Image_Load("Assets/Ice Icon.png");
@@ -100,12 +101,12 @@ void drawSpellMenu(float x, float y) // create spell selection menu. Will requir
 
 	// highlight which spell is selected
 	CP_Color highlightColor = CP_Color_Create(255, 255, 0, 255);
-	if (selectedSpell == 0)
+	if (selectedSpell == FIREBALL)
 	{
 		CP_Settings_Fill(highlightColor);
 		CP_Graphics_DrawRect(startX - 5, startY - 5, spellSelectWidth + 10, spellSelectHeight + 10); // create highlight of chosen spell
 	}
-	else if (selectedSpell == 1)
+	else if (selectedSpell == ICESHARDS)
 	{
 		CP_Settings_Fill(highlightColor);
 		CP_Graphics_DrawRect(startX + spellSelectWidth + spacing - 5, startY - 5, spellSelectWidth + 10, spellSelectHeight + 10); // create highlight of chosen spell
@@ -123,7 +124,9 @@ void drawSpellMenu(float x, float y) // create spell selection menu. Will requir
 	CP_Image_Draw(fireballIcon, startX + (spellSelectWidth / 2), startY + (spellSelectHeight / 2), spellSelectWidth, spellSelectHeight, 255);
 	// draw ice icon
 	CP_Image_Draw(iceIcon, startX + spellSelectWidth + spacing + (spellSelectWidth / 2), startY + (spellSelectHeight / 2), spellSelectWidth, spellSelectHeight, 255);
-
+	
+	fireballIcon = CP_Image_Free;
+	iceIcon = CP_Image_Free;
 }
 void take_damage(struct player* p, int damage) {
 	if (p->invincibilityTimer <= 0) {  // Only take damage if not invincible
@@ -443,12 +446,12 @@ void Game_Update(void)
 			if (CP_Input_GetMouseX() >= (player.position.x - 100.0f) - (10.0f) && CP_Input_GetMouseX() <= player.position.x &&
 				CP_Input_GetMouseY() >= ((player.position.y + player.diameter / 2) + 60.0f) &&
 				CP_Input_GetMouseY() <= ((player.position.y + player.diameter / 2) + 110.0f))
-				selectedSpell = 0; //default (fireball)
+				selectedSpell = FIREBALL;
 			else if (CP_Input_GetMouseX() >= player.position.x + 10.0f && CP_Input_GetMouseX() <= player.position.x + 110.0f &&
 				CP_Input_GetMouseY() >= ((player.position.y + player.diameter / 2) + 60.0f) &&
 				CP_Input_GetMouseY() <= ((player.position.y + player.diameter / 2) + 110.0f))
-				selectedSpell = 1; //ice 
-			drawSpellMenu(player.position.x, player.position.y);
+				selectedSpell = ICESHARDS;
+			drawSpellMenu(player.position.x, player.position.y, selectedSpell);
 		}
 	}
 }
