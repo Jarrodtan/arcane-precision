@@ -93,7 +93,7 @@ void init_enemy(void)
 	// Find an available enemy slot in the array
 	//for loop enemyNumber
 	//generate rng for enemy position
-	for (int i = 0; i < 20; i++) 
+	for (int i = 0; i < enemyNumber; i++) 
 	{
 		CP_Vector enemyPosition = CP_Vector_Set(CP_Random_RangeInt(70, (int)WINDOW_WIDTH - 70), CP_Random_RangeInt(70, (int)WINDOW_HEIGHT - 70));
 		if (enemies[i].active == 0) 
@@ -210,6 +210,8 @@ void enemy_code(void) {
 				if (enemies[i].lives <= 0) 
 				{
 					enemies[i].active = 0;
+					enemies[i].position.x = -10;
+					enemies[i].position.y = -10;
 					player.score += 10;
 					enemyNumber--;
 					printf("enemy num minus: %d\n", enemyNumber);
