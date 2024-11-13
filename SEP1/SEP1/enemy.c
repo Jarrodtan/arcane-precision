@@ -155,52 +155,58 @@ void enemy_code(void) {
 				{
 					take_damage(&player, 1);
 				}
+
+				// Update and draw all active bullets
+				for (int o = 0; o < MAX_BULLETS; o++) {
+					if (enemies[i].bullets[o].active && enemies[i].type == 1) {
+						// Move bullet
+						enemies[i].bullets[o].position = CP_Vector_Add(enemies[i].bullets[o].position, CP_Vector_Scale(enemies[i].bullets[o].direction, enemies[i].bullets[o].speed * dt));
+
+						// Draw bullet
+						CP_Settings_Fill(CP_Color_Create(242, 103, 75, 255));
+						CP_Graphics_DrawCircle(enemies[i].bullets[o].position.x, enemies[i].bullets[o].position.y, enemies[i].bullets[o].diameter);
+
+						// Check for collision with player
+						if (AreCirclesIntersecting(player.position.x, player.position.y, player.diameter, enemies[i].bullets[o].position.x, enemies[i].bullets[o].position.y, enemies[i].bullets[o].diameter) == 1) {
+							take_damage(&player, enemies[i].bullets[o].damage);
+							enemies[i].bullets[o].active = 0; // Deactivate bullet upon collision
+						}
+
+						// Deactivate bullet if it goes off-screen
+						if (enemies[i].bullets[o].position.x - enemies[i].bullets[o].diameter / 2 < 10 || enemies[i].bullets[o].position.x + enemies[i].bullets[o].diameter / 2 > WINDOW_WIDTH - 10 ||
+							enemies[i].bullets[o].position.y - enemies[i].bullets[o].diameter / 2 < 10 || enemies[i].bullets[o].position.y + enemies[i].bullets[o].diameter / 2 > WINDOW_HEIGHT - 10) {
+							enemies[i].bullets[o].active = 0;
+						}
+					}
+				}
+
+
+
 		}	
-		else if (enemies[i].active == 1 && enemies[i].type == 2) 
-		{ //melee enemy
-				//draw melee enemy
-				CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255));
-				CP_Graphics_DrawCircle(enemies[i].position.x, enemies[i].position.y, enemies[i].diameter);
+		else if (enemies[i].active == 1 && enemies[i].type == 2) { //melee enemy
 
-				// Enemy movement logic for melee enemy (similar to stationary)
-				enemyMoveD.x = player.position.x - enemies[i].position.x;
-				enemyMoveD.y = player.position.y - enemies[i].position.y;
-				enemyMoveN = CP_Vector_Normalize(enemyMoveD);
+			//draw melee enemy
+			CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255));
+			CP_Graphics_DrawCircle(enemies[i].position.x, enemies[i].position.y, enemies[i].diameter);
 
-				enemies[i].direction.x = (enemyMoveN.x * 5) + (rand() % 3 - 1);  // Add randomness to movement
-				enemies[i].direction.y = (enemyMoveN.y * 5) + (rand() % 3 - 1);
+			// Enemy movement logic for melee enemy (similar to stationary)
+			enemyMoveD.x = player.position.x - enemies[i].position.x;
+			enemyMoveD.y = player.position.y - enemies[i].position.y;
+			enemyMoveN = CP_Vector_Normalize(enemyMoveD);
 
-				// Update melee enemy position
-				enemies[i].position = CP_Vector_Add(enemies[i].position, CP_Vector_Scale(enemies[i].direction, enemies[i].speed * dt));
+			enemies[i].direction.x = (enemyMoveN.x * 5) + (rand() % 3 - 1);  // Add randomness to movement
+			enemies[i].direction.y = (enemyMoveN.y * 5) + (rand() % 3 - 1);
+
+			// Update melee enemy position
+			enemies[i].position = CP_Vector_Add(enemies[i].position, CP_Vector_Scale(enemies[i].direction, enemies[i].speed * dt));
+
 			// Collision and damage logic for when enemy comes in contact with player
 			if (CP_Vector_Distance(player.position, enemies[i].position) <= (player.diameter / 2) + (enemies[i].diameter / 2)) 
 			{
 				take_damage(&player, 1);
 			}
 			}
-		// Update and draw all active bullets
-		for (int o = 0; o < MAX_BULLETS; o++) {
-			if (enemies[i].bullets[o].active && enemies[i].type == 2) {
-				// Move bullet
-				enemies[i].bullets[o].position = CP_Vector_Add(enemies[i].bullets[o].position, CP_Vector_Scale(enemies[i].bullets[o].direction, enemies[i].bullets[o].speed * dt));
-
-				// Draw bullet
-				CP_Settings_Fill(CP_Color_Create(242, 103, 75, 255));
-				CP_Graphics_DrawCircle(enemies[i].bullets[o].position.x, enemies[i].bullets[o].position.y, enemies[i].bullets[o].diameter);
-
-				// Check for collision with player
-				if (AreCirclesIntersecting(player.position.x, player.position.y, player.diameter, enemies[i].bullets[o].position.x, enemies[i].bullets[o].position.y, enemies[i].bullets[o].diameter) == 1) {
-					take_damage(&player, enemies[i].bullets[o].damage);
-					enemies[i].bullets[o].active = 0; // Deactivate bullet upon collision
-				}
-
-				// Deactivate bullet if it goes off-screen
-				if (enemies[i].bullets[o].position.x - enemies[i].bullets[o].diameter / 2 < 10 || enemies[i].bullets[o].position.x + enemies[i].bullets[o].diameter / 2 > WINDOW_WIDTH - 10 ||
-					enemies[i].bullets[o].position.y - enemies[i].bullets[o].diameter / 2 < 10 || enemies[i].bullets[o].position.y + enemies[i].bullets[o].diameter / 2 > WINDOW_HEIGHT - 10) {
-					enemies[i].bullets[o].active = 0;
-				}
-			}
-		}
+		
 			//enemy takes dmg when in contact with player attack
 			if (AreCirclesIntersecting(enemies[i].position.x, enemies[i].position.y, enemies[i].diameter, playerAttack.position.x, playerAttack.position.y, playerAttack.diameter) == 1 && playerAttack.isActive == 1)
 			{
