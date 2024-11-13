@@ -101,15 +101,15 @@ void init_enemy(void)
 			int enemyType = CP_Random_RangeInt(1, 2);
 			if (enemyType == 1) 
 			{
-				//initialise melee
-				initialize_enemyMelee(&enemies[i], enemyPosition);
-			}
-			else if (enemyType == 2) 
-			{
 				//initialise stationary
 				initialize_enemyStationary(&enemies[i], enemyPosition);
 				enemies[i].bullets->active = 0;
 				enemies[i].bullets->shootTimer = 0.0f;
+			}
+			else if (enemyType == 2) 
+			{
+				//initialise melee
+				initialize_enemyMelee(&enemies[i], enemyPosition);
 			}
 		}
 	}
@@ -121,13 +121,13 @@ void enemy_code(void) {
 	// Update and draw all active enemies
 	for (int i = 0; i < MAX_ENEMIES; i++) 
 	{
-		if (enemies[i].active == 1 && enemies[i].type ==1) 
-		{//stationary enemy
+		if (enemies[i].active == 1 && enemies[i].type == 1) { //stationary enemy
 				// Draw stationary enemy
 				CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 				CP_Graphics_DrawCircle(enemies[i].position.x, enemies[i].position.y, enemies[i].diameter);
 
-				//enemy shooting------------------------------------------------------
+				//enemy shooting
+				// -----------------------------------------------------------
 				// Update shooting timer
 				enemies[i].bullets[i].shootTimer += (dt * difficulty) + CP_Random_RangeInt(1, 3);
 
@@ -150,11 +150,7 @@ void enemy_code(void) {
 						}
 					}
 				}
-				// Collision and damage logic for when enemy comes in contact with player
-				if (CP_Vector_Distance(player.position, enemies[i].position) <= (player.diameter / 2) + (enemies[i].diameter / 2))
-				{
-					take_damage(&player, 1);
-				}
+				
 
 				// Update and draw all active bullets
 				for (int o = 0; o < MAX_BULLETS; o++) {
@@ -178,6 +174,12 @@ void enemy_code(void) {
 							enemies[i].bullets[o].active = 0;
 						}
 					}
+				}
+
+				// Collision and damage logic for when enemy comes in contact with player
+				if (CP_Vector_Distance(player.position, enemies[i].position) <= (player.diameter / 2) + (enemies[i].diameter / 2))
+				{
+					take_damage(&player, 1);
 				}
 
 
