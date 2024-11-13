@@ -38,7 +38,7 @@ struct enemy {
 };
 
 
-float difficulty = 1;
+int difficulty;
 int enemyNumber;
 CP_Vector bulletMoveD;
 CP_Vector bulletMoveN;
@@ -81,34 +81,37 @@ void initialize_enemyMelee(struct enemy* enemyMelee, CP_Vector position) {
 	enemyMelee->active = 1;
 }
 
-void init_enemy(void) {
-	if (roomsPassed % 5 == 0) {
-		difficulty = (roomsPassed / 5) + 1.0;
+void init_enemy(void) 
+{
+	if (roomsPassed % 5 == 0) 
+	{
+		difficulty = (roomsPassed / 5) + 1;
 	}
-
-	enemyNumber = (int)difficulty;
+	enemyNumber = difficulty;
+	printf("difficulty: %d\n", difficulty);
 	printf("enemy num: %d\n", enemyNumber);
 	// Find an available enemy slot in the array
 	//for loop enemyNumber
 	//generate rng for enemy position
-	for (int i = 0; i <= enemyNumber; i++) {
-		CP_Vector enemyPosition = CP_Vector_Set(CP_Random_RangeInt(50, (int)WINDOW_WIDTH - 50), CP_Random_RangeInt(50, (int)WINDOW_HEIGHT - 50));
-		if (enemies[i].active == 0) {
+	for (int i = 0; i < 20; i++) 
+	{
+		CP_Vector enemyPosition = CP_Vector_Set(CP_Random_RangeInt(70, (int)WINDOW_WIDTH - 70), CP_Random_RangeInt(70, (int)WINDOW_HEIGHT - 70));
+		if (enemies[i].active == 0) 
+		{
 			int enemyType = CP_Random_RangeInt(1, 2);
-			if (enemyType == 1) {
+			if (enemyType == 1) 
+			{
 				//initialise melee
 				initialize_enemyMelee(&enemies[i], enemyPosition);
-				break;
 			}
-			if (enemyType == 2) {
+			else if (enemyType == 2) 
+			{
 				//initialise stationary
 				initialize_enemyStationary(&enemies[i], enemyPosition);
 				enemies[i].bullets->active = 0;
 				enemies[i].bullets->shootTimer = 0.0f;
-				break;
 			}
 		}
-
 	}
 }
 
@@ -126,7 +129,7 @@ void enemy_code(void) {
 
 				//enemy shooting------------------------------------------------------
 				// Update shooting timer
-				enemies[i].bullets[i].shootTimer += dt * difficulty;
+				enemies[i].bullets[i].shootTimer += (dt * difficulty) + CP_Random_RangeInt(1, 3);
 
 				// Check if 5 seconds have passed to shoot
 				if (enemies[i].bullets[i].shootTimer >= 5.0f) {
@@ -152,8 +155,8 @@ void enemy_code(void) {
 				{
 					take_damage(&player, 1);
 				}
-			}	
-			else if (enemies[i].active == 1 && enemies[i].type == 2) 
+		}	
+		else if (enemies[i].active == 1 && enemies[i].type == 2) 
 		{ //melee enemy
 				//draw melee enemy
 				CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255));
@@ -177,7 +180,7 @@ void enemy_code(void) {
 			}
 		// Update and draw all active bullets
 		for (int o = 0; o < MAX_BULLETS; o++) {
-			if (enemies[i].bullets[o].active) {
+			if (enemies[i].bullets[o].active && enemies[i].type == 2) {
 				// Move bullet
 				enemies[i].bullets[o].position = CP_Vector_Add(enemies[i].bullets[o].position, CP_Vector_Scale(enemies[i].bullets[o].direction, enemies[i].bullets[o].speed * dt));
 
@@ -210,7 +213,7 @@ void enemy_code(void) {
 					player.score += 10;
 					enemyNumber--;
 					printf("enemy num minus: %d\n", enemyNumber);
-				printf("%d\n", player.score);
+					printf("%d\n", player.score);
 				}
 			}
 

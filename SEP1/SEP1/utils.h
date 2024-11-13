@@ -11,6 +11,7 @@ typedef struct {
     int score;
     int roomsPassed;
     int lastEntered;
+    //int difficulty;
 }playerStats;
 
 typedef struct {

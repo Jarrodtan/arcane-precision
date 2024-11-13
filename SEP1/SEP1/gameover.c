@@ -121,5 +121,5 @@ void gameover_Update(void)
 
 void gameover_Exit(void)
 {
-
+	gameover_sign = CP_Image_Free;
 }

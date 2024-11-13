@@ -15,6 +15,8 @@
 
 #define WINDOW_WIDTH 1600.0f
 #define WINDOW_HEIGHT 900.0f
+#define MAX_BULLETS 100  // Maximum bullets in array
+#define MAX_ENEMIES 100  // Maximum enemies in array
 #define MAX_OBSTACLES 10
 extern bool isNewGame;
 extern bool game_pause;
@@ -63,8 +65,7 @@ extern struct walls topWall;
 extern struct walls botWall;
 extern struct walls leftWall; 
 extern struct walls rightWall;
-extern struct enemy enemyStationary;
-extern struct enemy enemyMelee;
+extern struct enemy enemies[MAX_ENEMIES];
 extern struct enemyAttack bullet;
 
 
@@ -151,7 +152,7 @@ void saveGame(void)
 	isNewGame = false;
 	playerStats stats = { player.moveSpeed,player.lives,
 				player.manaBuildSpeed,player.cooldownSpeed, player.attackDamage,
-				player.attackSize, player.attackSpeed,player.score, roomsPassed, lastEntered };
+				player.attackSize, player.attackSpeed,player.score, roomsPassed, lastEntered};
 	switch (saveSlot)
 	{
 	case 1:
@@ -167,7 +168,7 @@ void initializeAttack(struct playerAttack* playerAttack, CP_Vector position, CP_
 	playerAttack->position = position;
 	playerAttack->direction = direction;
 	playerAttack->speed = 400.0f;
-	playerAttack->damage = 1;
+	playerAttack->damage = player.attackDamage;
 	playerAttack->diameter = 30; // Set diameter for each bullet
 	playerAttack->isActive = 1;    // Mark bullet as active
 }
@@ -316,6 +317,7 @@ void Game_Update(void)
 	{
 		player.lives += 1;
 		player.score += 10;
+		player.attackDamage += 10;
 		printf("score: %d\n", player.score);
 	}//debug decrement health and score
 	else if (CP_Input_KeyTriggered(KEY_MINUS))
@@ -452,9 +454,14 @@ void Game_Update(void)
 }
 void Game_Exit(void)
 {
+	pause_sign = CP_Image_Free;
 	for (int i = 0; i < 100; i++)
 	{
 	playerAttack[i].isActive = 0;
+	}
+	for (int i = 0; i < MAX_ENEMIES; i++)
+	{
+		enemies[i].active = 0;
 	}
 	game_pause = false;
 	hitboxSpawn = 0;
