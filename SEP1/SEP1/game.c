@@ -86,8 +86,8 @@ float slowTime(void) //returns dt value for slowing down time
 
 void drawSpellMenu(float x, float y, enum Spells selectedSpell) // create spell selection menu. Will require more work
 {
-	CP_Image fireballIcon = CP_Image_Load("Assets/Fire Icon.png");
-	CP_Image iceIcon = CP_Image_Load("Assets/Ice Icon.png");
+	CP_Image fireballIcon = CP_Image_Load("Assets/fireballSpell.png");
+	CP_Image iceIcon = CP_Image_Load("Assets/iceshardSpell.png");
 	// dim the game to show time is slowed
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 70));
 	CP_Graphics_DrawRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
