@@ -5,16 +5,20 @@
 #include "game.h"
 #include <math.h>
 #include <stdio.h>
+#include "itemDrop.h"
 
 #define WINDOW_WIDTH 1600.0f
 #define WINDOW_HEIGHT 900.0f
 #define MAX_BULLETS 100  // Maximum bullets in array
 #define MAX_ENEMIES 100  // Maximum enemies in array
+#define MAX_ITEMS 100
+
 
 extern float dt;
 extern int roomsPassed;
 extern struct player player;
 extern struct playerAttack playerAttack;
+extern struct itemDrops item[MAX_ITEMS];
 
 struct enemyAttack {
 	CP_Vector position;
@@ -89,14 +93,12 @@ void init_enemy(void)
 		difficulty = (roomsPassed / 5) + 1;
 	}
 	enemyNumber = difficulty;
-	printf("difficulty: %d\n", difficulty);
-	printf("enemy num: %d\n", enemyNumber);
 	// Find an available enemy slot in the array
 	//for loop enemyNumber
 	//generate rng for enemy position
 	for (int i = 0; i < enemyNumber; i++) 
 	{
-		CP_Vector enemyPosition = CP_Vector_Set(CP_Random_RangeInt(70, (int)WINDOW_WIDTH - 70), CP_Random_RangeInt(70, (int)WINDOW_HEIGHT - 70));
+		CP_Vector enemyPosition = CP_Vector_Set(CP_Random_RangeInt(70, WINDOW_WIDTH - 70), CP_Random_RangeInt(70, WINDOW_HEIGHT - 70));
 		if (enemies[i].active == 0) 
 		{
 			int enemyType = CP_Random_RangeInt(1, 2);
@@ -105,7 +107,7 @@ void init_enemy(void)
 				//initialise stationary
 				initialize_enemyStationary(&enemies[i], enemyPosition);
 				enemies[i].bullets->active = 0;
-				enemies[i].shootTimer = 0.0f;
+				enemies[i].shootTimer = CP_Random_RangeFloat(0.0f, 2.0f); //give a bit of randomness in each stationary enemies shoot timing so they dont all shoot at the same time.
 			}
 			else if (enemyType == 2) 
 			{
@@ -123,7 +125,8 @@ void enemy_code(void)
 	// Update and draw all active enemies
 	for (int i = 0; i < MAX_ENEMIES; i++) 
 	{
-		if (enemies[i].active == 1 && enemies[i].type == 1) { //stationary enemy
+		if (enemies[i].active == 1 && enemies[i].type == 1) //stationary enemy
+		{ 
 				// Draw stationary enemy
 				CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 				CP_Graphics_DrawCircle(enemies[i].position.x, enemies[i].position.y, enemies[i].diameter);
@@ -132,8 +135,7 @@ void enemy_code(void)
 				// -----------------------------------------------------------
 				// Update shooting timer
 				
-						enemies[i].shootTimer += (dt * difficulty) + CP_Random_RangeInt(1, 3);
-							printf("%f\n",enemies[i].shootTimer);
+						enemies[i].shootTimer += (dt * difficulty);
 
 						// Check if 5 seconds have passed to shoot
 						if (enemies[i].shootTimer >= 5.0f)
@@ -149,35 +151,10 @@ void enemy_code(void)
 						if (enemies[i].bullets[j].active == 0) 
 						{
 							// Initialize new bullet
-							initialize_bullet(&enemies[i].bullets[j], enemies[i].position, CP_Vector_Scale(bulletMoveN, difficulty), 400.0f, 1);
-							
+							initialize_bullet(&enemies[i].bullets[j], enemies[i].position, CP_Vector_Scale(bulletMoveN, (float)difficulty), 400.0f, 1);
+							break;
 						}
-						break;
-					}
-				}
-				
-
-				// Update and draw all active bullets
-				for (int o = 0; o < MAX_BULLETS; o++) {
-					if (enemies[i].bullets[o].active && enemies[i].type == 1) {
-						// Move bullet
-						enemies[i].bullets[o].position = CP_Vector_Add(enemies[i].bullets[o].position, CP_Vector_Scale(enemies[i].bullets[o].direction, enemies[i].bullets[o].speed * dt));
-
-						// Draw bullet
-						CP_Settings_Fill(CP_Color_Create(242, 103, 75, 255));
-						CP_Graphics_DrawCircle(enemies[i].bullets[o].position.x, enemies[i].bullets[o].position.y, enemies[i].bullets[o].diameter);
-
-						// Check for collision with player
-						if (AreCirclesIntersecting(player.position.x, player.position.y, player.diameter, enemies[i].bullets[o].position.x, enemies[i].bullets[o].position.y, enemies[i].bullets[o].diameter) == 1) {
-							take_damage(&player, enemies[i].bullets[o].damage);
-							enemies[i].bullets[o].active = 0; // Deactivate bullet upon collision
-						}
-
-						// Deactivate bullet if it goes off-screen
-						if (enemies[i].bullets[o].position.x - enemies[i].bullets[o].diameter / 2 < 10 || enemies[i].bullets[o].position.x + enemies[i].bullets[o].diameter / 2 > WINDOW_WIDTH - 10 ||
-							enemies[i].bullets[o].position.y - enemies[i].bullets[o].diameter / 2 < 10 || enemies[i].bullets[o].position.y + enemies[i].bullets[o].diameter / 2 > WINDOW_HEIGHT - 10) {
-							enemies[i].bullets[o].active = 0;
-						}
+							break;
 					}
 				}
 
@@ -186,11 +163,9 @@ void enemy_code(void)
 				{
 					take_damage(&player, 1);
 				}
-
-
-
 		}	
-		else if (enemies[i].active == 1 && enemies[i].type == 2) { //melee enemy
+		else if (enemies[i].active == 1 && enemies[i].type == 2) //melee enemy
+		{ 
 
 			//draw melee enemy
 			CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255));
@@ -212,8 +187,33 @@ void enemy_code(void)
 			{
 				take_damage(&player, 1);
 			}
+		}
+
+		// Update and draw all active bullets
+		for (int o = 0; o < MAX_BULLETS; o++) 
+		{
+			if (enemies[i].bullets[o].active && enemies[i].type == 1) {
+				// Move bullet
+				enemies[i].bullets[o].position = CP_Vector_Add(enemies[i].bullets[o].position, CP_Vector_Scale(enemies[i].bullets[o].direction, enemies[i].bullets[o].speed * dt));
+
+				// Draw bullet
+				CP_Settings_Fill(CP_Color_Create(242, 103, 75, 255));
+				CP_Graphics_DrawCircle(enemies[i].bullets[o].position.x, enemies[i].bullets[o].position.y, enemies[i].bullets[o].diameter);
+
+				// Check for collision with player
+				if (AreCirclesIntersecting(player.position.x, player.position.y, player.diameter, enemies[i].bullets[o].position.x, enemies[i].bullets[o].position.y, enemies[i].bullets[o].diameter) == 1) {
+					take_damage(&player, enemies[i].bullets[o].damage);
+					enemies[i].bullets[o].active = 0; // Deactivate bullet upon collision
+				}
+
+				// Deactivate bullet if it goes off-screen
+				if (enemies[i].bullets[o].position.x - enemies[i].bullets[o].diameter / 2 < 10 || enemies[i].bullets[o].position.x + enemies[i].bullets[o].diameter / 2 > WINDOW_WIDTH - 10 ||
+					enemies[i].bullets[o].position.y - enemies[i].bullets[o].diameter / 2 < 10 || enemies[i].bullets[o].position.y + enemies[i].bullets[o].diameter / 2 > WINDOW_HEIGHT - 10) {
+					enemies[i].bullets[o].active = 0;
+				}
 			}
-		
+		}
+
 			//enemy takes dmg when in contact with player attack
 			if (AreCirclesIntersecting(enemies[i].position.x, enemies[i].position.y, enemies[i].diameter, playerAttack.position.x, playerAttack.position.y, playerAttack.diameter) == 1
 				&& playerAttack.isActive == 1 && enemies[i].active == 1)
@@ -224,12 +224,16 @@ void enemy_code(void)
 				if (enemies[i].lives <= 0) 
 				{
 					enemies[i].active = 0;
-					/*enemies[i].position.x = -10;
-					enemies[i].position.y = -10;*/
 					player.score += 10;
 					enemyNumber--;
-					printf("enemy num minus: %d\n", enemyNumber);
-					printf("%d\n", player.score);
+					for (int u = 0; u < MAX_ITEMS; u++)
+					{
+						if (item[u].active == 0)
+						{
+							initialize_itemDrop(&item[u], enemies[i].position);
+							break;
+						}
+					}
 				}
 			}
 

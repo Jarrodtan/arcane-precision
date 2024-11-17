@@ -10,7 +10,7 @@ struct player {
     int lives;
     float manaBuildSpeed;
     float cooldownSpeed;
-    float attackDamage;
+    int attackDamage;
     float attackSize;
     float attackSpeed;
     float invincibilityTimer;      // Tracks remaining invincibility time

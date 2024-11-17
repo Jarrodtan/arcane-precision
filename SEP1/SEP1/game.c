@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include "stdlib.h"
 #include "obstacle.h"
+#include "itemDrop.h"
 
 
 #define WINDOW_WIDTH 1600.0f
@@ -18,6 +19,8 @@
 #define MAX_BULLETS 100  // Maximum bullets in array
 #define MAX_ENEMIES 100  // Maximum enemies in array
 #define MAX_OBSTACLES 10
+#define MAX_ITEMS 100
+
 extern bool isNewGame;
 extern bool game_pause;
 extern const char* saveFile1;
@@ -68,6 +71,7 @@ extern struct walls leftWall;
 extern struct walls rightWall;
 extern struct enemy enemies[MAX_ENEMIES];
 extern struct enemyAttack bullet;
+extern struct itemDrops item[MAX_ITEMS];
 
 
 float slowTime(void) //returns dt value for slowing down time
@@ -167,14 +171,16 @@ void saveGame(void)
 
 	}
 }
-void initializeAttack(struct playerAttack* playerAttack, CP_Vector position, CP_Vector direction, float speed, int damage) {
+void initializeAttack(struct playerAttack* playerAttack, CP_Vector position, CP_Vector direction, float speed, int damage, float diameter) {
 	playerAttack->position = position;
 	playerAttack->direction = direction;
-	playerAttack->speed = 400.0f;
-	playerAttack->damage = player.attackDamage;
-	playerAttack->diameter = 30; // Set diameter for each bullet
+	playerAttack->speed = speed;
+	playerAttack->damage = damage;
+	playerAttack->diameter = diameter; // Set diameter for each bullet
 	playerAttack->isActive = 1;    // Mark bullet as active
 }
+
+//===================================================GAME_INIT==================================================================================
 void Game_Init(void)
 {
 	pause_sign = CP_Image_Load("Assets/Pause Sign.png");
@@ -217,7 +223,7 @@ void Game_Init(void)
 	player.invincibilityDuration = 1.5f;
 	if (isNewGame == true) 
 	{
-	player.moveSpeed = 400.0f;
+	player.moveSpeed = 300.0f;
 	player.lives = 3;
 	player.manaBuildSpeed = 1.0f;
 	player.cooldownSpeed = 1.0f;
@@ -278,6 +284,11 @@ void Game_Init(void)
 	playerHearts.size = 15.0f;
 	playerHearts.spacing = 50;
 
+	for (int i = 0; i < MAX_ITEMS; i++)
+	{
+		item[i].active = 0;
+	}
+
 	printf("rooms passed: %d\n", roomsPassed);
 
 	//for object spawn
@@ -288,9 +299,12 @@ void Game_Init(void)
 	roomLayout_init();
 }
 
+//===================================================GAME_UPDATE==================================================================================
 void Game_Update(void)
 {
-	// Testing Gameover sign
+	dt = slowTime(); // used for slowing downtime
+
+	//GAME OVER trigger
 	if (player.lives <= 0) {
 		CP_Engine_SetNextGameState(gameover_Init, gameover_Update, gameover_Exit);
 	}
@@ -303,8 +317,6 @@ void Game_Update(void)
 		}
 	}
 
-
-	dt = slowTime();
 	// Pause & Resume game
 	if (CP_Input_KeyTriggered(KEY_ESCAPE)) {
 		switch (game_pause) {
@@ -316,24 +328,26 @@ void Game_Update(void)
 			break;
 		}
 	}
-	//debug increment health and score
+
+	//debug increment health, score and attack
 	if (CP_Input_KeyTriggered(KEY_EQUAL))
 	{
 		player.lives += 1;
 		player.score += 10;
 		player.attackDamage += 10;
 		printf("score: %d\n", player.score);
-	}//debug decrement health and score
+	}//debug decrement health, score and attack
 	else if (CP_Input_KeyTriggered(KEY_MINUS))
 	{
 		player.lives -= 1;
 		player.score -= 10;
+		player.attackDamage += 10;
 		printf("score: %d\n", player.score);
 	}
 
-	if (game_pause == true) {
-		//limit of 100 projectiles
-		for (int i = 0; i < 100; i++)
+	if (game_pause == true) //if game is paused
+	{
+		for (int i = 0; i < MAX_BULLETS; i++)//drawing of bullets
 		{
 		if (playerAttack[i].isActive == 1) {
 			CP_Settings_Fill(CP_Color_Create(255, 255, 0, 255));
@@ -342,11 +356,11 @@ void Game_Update(void)
 		}
 		draw_screen();
 		pause();
-	
 	}
 
 	else if (game_pause == false) {
-		//player 1 controls
+
+		//player controls
 		if (player.active == 1) {
 			if (CP_Input_KeyDown(KEY_W))
 			{
@@ -405,7 +419,7 @@ void Game_Update(void)
 				{
 					if (!playerAttack[i].isActive) {
 						// Initialize new bullet
-						initializeAttack(&playerAttack[i], player.position, CP_Vector_Scale(attackDirection, 1), 400.0f, 1);
+						initializeAttack(&playerAttack[i], player.position, CP_Vector_Scale(attackDirection, 1), player.attackSpeed, player.attackDamage, player.attackSize);
 						break;
 					}
 				}
@@ -429,7 +443,7 @@ void Game_Update(void)
 			CP_Settings_Fill(CP_Color_Create(255, 255, 0, 255)); // Yellow for attack
 			CP_Graphics_DrawCircle(playerAttack[i].position.x, playerAttack[i].position.y, playerAttack[i].diameter);
 
-			//deactivate when attack goes off-screen
+			//set active to 0 when attack goes off-screen
 			if (playerAttack[i].position.x - (playerAttack[i].diameter / 2) < 10 || playerAttack[i].position.x + (playerAttack[i].diameter / 2) > WINDOW_WIDTH - 10 ||
 				playerAttack[i].position.y - (playerAttack[i].diameter / 2) < 10 || playerAttack[i].position.y + (playerAttack[i].diameter / 2) > WINDOW_HEIGHT - 10)
 			{
@@ -441,6 +455,8 @@ void Game_Update(void)
 		enemy_code();
 		update_player(dt);
 		doorInteraction();
+		update_item(&item, &player);
+
 		//skill selection
 		if (isSlowed)
 		{
@@ -456,6 +472,7 @@ void Game_Update(void)
 		}
 	}
 }
+
 void Game_Exit(void)
 {
 	pause_sign = CP_Image_Free;
@@ -467,6 +484,7 @@ void Game_Exit(void)
 	{
 		enemies[i].active = 0;
 	}
+
 	game_pause = false;
 	hitboxSpawn = 0;
 	cooldown = 0;
