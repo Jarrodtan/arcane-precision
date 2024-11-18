@@ -27,7 +27,7 @@ void gameover_Init(void)
 	playerName[0] = '\0'; // Set the first character to null terminator
 	sprintf_s(highscore, sizeof(highscore), "score: %d", player.score);
 	cursorPosition = 0;
-	gameover_sign = CP_Image_Load("Assets/Gameover.png");
+	gameover_sign = CP_Image_Load("Assets/gameoverscreen.png");
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	textSize = 50.0f;
 	CP_Settings_TextSize(textSize);
@@ -43,7 +43,7 @@ void gameover_Update(void)
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 	CP_Graphics_DrawRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-	CP_Image_Draw(gameover_sign, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.7f, 500.0f, 500.0f, 255);
+	CP_Image_Draw(gameover_sign, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.7f, 700.0f, 400.0f, 255);
 	
 	// Score: ______ (generated)
 	CP_Font_Set(myFont);
