@@ -98,7 +98,7 @@ void init_enemy(void)
 	//generate rng for enemy position
 	for (int i = 0; i < enemyNumber; i++) 
 	{
-		CP_Vector enemyPosition = CP_Vector_Set(CP_Random_RangeInt(70, WINDOW_WIDTH - 70), CP_Random_RangeInt(70, WINDOW_HEIGHT - 70));
+		CP_Vector enemyPosition = CP_Vector_Set(CP_Random_RangeFloat(150.0f, WINDOW_WIDTH - 150.0f), CP_Random_RangeFloat(300.0f, WINDOW_HEIGHT - 300.0f));
 		if (enemies[i].active == 0) 
 		{
 			int enemyType = CP_Random_RangeInt(1, 2);
@@ -226,12 +226,19 @@ void enemy_code(void)
 					enemies[i].active = 0;
 					player.score += 10;
 					enemyNumber--;
-					for (int u = 0; u < MAX_ITEMS; u++)
+
+					//initialise item drops
+					int r = CP_Random_RangeInt(1, 2); // change here for higher/lower odds of spawning items
+					printf("%d\n", r);//for debugging
+					if (r == 1) //RNG for spawning item, 1 in 2 chances
 					{
-						if (item[u].active == 0)
+						for (int u = 0; u < MAX_ITEMS; u++)
 						{
-							initialize_itemDrop(&item[u], enemies[i].position);
-							break;
+							if (item[u].active == 0)
+							{
+								initialize_itemDrop(&item[u], enemies[i].position);
+								break;
+							}
 						}
 					}
 				}

@@ -307,6 +307,15 @@ void Game_Update(void)
 	//GAME OVER trigger
 	if (player.lives <= 0) {
 		CP_Engine_SetNextGameState(gameover_Init, gameover_Update, gameover_Exit);
+		switch (saveSlot)
+		{
+		case 1:
+			remove(saveFile1);
+			break;
+		case 2:
+			remove(saveFile2);
+			break;
+		}
 	}
 
 	UpdateObstacles(roomsPassed, player.position, player.diameter);

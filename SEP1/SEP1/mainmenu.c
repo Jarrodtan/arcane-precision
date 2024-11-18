@@ -55,7 +55,7 @@ void Main_Menu_Update(void)
     if (IsAreaClicked((WINDOW_WIDTH / 4.0f) * 2.89, WINDOW_HEIGHT / 3.0f,
         WINDOW_WIDTH / 8.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
     {
-        remove("save1.dat");
+        remove(saveFile1);
     }
     //start button
     if (IsAreaClicked(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 3.0f,
@@ -104,7 +104,7 @@ void Main_Menu_Update(void)
     if (IsAreaClicked((WINDOW_WIDTH / 4.0f) * 2.89, WINDOW_HEIGHT / 2.0f,
         WINDOW_WIDTH / 8.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
     {
-        remove("save2.dat");
+        remove(saveFile2);
     }
     //start button
     if (IsAreaClicked(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f,
