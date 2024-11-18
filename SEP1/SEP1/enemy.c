@@ -6,6 +6,7 @@
 #include <math.h>
 #include <stdio.h>
 #include "itemDrop.h"
+#include "obstacle.h"
 
 #define WINDOW_WIDTH 1600.0f
 #define WINDOW_HEIGHT 900.0f
@@ -13,12 +14,13 @@
 #define MAX_ENEMIES 100  // Maximum enemies in array
 #define MAX_ITEMS 100
 
-
 extern float dt;
 extern int roomsPassed;
 extern struct player player;
 extern struct playerAttack playerAttack;
 extern struct itemDrops item[MAX_ITEMS];
+extern float obstacle_diameter;
+extern int currentObstacleCount;
 
 struct enemyAttack {
 	CP_Vector position;
@@ -118,7 +120,6 @@ void init_enemy(void)
 	}
 }
 
-
 void enemy_code(void) 
 {
 	
@@ -205,7 +206,13 @@ void enemy_code(void)
 					take_damage(&player, enemies[i].bullets[o].damage);
 					enemies[i].bullets[o].active = 0; // Deactivate bullet upon collision
 				}
-
+				// Check for collision with obstacles
+				for (int j = 0; j < currentObstacleCount; j++) {
+					if (CheckBulletCollision(enemies[i].bullets[o].position, enemies[i].bullets[o].diameter, obstacle[j], obstacle_diameter)) {
+						HandleProjectileCollision(&enemies[i].bullets[o]);
+						break; // Exit the loop once a collision is detected
+					}
+				}
 				// Deactivate bullet if it goes off-screen
 				if (enemies[i].bullets[o].position.x - enemies[i].bullets[o].diameter / 2 < 10 || enemies[i].bullets[o].position.x + enemies[i].bullets[o].diameter / 2 > WINDOW_WIDTH - 10 ||
 					enemies[i].bullets[o].position.y - enemies[i].bullets[o].diameter / 2 < 10 || enemies[i].bullets[o].position.y + enemies[i].bullets[o].diameter / 2 > WINDOW_HEIGHT - 10) {
