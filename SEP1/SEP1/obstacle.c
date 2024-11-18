@@ -50,18 +50,6 @@ void InitializeObstacle(int index) {
                 }
             }
         }
-        // Check for overlap with other obstacles
-        for (int i = 0; i < currentObstacleCount && !overlap; i++) {
-            if (i != index) {
-                dx = obstacle[i].x - xRange;
-                dy = obstacle[i].y - yRange;
-                distance = (float)sqrt(dx * dx + dy * dy);
-                bufferDistance = obstacle_diameter + 100;
-                if (distance < bufferDistance) {
-                    overlap = true; // Set overlap to true if too close to any other obstacle
-                }
-            }
-        }
     } while (overlap); // Regenerate if too close
     obstacle[index].x = xRange;
     obstacle[index].y = yRange;
@@ -207,7 +195,7 @@ bool CheckPlayerBulletCollision(CP_Vector playerBullet_position, float playerBul
     float obstacleBottom = obstacle.y + obstacleSize;
     // check if the bullet is colliding with the obstacle
     return playerBulletRight > obstacleLeft && playerBulletLeft < obstacleRight &&
-        playerBulletLeft > obstacleTop && playerBulletTop < obstacleBottom;
+           playerBulletBottom > obstacleTop && playerBulletTop < obstacleBottom;
 }
 
 void HandlePlayerProjectileCollision(struct playerAttack* bullet) {
@@ -244,6 +232,7 @@ void UpdateObstacles(int roomsPassed, CP_Vector player_position, float playerDia
             }
         }
     }
+    // Check for player bullet collisions with obstacles
     for (int i = 0; i < 2; i++) {
         if (playerAttack[i].isActive) {
             // Check for collision with obstacles
@@ -255,7 +244,7 @@ void UpdateObstacles(int roomsPassed, CP_Vector player_position, float playerDia
             }
         }
     }
-            // Drawing Obstacles
+    // Drawing Obstacles
     for (int i = 0; i < currentObstacleCount; i++) {
         CP_Settings_Fill(CP_Color_Create(150, 255, 100, 255));
         CP_Graphics_DrawRect(obstacle[i].x, obstacle[i].y, obstacle_diameter, obstacle_diameter);
