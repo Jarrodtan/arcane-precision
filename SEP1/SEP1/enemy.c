@@ -41,6 +41,8 @@ struct enemy {
 	int active;
 	float shootTimer;
 	struct enemyAttack bullets[MAX_BULLETS];
+	int isFrozen;
+	float freezeTimer;
 };
 
 
@@ -128,6 +130,15 @@ void enemy_code(void)
 	{
 		if (enemies[i].active == 1 && enemies[i].type == 1) //stationary enemy
 		{ 
+				if (enemies[i].isFrozen)
+				{
+					enemies[i].freezeTimer -= dt; // Decrease freeze timer
+					if (enemies[i].freezeTimer <= 0)
+					{
+						enemies[i].isFrozen = 0; // Unfreeze enemy
+						enemies[i].speed = (enemies[i].type == 1 ? 10.0f : 0.0f) * difficulty; // Restore speed
+					}
+				}
 				// Draw stationary enemy
 				CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 				CP_Graphics_DrawCircle(enemies[i].position.x, enemies[i].position.y, enemies[i].diameter);
@@ -167,10 +178,28 @@ void enemy_code(void)
 		}	
 		else if (enemies[i].active == 1 && enemies[i].type == 2) //melee enemy
 		{ 
+			if (enemies[i].isFrozen)
+			{
+				enemies[i].freezeTimer -= dt; // Decrease freeze timer
+				if (enemies[i].freezeTimer <= 0)
+				{
+					enemies[i].isFrozen = 0; // Unfreeze enemy
+					enemies[i].speed = (enemies[i].type == 2 ? 10.0f : 0.0f) * difficulty; // Restore speed
+				}
+			}
 
 			//draw melee enemy
 			CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255));
 			CP_Graphics_DrawCircle(enemies[i].position.x, enemies[i].position.y, enemies[i].diameter);
+
+			if (!enemies[i].isFrozen)
+			{
+				// Enemy movement logic for melee enemy
+				enemyMoveD.x = player.position.x - enemies[i].position.x;
+				enemyMoveD.y = player.position.y - enemies[i].position.y;
+				enemyMoveN = CP_Vector_Normalize(enemyMoveD);
+				enemies[i].position = CP_Vector_Add(enemies[i].position, CP_Vector_Scale(enemyMoveN, enemies[i].speed * dt));
+			}
 
 			// Enemy movement logic for melee enemy (similar to stationary)
 			enemyMoveD.x = player.position.x - enemies[i].position.x;
@@ -226,6 +255,14 @@ void enemy_code(void)
 				&& playerAttack.isActive == 1 && enemies[i].active == 1)
 			{
 				playerAttack.isActive = 0;
+
+				if (selectedSpell == ICESHARDS)
+				{
+					enemies[i].isFrozen = 1;
+					enemies[i].freezeTimer = 2.0f; // Freeze 2 seconds
+					enemies[i].speed = 0; // Stop movement
+				}
+
 				enemies[i].lives -= playerAttack.damage;
 			// Deactivate enemy when health is 0
 				if (enemies[i].lives <= 0) 

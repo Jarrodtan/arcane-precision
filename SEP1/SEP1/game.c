@@ -55,8 +55,8 @@ bool game_over;
 //time manip
 float slowTimeScale = 0.1f;
 bool isSlowed = false;
-enum Spells { FIREBALL, ICESHARDS };
 enum Spells selectedSpell = FIREBALL;// Default spell
+
 
 
 struct player player;

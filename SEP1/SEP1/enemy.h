@@ -1,7 +1,7 @@
 #pragma once
 #define MAX_BULLETS 100  // Maximum bullets in array
 #define MAX_ENEMIES 100  // Maximum enemies in array
-
+#include <stdbool.h>
 
 struct enemyAttack {
 	CP_Vector position;
@@ -23,6 +23,8 @@ struct enemy {
 	int active;
 	float shootTimer;
 	struct enemyAttack bullets[MAX_BULLETS];
+	bool isFrozen;
+	float freezeTimer;
 };
 
 void init_enemy(void);
