@@ -39,6 +39,7 @@ struct playerAttack {
     int damage;
     float speed;
     int isActive;
+    enum Spells selSpell;
 };
 
 enum Spells { FIREBALL, ICESHARDS };

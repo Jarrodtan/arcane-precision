@@ -169,13 +169,14 @@ void saveGame(void)
 
 	}
 }
-static void initializeAttack(struct playerAttack* playerAttack, CP_Vector position, CP_Vector direction, float speed, int damage, float diameter) {
+static void initializeAttack(struct playerAttack* playerAttack, CP_Vector position, CP_Vector direction, float speed, int damage, float diameter, enum Spells spellType) {
 	playerAttack->position = position;
 	playerAttack->direction = direction;
 	playerAttack->speed = speed;
 	playerAttack->damage = damage;
 	playerAttack->diameter = diameter; // Set diameter for each bullet
 	playerAttack->isActive = 1;    // Mark bullet as active
+	playerAttack->selSpell = spellType;
 }
 
 //===================================================GAME_INIT==================================================================================
@@ -428,7 +429,7 @@ void Game_Update(void)
 				{
 					if (!playerAttack[i].isActive) {
 						// Initialize new bullet
-						initializeAttack(&playerAttack[i], player.position, CP_Vector_Scale(attackDirection, 1), player.attackSpeed, player.attackDamage, player.attackSize);
+						initializeAttack(&playerAttack[i], player.position, CP_Vector_Scale(attackDirection, 1), player.attackSpeed, player.attackDamage, player.attackSize, selectedSpell);
 						break;
 					}
 				}
@@ -451,16 +452,15 @@ void Game_Update(void)
 			playerAttack[i].position = CP_Vector_Add(playerAttack[i].position, CP_Vector_Scale(playerAttack[i].direction, playerAttack[i].speed * dt));
 			
 			//draw attack
-			if (selectedSpell == FIREBALL)
+			if (playerAttack[i].selSpell == FIREBALL)
 			{
 				CP_Settings_Fill(CP_Color_Create(245, 39, 71, 255)); // Draw Fireball color
-				CP_Graphics_DrawCircle(playerAttack[i].position.x, playerAttack[i].position.y, playerAttack[i].diameter);
 			}
-			else if (selectedSpell == ICESHARDS)
+			else if (playerAttack[i].selSpell == ICESHARDS)
 			{
 				CP_Settings_Fill(CP_Color_Create(39, 225, 245, 255)); // Draw Ice shard color
-				CP_Graphics_DrawCircle(playerAttack[i].position.x, playerAttack[i].position.y, playerAttack[i].diameter);
 			}
+				CP_Graphics_DrawCircle(playerAttack[i].position.x, playerAttack[i].position.y, playerAttack[i].diameter);
 
 			//set active to 0 when attack goes off-screen
 			if (playerAttack[i].position.x - (playerAttack[i].diameter / 2) < 10 || playerAttack[i].position.x + (playerAttack[i].diameter / 2) > WINDOW_WIDTH - 10 ||

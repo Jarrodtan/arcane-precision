@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include "itemDrop.h"
 #include "obstacle.h"
+#include "enemy.h"
 
 #define WINDOW_WIDTH 1600.0f
 #define WINDOW_HEIGHT 900.0f
@@ -21,30 +22,6 @@ extern struct playerAttack playerAttack;
 extern struct itemDrops item[MAX_ITEMS];
 extern float obstacle_diameter;
 extern int currentObstacleCount;
-
-struct enemyAttack {
-	CP_Vector position;
-	float diameter;
-	CP_Vector direction;
-	float speed;
-	int damage;
-	int active;
-};
-
-struct enemy {
-	int type;
-	CP_Vector position;
-	float diameter;
-	CP_Vector direction;
-	float speed;
-	int lives;
-	int active;
-	float shootTimer;
-	struct enemyAttack bullets[MAX_BULLETS];
-	int isFrozen;
-	float freezeTimer;
-};
-
 
 int difficulty;
 int enemyNumber;
@@ -132,6 +109,7 @@ void enemy_code(void)
 		{ 
 				if (enemies[i].isFrozen)
 				{
+					enemies[i].shootTimer = 0;
 					enemies[i].freezeTimer -= dt; // Decrease freeze timer
 					if (enemies[i].freezeTimer <= 0)
 					{
@@ -140,7 +118,15 @@ void enemy_code(void)
 					}
 				}
 				// Draw stationary enemy
-				CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
+				switch (enemies[i].isFrozen)
+				{
+				case true:
+					CP_Settings_Fill(CP_Color_Create(200, 50, 50, 255));
+					break;
+				case false:
+					CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
+					break;
+				}
 				CP_Graphics_DrawCircle(enemies[i].position.x, enemies[i].position.y, enemies[i].diameter);
 
 				//enemy shooting
@@ -166,7 +152,6 @@ void enemy_code(void)
 							initialize_bullet(&enemies[i].bullets[j], enemies[i].position, CP_Vector_Scale(bulletMoveN, (float)difficulty), 400.0f, 1);
 							break;
 						}
-							break;
 					}
 				}
 
@@ -189,7 +174,15 @@ void enemy_code(void)
 			}
 
 			//draw melee enemy
-			CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255));
+			switch (enemies[i].isFrozen)
+			{
+			case true:
+				CP_Settings_Fill(CP_Color_Create(0, 100, 255, 255));
+				break;
+			case false:
+				CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255));
+				break;
+			}
 			CP_Graphics_DrawCircle(enemies[i].position.x, enemies[i].position.y, enemies[i].diameter);
 
 			if (!enemies[i].isFrozen)
@@ -256,15 +249,13 @@ void enemy_code(void)
 			{
 				playerAttack.isActive = 0;
 
-				if (selectedSpell == ICESHARDS)
+				if (playerAttack.selSpell == ICESHARDS)
 				{
-
 					enemies[i].isFrozen = 1;
 					enemies[i].freezeTimer = 2.0f; // Freeze 2 seconds
 					enemies[i].speed = 0; // Stop movement
 				}
 				else {
-
 					enemies[i].lives -= playerAttack.damage;
 				}
 			// Deactivate enemy when health is 0
