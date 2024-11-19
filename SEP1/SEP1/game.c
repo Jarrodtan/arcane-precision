@@ -449,8 +449,16 @@ void Game_Update(void)
 			playerAttack[i].position = CP_Vector_Add(playerAttack[i].position, CP_Vector_Scale(playerAttack[i].direction, playerAttack[i].speed * dt));
 			
 			//draw attack
-			CP_Settings_Fill(CP_Color_Create(255, 255, 0, 255)); // Yellow for attack
-			CP_Graphics_DrawCircle(playerAttack[i].position.x, playerAttack[i].position.y, playerAttack[i].diameter);
+			if (selectedSpell == FIREBALL)
+			{
+				CP_Settings_Fill(CP_Color_Create(245, 39, 71, 255)); // Draw Fireball color
+				CP_Graphics_DrawCircle(playerAttack[i].position.x, playerAttack[i].position.y, playerAttack[i].diameter);
+			}
+			else if (selectedSpell == ICESHARDS)
+			{
+				CP_Settings_Fill(CP_Color_Create(39, 225, 245, 255)); // Draw Ice shard color
+				CP_Graphics_DrawCircle(playerAttack[i].position.x, playerAttack[i].position.y, playerAttack[i].diameter);
+			}
 
 			//set active to 0 when attack goes off-screen
 			if (playerAttack[i].position.x - (playerAttack[i].diameter / 2) < 10 || playerAttack[i].position.x + (playerAttack[i].diameter / 2) > WINDOW_WIDTH - 10 ||

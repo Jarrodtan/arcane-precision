@@ -258,12 +258,15 @@ void enemy_code(void)
 
 				if (selectedSpell == ICESHARDS)
 				{
+
 					enemies[i].isFrozen = 1;
 					enemies[i].freezeTimer = 2.0f; // Freeze 2 seconds
 					enemies[i].speed = 0; // Stop movement
 				}
+				else {
 
-				enemies[i].lives -= playerAttack.damage;
+					enemies[i].lives -= playerAttack.damage;
+				}
 			// Deactivate enemy when health is 0
 				if (enemies[i].lives <= 0) 
 				{
