@@ -16,14 +16,14 @@ CP_Vector obstacle[MAX_OBSTACLES];
 
 //bool IsOverlapping(float x, float y, float diameter);
 void InitializeObstacle(int index);
-bool CheckCollision(CP_Vector player_position, float playerDiameter, CP_Vector obstacle, int obstacleSize);
-void HandleCollision(CP_Vector* player_position, float playerDiameter, CP_Vector obstacle, int obstacleSize);
-bool CheckEnemyCollision(CP_Vector enemy_position, float enemyDiameter, CP_Vector obstacle, int obstacleSize);
-void HandleEnemyCollision(CP_Vector* enemy_position, float enemyDiameter, CP_Vector obstacle, int obstacleSize);
+bool CheckCollision(CP_Vector player_position, float playerDiameter, CP_Vector obstacle, float obstacleSize);
+void HandleCollision(CP_Vector* player_position, float playerDiameter, CP_Vector obstacle, float obstacleSize);
+bool CheckEnemyCollision(CP_Vector enemy_position, float enemyDiameter, CP_Vector obstacle, float obstacleSize);
+void HandleEnemyCollision(CP_Vector* enemy_position, float enemyDiameter, CP_Vector obstacle, float obstacleSize);
 
-bool CheckBulletCollision(CP_Vector bullet_position, float bulletDiameter, CP_Vector obstacle, int obstacleSize);
+bool CheckBulletCollision(CP_Vector bullet_position, float bulletDiameter, CP_Vector obstacle, float obstacleSize);
 void HandleProjectileCollision(struct enemyAttack* bullet);
-bool CheckPlayerBulletCollision(CP_Vector playerBullet_position, float playerBulletDiameter, CP_Vector obstacle, int obstacleSize);
+bool CheckPlayerBulletCollision(CP_Vector playerBullet_position, float playerBulletDiameter, CP_Vector obstacle, float obstacleSize);
 void HandlePlayerProjectileCollision(struct playerAttack* bullet);
 void UpdateObstacles(int roomsPassed, CP_Vector player_position, float playerDiameter);
 

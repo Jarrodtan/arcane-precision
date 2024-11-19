@@ -5,13 +5,12 @@ typedef struct {
     int lives;
     float manaBuildSpeed;
     float cooldownSpeed;
-    float attackDamage;
+    int attackDamage;
     float attackSize;
     float attackSpeed;
     int score;
     int roomsPassed;
     int lastEntered;
-    //int difficulty;
 }playerStats;
 
 typedef struct {

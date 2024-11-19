@@ -23,6 +23,7 @@
 
 extern bool isNewGame;
 extern bool game_pause;
+extern bool how_To;
 extern const char* saveFile1;
 extern const char* saveFile2;
 extern int saveSlot;
@@ -74,7 +75,7 @@ extern struct enemyAttack bullet;
 extern struct itemDrops item[MAX_ITEMS];
 
 
-float slowTime(void) //returns dt value for slowing down time
+static float slowTime(void) //returns dt value for slowing down time
 {
 	dt = CP_System_GetDt();
 	if (CP_Input_KeyDown(KEY_SPACE))
@@ -88,7 +89,7 @@ float slowTime(void) //returns dt value for slowing down time
 	}
 }
 
-void drawSpellMenu(float x, float y, enum Spells selectedSpell) // create spell selection menu. Will require more work
+static void drawSpellMenu(float x, float y, enum Spells selectedSpell) // create spell selection menu. Will require more work
 {
 	CP_Image fireballIcon = CP_Image_Load("Assets/fireballSpell.png");
 	CP_Image iceIcon = CP_Image_Load("Assets/iceshardSpell.png");
@@ -128,9 +129,6 @@ void drawSpellMenu(float x, float y, enum Spells selectedSpell) // create spell 
 	CP_Image_Draw(fireballIcon, startX + (spellSelectWidth / 2), startY + (spellSelectHeight / 2), spellSelectWidth, spellSelectHeight, 255);
 	// draw ice icon
 	CP_Image_Draw(iceIcon, startX + spellSelectWidth + spacing + (spellSelectWidth / 2), startY + (spellSelectHeight / 2), spellSelectWidth, spellSelectHeight, 255);
-	
-	fireballIcon = CP_Image_Free;
-	iceIcon = CP_Image_Free;
 }
 void take_damage(struct player* p, int damage) {
 	if (p->invincibilityTimer <= 0) {  // Only take damage if not invincible
@@ -144,7 +142,7 @@ void take_damage(struct player* p, int damage) {
 		}
 	}
 }
-void update_player(float dt) {
+static void update_player(float dt) {
 	// Decrease the invincibility timer if it's active
 	if (player.invincibilityTimer > 0.0f) {
 		player.invincibilityTimer -= dt;
@@ -171,7 +169,7 @@ void saveGame(void)
 
 	}
 }
-void initializeAttack(struct playerAttack* playerAttack, CP_Vector position, CP_Vector direction, float speed, int damage, float diameter) {
+static void initializeAttack(struct playerAttack* playerAttack, CP_Vector position, CP_Vector direction, float speed, int damage, float diameter) {
 	playerAttack->position = position;
 	playerAttack->direction = direction;
 	playerAttack->speed = speed;
@@ -199,46 +197,29 @@ void Game_Init(void)
 
 	//player
 	player.diameter = 60.0f;
-	switch (lastEntered)
-	{
-	case 1:
-		player.position = CP_Vector_Set(WINDOW_WIDTH / 2, (WINDOW_HEIGHT / 8)*7);
-		break;
-	case 2:
-		player.position = CP_Vector_Set(WINDOW_WIDTH / 8 , WINDOW_HEIGHT / 2);
-		break;
-	case 3:
-		player.position = CP_Vector_Set(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 8);
-		break;
-	case 4:
-		player.position = CP_Vector_Set((WINDOW_WIDTH / 8)*7, WINDOW_HEIGHT / 2);
-		break;
-	default:
-	player.position = CP_Vector_Set(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-	break;
-	}
 	player.direction = 1;
 	player.active = 1;
 	player.invincibilityTimer = 0.0f;
 	player.invincibilityDuration = 1.5f;
-	if (isNewGame == true) 
+	
+	if (isNewGame == true) //set default stats if its a new game.
 	{
-	player.moveSpeed = 300.0f;
-	player.lives = 3;
-	player.manaBuildSpeed = 1.0f;
-	player.cooldownSpeed = 1.0f;
-	player.attackSize = 30.0f;
-	player.attackDamage = 1;
-	player.attackSpeed = 500.0f;
-	player.score = 0;
-	roomsPassed = 0;
-	lastEntered = 0;
+		player.moveSpeed = 300.0f;
+		player.lives = 3;
+		player.manaBuildSpeed = 1.0f;
+		player.cooldownSpeed = 1.0f;
+		player.attackSize = 30.0f;
+		player.attackDamage = 1;
+		player.attackSpeed = 500.0f;
+		player.score = 0;
+		roomsPassed = 0;
+		lastEntered = 0;
 	}
-	else 
+	else  // load stats if its not a new game
 	{
-		playerStats stats = { player.moveSpeed,player.lives,
-	player.manaBuildSpeed,player.cooldownSpeed, player.attackDamage,
-	player.attackSize, player.attackSpeed, player.score, roomsPassed, lastEntered};
+	playerStats stats = { player.moveSpeed,player.lives,
+		player.manaBuildSpeed,player.cooldownSpeed, player.attackDamage,
+		player.attackSize, player.attackSpeed, player.score, roomsPassed, lastEntered };
 		switch (saveSlot)
 		{
 		case 1:
@@ -258,6 +239,24 @@ void Game_Init(void)
 		player.score = stats.score;
 		roomsPassed = stats.roomsPassed;
 		lastEntered = stats.lastEntered;
+	}
+	switch (lastEntered) //player positioning and spawn points based on room last entered.
+	{
+	case 1:
+		player.position = CP_Vector_Set(WINDOW_WIDTH / 2, (WINDOW_HEIGHT / 8) * 7);
+		break;
+	case 2:
+		player.position = CP_Vector_Set(WINDOW_WIDTH / 8, WINDOW_HEIGHT / 2);
+		break;
+	case 3:
+		player.position = CP_Vector_Set(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 8);
+		break;
+	case 4:
+		player.position = CP_Vector_Set((WINDOW_WIDTH / 8) * 7, WINDOW_HEIGHT / 2);
+		break;
+	default:
+		player.position = CP_Vector_Set(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+		break;
 	}
 
 	//max Manabar
@@ -331,6 +330,7 @@ void Game_Update(void)
 		switch (game_pause) {
 		case true:
 			game_pause = false;
+			how_To = false;
 			break;
 		case false:
 			game_pause = true;
@@ -434,14 +434,16 @@ void Game_Update(void)
 				}
 			}
 		}
-		if (cooldown == 1 && mana > 0) {
+		if (cooldown == 1 && mana > 0) //mana is on cooldown
+		{
 			mana -= player.cooldownSpeed;
-
 		}
-		else if (mana <= 0) {
+		else if (mana <= 0) //mana is off cooldown
+		{
 			cooldown = 0;
 		}
-		for (int i = 0; i < 100; i++)
+		//moving player projectiles
+		for (int i = 0; i < MAX_BULLETS; i++)
 		{
 		if (playerAttack[i].isActive)
 		{
@@ -492,7 +494,6 @@ void Game_Update(void)
 
 void Game_Exit(void)
 {
-	pause_sign = CP_Image_Free;
 	for (int i = 0; i < 100; i++)
 	{
 	playerAttack[i].isActive = 0;

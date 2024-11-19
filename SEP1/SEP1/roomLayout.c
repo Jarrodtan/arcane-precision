@@ -4,6 +4,8 @@
 #include "roomLayout.h"
 #include "utils.h"
 #include "enemy.h"
+#include "stdio.h"
+#include "string.h"
 
 #define WINDOW_WIDTH 1600.0f
 #define WINDOW_HEIGHT 900.0f
@@ -213,6 +215,8 @@ void draw_screen(void) {
 	}
 	//display score and rooms passsed
 	CP_Font_Set(myFont);
+	textSize = 30.0f;
+	CP_Settings_TextSize(textSize);
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 	sprintf_s(roomsDisplay, sizeof(roomsDisplay), "Room Passed: %d", roomsPassed);
 	sprintf_s(scoreDisplay, sizeof(scoreDisplay), "Score: %d", player.score);

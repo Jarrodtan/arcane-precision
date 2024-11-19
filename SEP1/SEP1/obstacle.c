@@ -58,7 +58,7 @@ void InitializeObstacle(int index) {
 }
 
 // checks for collision
-bool CheckCollision(CP_Vector player_position, float playerDiameter, CP_Vector obstacle, int obstacleSize) {
+bool CheckCollision(CP_Vector player_position, float playerDiameter, CP_Vector obstacle, float obstacleSize) {
 	// calculate the player's position with the radius
     float playerRadius = playerDiameter / 2.0f;
     float playerLeft = player_position.x - playerRadius;
@@ -76,7 +76,7 @@ bool CheckCollision(CP_Vector player_position, float playerDiameter, CP_Vector o
 }
 
 // handles the collision
-void HandleCollision(CP_Vector* player_position, float playerDiameter, CP_Vector obstacle, int obstacleSize) {
+void HandleCollision(CP_Vector* player_position, float playerDiameter, CP_Vector obstacle, float obstacleSize) {
 	// calculate the player's position with the radius
     float playerRadius = playerDiameter / 2.0f;
     float playerLeft = player_position->x - playerRadius;
@@ -109,7 +109,7 @@ void HandleCollision(CP_Vector* player_position, float playerDiameter, CP_Vector
 }
 
 // checks for enemy collision
-bool CheckEnemyCollision(CP_Vector enemy_position, float enemyDiameter, CP_Vector obstacle, int obstacleSize) {
+bool CheckEnemyCollision(CP_Vector enemy_position, float enemyDiameter, CP_Vector obstacle, float obstacleSize) {
     // calculate the enemy's position with the radius
     float enemyRadius = enemyDiameter / 2.0f;
     float enemyLeft = enemy_position.x - enemyRadius;
@@ -127,7 +127,7 @@ bool CheckEnemyCollision(CP_Vector enemy_position, float enemyDiameter, CP_Vecto
 }
 
 // handles the enemy collision
-void HandleEnemyCollision(CP_Vector* enemy_position, float enemyDiameter, CP_Vector obstacle, int obstacleSize) {
+void HandleEnemyCollision(CP_Vector* enemy_position, float enemyDiameter, CP_Vector obstacle, float obstacleSize) {
     // calculate the enemy's position with the radius
     float enemyRadius = enemyDiameter / 2.0f;
     float enemyLeft = enemy_position->x - enemyRadius;
@@ -160,7 +160,7 @@ void HandleEnemyCollision(CP_Vector* enemy_position, float enemyDiameter, CP_Vec
 }
 
 // checks for projectile collision
-bool CheckBulletCollision(CP_Vector bullet_position, float bulletDiameter, CP_Vector obstacle, int obstacleSize) {
+bool CheckBulletCollision(CP_Vector bullet_position, float bulletDiameter, CP_Vector obstacle, float obstacleSize) {
     // calculate the bullet's position with the radius
     float bulletRadius = bulletDiameter / 2.0f;
     float bulletLeft = bullet_position.x - bulletRadius;
@@ -181,7 +181,7 @@ void HandleProjectileCollision(struct enemyAttack* bullet) {
     bullet->active = 0;
 }
 
-bool CheckPlayerBulletCollision(CP_Vector playerBullet_position, float playerBulletDiameter, CP_Vector obstacle, int obstacleSize) {
+bool CheckPlayerBulletCollision(CP_Vector playerBullet_position, float playerBulletDiameter, CP_Vector obstacle, float obstacleSize) {
     // calculate the bullet's position with the radius
     float playerBulletRadius = playerBulletDiameter / 2.0f;
     float playerBulletLeft = playerBullet_position.x - playerBulletRadius;
