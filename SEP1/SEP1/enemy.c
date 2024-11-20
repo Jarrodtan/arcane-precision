@@ -149,7 +149,7 @@ void enemy_code(void)
 						if (enemies[i].bullets[j].active == 0) 
 						{
 							// Initialize new bullet
-							initialize_bullet(&enemies[i].bullets[j], enemies[i].position, CP_Vector_Scale(bulletMoveN, (float)difficulty), 400.0f, 1);
+							initialize_bullet(&enemies[i].bullets[j], enemies[i].position, CP_Vector_Scale(bulletMoveN, 1), 400.0f, 1);
 							break;
 						}
 					}
@@ -220,7 +220,7 @@ void enemy_code(void)
 				enemies[i].bullets[o].position = CP_Vector_Add(enemies[i].bullets[o].position, CP_Vector_Scale(enemies[i].bullets[o].direction, enemies[i].bullets[o].speed * dt));
 
 				// Draw bullet
-				CP_Settings_Fill(CP_Color_Create(242, 103, 75, 255));
+				CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 				CP_Graphics_DrawCircle(enemies[i].bullets[o].position.x, enemies[i].bullets[o].position.y, enemies[i].bullets[o].diameter);
 
 				// Check for collision with player

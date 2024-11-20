@@ -28,12 +28,14 @@ extern const char* saveFile1;
 extern const char* saveFile2;
 extern int saveSlot;
 extern int difficulty;
+extern int page;
 
 CP_Color manaBarColor;
 CP_Color manaColor;
 CP_Color manaHitboxColor;
 CP_Vector player_position;
 extern CP_Image pause_sign;
+extern CP_Image tut_page1, tut_page2;
 extern CP_Vector obstacle[MAX_OBSTACLES];
 
 //// Obstacle spawn (Bev)
@@ -52,6 +54,7 @@ int roomsPassed; //for increasing difficulty
 float dt;
 int lastEntered;
 bool game_over;
+bool tut;
 
 //time manip
 float slowTimeScale = 0.1f;
@@ -183,6 +186,8 @@ static void initializeAttack(struct playerAttack* playerAttack, CP_Vector positi
 void Game_Init(void)
 {
 	pause_sign = CP_Image_Load("Assets/Pause Sign.png");
+	tut_page1 = CP_Image_Load("Assets/tutorial_page1.jpg");
+	tut_page2 = CP_Image_Load("Assets/tutorial_page2.jpg");
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	manaBarColor = CP_Color_Create(0, 0, 150, 255);
 	manaColor = CP_Color_Create(0, 0, 255, 255);
@@ -205,6 +210,8 @@ void Game_Init(void)
 	
 	if (isNewGame == true) //set default stats if its a new game.
 	{
+		tut = true;
+		page = 1;
 		player.moveSpeed = 300.0f;
 		player.lives = 3;
 		player.manaBuildSpeed = 1.0f;
@@ -218,6 +225,7 @@ void Game_Init(void)
 	}
 	else  // load stats if its not a new game
 	{
+		tut = false;
 	playerStats stats = { player.moveSpeed,player.lives,
 		player.manaBuildSpeed,player.cooldownSpeed, player.attackDamage,
 		player.attackSize, player.attackSpeed, player.score, roomsPassed, lastEntered };
@@ -302,6 +310,12 @@ void Game_Init(void)
 //===================================================GAME_UPDATE==================================================================================
 void Game_Update(void)
 {
+	if (tut == true)
+	{
+		tutorial();
+	}
+	else
+	{
 	dt = slowTime(); // used for slowing downtime
 
 	//GAME OVER trigger
@@ -340,158 +354,167 @@ void Game_Update(void)
 	}
 
 	//debug increment health, score and attack
-	if (CP_Input_KeyTriggered(KEY_EQUAL))
-	{
-		player.lives += 1;
-		player.score += 10;
-		player.attackDamage += 10;
-		printf("score: %d\n", player.score);
-	}//debug decrement health, score and attack
-	else if (CP_Input_KeyTriggered(KEY_MINUS))
-	{
-		player.lives -= 1;
-		player.score -= 10;
-		player.attackDamage += 10;
-		printf("score: %d\n", player.score);
-	}
+	//if (CP_Input_KeyTriggered(KEY_EQUAL))
+	//{
+	//	player.lives += 1;
+	//	player.score += 10;
+	//	player.attackDamage += 10;
+	//	printf("score: %d\n", player.score);
+	//}//debug decrement health, score and attack
+	//else if (CP_Input_KeyTriggered(KEY_MINUS))
+	//{
+	//	player.lives -= 1;
+	//	player.score -= 10;
+	//	player.attackDamage += 10;
+	//	printf("score: %d\n", player.score);
+	//}
 
-	if (game_pause == true) //if game is paused
-	{
-		for (int i = 0; i < MAX_BULLETS; i++)//drawing of bullets
+
+		if (game_pause == true) //if game is paused
 		{
-		if (playerAttack[i].isActive == 1) {
-			CP_Settings_Fill(CP_Color_Create(255, 255, 0, 255));
-			CP_Graphics_DrawCircle(playerAttack[i].position.x, playerAttack[i].position.y, playerAttack[i].diameter);
-		}
-		}
-		draw_screen();
-		pause();
-	}
-
-	else if (game_pause == false) {
-
-		//player controls
-		if (player.active == 1) {
-			if (CP_Input_KeyDown(KEY_W))
+			for (int i = 0; i < MAX_BULLETS; i++)//drawing of bullets
 			{
-				if (player.position.y - (player.diameter / 2)-5 >= topWall.y + topWall.height)
-				{
-				player.position.y -= player.moveSpeed * dt;
+				if (playerAttack[i].isActive == 1) {
+					//draw attack
+					if (playerAttack[i].selSpell == FIREBALL)
+					{
+						CP_Settings_Fill(CP_Color_Create(240, 150, 0, 255)); // Draw Fire ball color
+					}
+					else if (playerAttack[i].selSpell == ICESHARDS)
+					{
+						CP_Settings_Fill(CP_Color_Create(39, 225, 245, 255)); // Draw Ice shard color
+					}
+					CP_Graphics_DrawCircle(playerAttack[i].position.x, playerAttack[i].position.y, playerAttack[i].diameter);
 				}
 			}
-			 if (CP_Input_KeyDown(KEY_S))
-			{
-				if (player.position.y + (player.diameter / 2)+5 <= botWall.y + botWall.height)
-				{
-				player.position.y += player.moveSpeed * dt;
-				}
-			}
-			 if (CP_Input_KeyDown(KEY_A))
-			{
-				if (player.position.x - (player.diameter / 2)-5 >= leftWall.x + leftWall.width)
-				{
-				player.position.x -= player.moveSpeed * dt;
-				}
-			}
-			 if (CP_Input_KeyDown(KEY_D))
-			{
-				if (player.position.x + (player.diameter / 2)+5 <= rightWall.x + rightWall.width)
-				{
-				player.position.x += player.moveSpeed * dt;
-				}
-			}
+			draw_screen();
+			pause();
 		}
 
-		//Attack Mechanic, hold left click to build mana, let go at hitbox to attack.
-		if (CP_Input_MouseClicked()) //randomizes hitbox position when mouse clicked in frame
-		{
-			random_float = CP_Random_RangeFloat(20, maxManabar.width-manaHitbox.width);
-		}
-		else if (CP_Input_MouseDown(MOUSE_BUTTON_LEFT) && mana < 100 && cooldown == 0)
-		{
-			hitboxSpawn = 1;
-			mana += player.manaBuildSpeed;
-		}
-		if (CP_Input_MouseReleased(MOUSE_BUTTON_LEFT) && mana >= 0 && cooldown == 0)
-		{
-			cooldown = 1;
-			hitboxSpawn = 0;
-			if (manaAreIntersecting(currentManabar.x + (currentManabar.width * (mana / 100)) - 10, 10,
-				manaHitbox.x, manaHitbox.width) == 1)
-			{
-				//spawn player attack flying towards mouse direction till collision with wall
-				// Calculate direction from player to mouse
-				CP_Vector mousePos = CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY());
-				CP_Vector attackDirection = CP_Vector_Normalize(CP_Vector_Subtract(mousePos, player.position));
+		else if (game_pause == false) {
 
-				// Initialize the player's attack
-				for (int i = 0; i < 100; i++)
+			//player controls
+			if (player.active == 1) {
+				if (CP_Input_KeyDown(KEY_W))
 				{
-					if (!playerAttack[i].isActive) {
-						// Initialize new bullet
-						initializeAttack(&playerAttack[i], player.position, CP_Vector_Scale(attackDirection, 1), player.attackSpeed, player.attackDamage, player.attackSize, selectedSpell);
-						break;
+					if (player.position.y - (player.diameter / 2) - 5 >= topWall.y + topWall.height)
+					{
+						player.position.y -= player.moveSpeed * dt;
+					}
+				}
+				if (CP_Input_KeyDown(KEY_S))
+				{
+					if (player.position.y + (player.diameter / 2) + 5 <= botWall.y + botWall.height)
+					{
+						player.position.y += player.moveSpeed * dt;
+					}
+				}
+				if (CP_Input_KeyDown(KEY_A))
+				{
+					if (player.position.x - (player.diameter / 2) - 5 >= leftWall.x + leftWall.width)
+					{
+						player.position.x -= player.moveSpeed * dt;
+					}
+				}
+				if (CP_Input_KeyDown(KEY_D))
+				{
+					if (player.position.x + (player.diameter / 2) + 5 <= rightWall.x + rightWall.width)
+					{
+						player.position.x += player.moveSpeed * dt;
 					}
 				}
 			}
-		}
-		if (cooldown == 1 && mana > 0) //mana is on cooldown
-		{
-			mana -= player.cooldownSpeed;
-		}
-		else if (mana <= 0) //mana is off cooldown
-		{
-			cooldown = 0;
-		}
-		//moving player projectiles
-		for (int i = 0; i < MAX_BULLETS; i++)
-		{
-		if (playerAttack[i].isActive)
-		{
-			//move attack
-			playerAttack[i].position = CP_Vector_Add(playerAttack[i].position, CP_Vector_Scale(playerAttack[i].direction, playerAttack[i].speed * dt));
-			
-			//draw attack
-			if (playerAttack[i].selSpell == FIREBALL)
-			{
-				CP_Settings_Fill(CP_Color_Create(245, 39, 71, 255)); // Draw Fireball color
-			}
-			else if (playerAttack[i].selSpell == ICESHARDS)
-			{
-				CP_Settings_Fill(CP_Color_Create(39, 225, 245, 255)); // Draw Ice shard color
-			}
-				CP_Graphics_DrawCircle(playerAttack[i].position.x, playerAttack[i].position.y, playerAttack[i].diameter);
 
-			//set active to 0 when attack goes off-screen
-			if (playerAttack[i].position.x - (playerAttack[i].diameter / 2) < 10 || playerAttack[i].position.x + (playerAttack[i].diameter / 2) > WINDOW_WIDTH - 10 ||
-				playerAttack[i].position.y - (playerAttack[i].diameter / 2) < 10 || playerAttack[i].position.y + (playerAttack[i].diameter / 2) > WINDOW_HEIGHT - 10)
+			//Attack Mechanic, hold left click to build mana, let go at hitbox to attack.
+			if (CP_Input_MouseClicked()) //randomizes hitbox position when mouse clicked in frame
 			{
-				playerAttack[i].isActive = 0;
+				random_float = CP_Random_RangeFloat(20, maxManabar.width - manaHitbox.width);
 			}
-		}
-		}
-		draw_screen();
-		enemy_code();
-		update_player(dt);
-		doorInteraction();
-		update_item(&item, &player);
+			else if (CP_Input_MouseDown(MOUSE_BUTTON_LEFT) && mana < 100 && cooldown == 0)
+			{
+				hitboxSpawn = 1;
+				mana += player.manaBuildSpeed;
+			}
+			if (CP_Input_MouseReleased(MOUSE_BUTTON_LEFT) && mana >= 0 && cooldown == 0)
+			{
+				cooldown = 1;
+				hitboxSpawn = 0;
+				if (manaAreIntersecting(currentManabar.x + (currentManabar.width * (mana / 100)) - 10, 10,
+					manaHitbox.x, manaHitbox.width) == 1)
+				{
+					//spawn player attack flying towards mouse direction till collision with wall
+					// Calculate direction from player to mouse
+					CP_Vector mousePos = CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY());
+					CP_Vector attackDirection = CP_Vector_Normalize(CP_Vector_Subtract(mousePos, player.position));
 
-		//skill selection
-		if (isSlowed)
-		{
-			if (CP_Input_GetMouseX() >= (player.position.x - 100.0f) - (10.0f) && CP_Input_GetMouseX() <= player.position.x &&
-				CP_Input_GetMouseY() >= ((player.position.y + player.diameter / 2) + 60.0f) &&
-				CP_Input_GetMouseY() <= ((player.position.y + player.diameter / 2) + 110.0f))
-				selectedSpell = FIREBALL;
-			else if (CP_Input_GetMouseX() >= player.position.x + 10.0f && CP_Input_GetMouseX() <= player.position.x + 110.0f &&
-				CP_Input_GetMouseY() >= ((player.position.y + player.diameter / 2) + 60.0f) &&
-				CP_Input_GetMouseY() <= ((player.position.y + player.diameter / 2) + 110.0f))
-				selectedSpell = ICESHARDS;
-			drawSpellMenu(player.position.x, player.position.y, selectedSpell);
+					// Initialize the player's attack
+					for (int i = 0; i < 100; i++)
+					{
+						if (!playerAttack[i].isActive) {
+							// Initialize new bullet
+							initializeAttack(&playerAttack[i], player.position, CP_Vector_Scale(attackDirection, 1), player.attackSpeed, player.attackDamage, player.attackSize, selectedSpell);
+							break;
+						}
+					}
+				}
+			}
+			if (cooldown == 1 && mana > 0) //mana is on cooldown
+			{
+				mana -= player.cooldownSpeed;
+			}
+			else if (mana <= 0) //mana is off cooldown
+			{
+				cooldown = 0;
+			}
+			//moving player projectiles
+			for (int i = 0; i < MAX_BULLETS; i++)
+			{
+				if (playerAttack[i].isActive)
+				{
+					//move attack
+					playerAttack[i].position = CP_Vector_Add(playerAttack[i].position, CP_Vector_Scale(playerAttack[i].direction, playerAttack[i].speed * dt));
+
+					//draw attack
+					if (playerAttack[i].selSpell == FIREBALL)
+					{
+						CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255)); // Draw Fire ball color
+					}
+					else if (playerAttack[i].selSpell == ICESHARDS)
+					{
+						CP_Settings_Fill(CP_Color_Create(39, 225, 245, 255)); // Draw Ice shard color
+					}
+					CP_Graphics_DrawCircle(playerAttack[i].position.x, playerAttack[i].position.y, playerAttack[i].diameter);
+
+					//set active to 0 when attack goes off-screen
+					if (playerAttack[i].position.x - (playerAttack[i].diameter / 2) < 10 || playerAttack[i].position.x + (playerAttack[i].diameter / 2) > WINDOW_WIDTH - 10 ||
+						playerAttack[i].position.y - (playerAttack[i].diameter / 2) < 10 || playerAttack[i].position.y + (playerAttack[i].diameter / 2) > WINDOW_HEIGHT - 10)
+					{
+						playerAttack[i].isActive = 0;
+					}
+				}
+			}
+			draw_screen();
+			enemy_code();
+			update_player(dt);
+			doorInteraction();
+			update_item(&item, &player);
+
+			//skill selection
+			if (isSlowed)
+			{
+				if (CP_Input_GetMouseX() >= (player.position.x - 100.0f) - (10.0f) && CP_Input_GetMouseX() <= player.position.x &&
+					CP_Input_GetMouseY() >= ((player.position.y + player.diameter / 2) + 60.0f) &&
+					CP_Input_GetMouseY() <= ((player.position.y + player.diameter / 2) + 110.0f))
+					selectedSpell = FIREBALL;
+				else if (CP_Input_GetMouseX() >= player.position.x + 10.0f && CP_Input_GetMouseX() <= player.position.x + 110.0f &&
+					CP_Input_GetMouseY() >= ((player.position.y + player.diameter / 2) + 60.0f) &&
+					CP_Input_GetMouseY() <= ((player.position.y + player.diameter / 2) + 110.0f))
+					selectedSpell = ICESHARDS;
+				drawSpellMenu(player.position.x, player.position.y, selectedSpell);
+			}
 		}
 	}
 }
-
 void Game_Exit(void)
 {
 	for (int i = 0; i < 100; i++)

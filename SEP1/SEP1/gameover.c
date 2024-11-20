@@ -66,7 +66,7 @@ void gameover_Update(void)
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 	// Adjust the y-position to be centered within the text box
 	float textYPosition = (WINDOW_HEIGHT / 1.5f) + (WINDOW_HEIGHT / 10.0f) / 2.0f;
-	CP_Font_DrawText(playerName, WINDOW_WIDTH / 2.08f, textYPosition);
+	CP_Font_DrawText(playerName, WINDOW_WIDTH / 2.04f, textYPosition);
 
 	// Check for key presses
 	if (CP_Input_KeyTriggered(KEY_BACKSPACE) && cursorPosition > 0) {
@@ -76,11 +76,17 @@ void gameover_Update(void)
 	else if (CP_Input_KeyTriggered(KEY_ENTER)) {
 		if (cursorPosition > 0) { // Check if the name is not empty
 			// Handle submission (e.g., save the name or proceed)
-			printf("Player Name: %s\n", playerName);
 			// Optionally, transition to another game state
-		}
-		else {
-			printf("Please enter a name before submitting.\n");
+			switch (cursorPosition)
+			{
+			case 0:
+				updateLeaderboard(ldrboard, &count, "ANON", player.score, leaderboardSave);
+				break;
+			default:
+				updateLeaderboard(ldrboard, &count, playerName, player.score, leaderboardSave);
+				break;
+			}
+			CP_Engine_SetNextGameState(Start_Menu_Init, Start_Menu_Update, Start_Menu_Exit);
 		}
 	}
 	else {

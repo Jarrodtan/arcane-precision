@@ -20,6 +20,6 @@ int main(void)
 {
 	CP_Engine_SetNextGameState(Start_Menu_Init, Start_Menu_Update, Start_Menu_Exit);
 	CP_System_SetWindowSize(1600, 900);
-	CP_Engine_Run(1);
+	CP_Engine_Run(0);
 	return 0;
 }
