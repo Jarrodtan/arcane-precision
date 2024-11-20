@@ -24,6 +24,7 @@
 extern bool isNewGame;
 extern bool game_pause;
 extern bool how_To;
+bool tut;
 extern const char* saveFile1;
 extern const char* saveFile2;
 extern int saveSlot;
@@ -37,10 +38,6 @@ CP_Vector player_position;
 extern CP_Image pause_sign;
 extern CP_Image tut_page1, tut_page2;
 extern CP_Vector obstacle[MAX_OBSTACLES];
-
-//// Obstacle spawn (Bev)
-//#define MAX_OBSTACLES (sizeof(obstacle) / sizeof(obstacle[0]))
-//CP_Vector obstacle[15]; // obstacle for random spawn
 extern int currentObstacleCount;
 extern int lastRoom; // Initialize to an invalid room number
 extern float obstacle_diameter;
@@ -332,6 +329,7 @@ void Game_Update(void)
 		}
 	}
 
+	// Obstacle spawn (BEV)
 	UpdateObstacles(roomsPassed, player.position, player.diameter);
 	// Check for collisions and handle them
 	for (int i = 0; i < currentObstacleCount; i++) {
@@ -392,7 +390,6 @@ void Game_Update(void)
 		}
 
 		else if (game_pause == false) {
-
 			//player controls
 			if (player.active == 1) {
 				if (CP_Input_KeyDown(KEY_W))
