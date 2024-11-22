@@ -211,8 +211,8 @@ void Game_Init(void)
 		page = 1;
 		player.moveSpeed = 300.0f;
 		player.lives = 3;
-		player.manaBuildSpeed = 1.0f;
-		player.cooldownSpeed = 1.0f;
+		player.manaBuildSpeed = 50.0f;
+		player.cooldownSpeed = 150.0f;
 		player.attackSize = 30.0f;
 		player.attackDamage = 1;
 		player.attackSpeed = 500.0f;
@@ -368,7 +368,6 @@ void Game_Update(void)
 	//	printf("score: %d\n", player.score);
 	//}
 
-
 		if (game_pause == true) //if game is paused
 		{
 			for (int i = 0; i < MAX_BULLETS; i++)//drawing of bullets
@@ -431,7 +430,7 @@ void Game_Update(void)
 			else if (CP_Input_MouseDown(MOUSE_BUTTON_LEFT) && mana < 100 && cooldown == 0)
 			{
 				hitboxSpawn = 1;
-				mana += player.manaBuildSpeed;
+				mana += player.manaBuildSpeed*dt;
 			}
 			if (CP_Input_MouseReleased(MOUSE_BUTTON_LEFT) && mana >= 0 && cooldown == 0)
 			{
@@ -458,7 +457,7 @@ void Game_Update(void)
 			}
 			if (cooldown == 1 && mana > 0) //mana is on cooldown
 			{
-				mana -= player.cooldownSpeed;
+				mana -= player.cooldownSpeed*dt;
 			}
 			else if (mana <= 0) //mana is off cooldown
 			{
@@ -518,11 +517,9 @@ void Game_Exit(void)
 	for (int i = 0; i < 100; i++)
 	{
 	playerAttack[i].isActive = 0;
-	}
-	for (int i = 0; i < MAX_ENEMIES; i++)
-	{
 		enemies[i].active = 0;
 	}
+	
 
 	game_pause = false;
 	hitboxSpawn = 0;

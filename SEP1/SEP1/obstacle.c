@@ -199,7 +199,13 @@ bool CheckPlayerBulletCollision(CP_Vector playerBullet_position, float playerBul
 }
 
 void HandlePlayerProjectileCollision(struct playerAttack* bullet) {
-    playerAttack->isActive = 0;
+    for (int i = 0; i < 100; i++)
+    {
+        if (bullet->isActive == 1)
+        {
+        bullet->isActive = 0;
+        }
+    }
 }
 
 
@@ -233,8 +239,8 @@ void UpdateObstacles(int roomsPassed, CP_Vector player_position, float playerDia
         }
     }
     // Check for player bullet collisions with obstacles
-    for (int i = 0; i < 2; i++) {
-        if (playerAttack[i].isActive) {
+    for (int i = 0; i < 100; i++) {
+        if (playerAttack[i].isActive == 1) {
             // Check for collision with obstacles
             for (int j = 0; j < currentObstacleCount; j++) {
                 if (CheckPlayerBulletCollision(playerAttack[i].position, playerAttack[i].diameter, obstacle[j], obstacle_diameter)) {

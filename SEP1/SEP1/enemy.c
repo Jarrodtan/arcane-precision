@@ -18,7 +18,7 @@
 extern float dt;
 extern int roomsPassed;
 extern struct player player;
-extern struct playerAttack playerAttack;
+extern struct playerAttack playerAttack[MAX_BULLETS];
 extern struct itemDrops item[MAX_ITEMS];
 extern float obstacle_diameter;
 extern int currentObstacleCount;
@@ -245,41 +245,43 @@ void enemy_code(void)
 				}
 			}
 		}
-
-			//enemy takes dmg when in contact with player attack
-			if (AreCirclesIntersecting(enemies[i].position.x, enemies[i].position.y, enemies[i].diameter, playerAttack.position.x, playerAttack.position.y, playerAttack.diameter) == 1
-				&& playerAttack.isActive == 1 && enemies[i].active == 1)
+			for (int p = 0; p < 100; p++)
 			{
-				playerAttack.isActive = 0;
+			//enemy takes dmg when in contact with player attack
+			if (AreCirclesIntersecting(enemies[i].position.x, enemies[i].position.y, enemies[i].diameter, playerAttack[p].position.x, playerAttack[p].position.y, playerAttack[p].diameter) == 1
+				&& playerAttack[p].isActive == 1 && enemies[i].active == 1)
+			{
+					playerAttack[p].isActive = 0;
 
-				if (playerAttack.selSpell == ICESHARDS)
-				{
-					enemies[i].isFrozen = 1;
-					enemies[i].freezeTimer = 3.0f; // Freeze 3 seconds
-					enemies[i].speed = 0; // Stop movement
-					enemies[i].lives -= 1;
-				}
-				else {
-					enemies[i].lives -= playerAttack.damage;
-				}
-			// Deactivate enemy when health is 0
-				if (enemies[i].lives <= 0) 
-				{
-					enemies[i].active = 0;
-					player.score += 10;
-					enemyNumber--;
-
-					//initialise item drops
-					int r = CP_Random_RangeInt(1, 2); // change here for higher/lower odds of spawning items
-					//printf("%d\n", r);//for debugging
-					if (r == 1) //RNG for spawning item, 1 in 2 chances
+					if (playerAttack[p].selSpell == ICESHARDS)
 					{
-						for (int u = 0; u < MAX_ITEMS; u++)
+						enemies[i].isFrozen = 1;
+						enemies[i].freezeTimer = 3.0f; // Freeze 3 seconds
+						enemies[i].speed = 0; // Stop movement
+						enemies[i].lives -= 1;
+					}
+					else {
+						enemies[i].lives -= playerAttack[p].damage;
+					}
+				// Deactivate enemy when health is 0
+					if (enemies[i].lives <= 0) 
+					{
+						enemies[i].active = 0;
+						player.score += 10;
+						enemyNumber--;
+
+						//initialise item drops
+						int r = CP_Random_RangeInt(1, 2); // change here for higher/lower odds of spawning items
+						//printf("%d\n", r);//for debugging
+						if (r == 1) //RNG for spawning item, 1 in 2 chances
 						{
-							if (item[u].active == 0)
+							for (int u = 0; u < MAX_ITEMS; u++)
 							{
-								initialize_itemDrop(&item[u], enemies[i].position);
-								break;
+								if (item[u].active == 0)
+								{
+									initialize_itemDrop(&item[u], enemies[i].position);
+									break;
+								}
 							}
 						}
 					}

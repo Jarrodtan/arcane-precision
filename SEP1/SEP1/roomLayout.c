@@ -101,8 +101,7 @@ void draw_Room()
 //interactions with doors
 void doorInteraction(void)
 {
-		
-	if (enemyNumber <= 0) 
+	if (enemyNumber >= 0) 
 	{
 	if (doorIntersect(player.position.x, player.position.y, player.diameter, topDoor.x, topDoor.y, topDoor.width, topDoor.height) == 1 && lastEntered != 3)
 	{
