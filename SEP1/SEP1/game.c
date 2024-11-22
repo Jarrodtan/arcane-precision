@@ -183,8 +183,8 @@ static void initializeAttack(struct playerAttack* playerAttack, CP_Vector positi
 void Game_Init(void)
 {
 	pause_sign = CP_Image_Load("Assets/Pause Sign.png");
-	tut_page1 = CP_Image_Load("Assets/tutorial_page1.jpg");
-	tut_page2 = CP_Image_Load("Assets/tutorial_page2.jpg");
+	tut_page1 = CP_Image_Load("Assets/tutorial_page1.png");
+	tut_page2 = CP_Image_Load("Assets/tutorial_page2.png");
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	manaBarColor = CP_Color_Create(0, 0, 150, 255);
 	manaColor = CP_Color_Create(0, 0, 255, 255);
