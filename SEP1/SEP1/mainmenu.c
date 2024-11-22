@@ -33,18 +33,18 @@ void Main_Menu_Update(void)
     switch (checkSaveExists(saveFile1))
     {
     case 1:
-        CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
+        CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
         CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 3.0f,
             WINDOW_WIDTH / 4.0f, WINDOW_HEIGHT / 12.0f);
         CP_Graphics_DrawRect((WINDOW_WIDTH / 4.0f)*2.89, WINDOW_HEIGHT / 3.0f,
             WINDOW_WIDTH / 8.0f, WINDOW_HEIGHT / 12.0f);
         CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-        CP_Font_DrawText("Load existing save", WINDOW_WIDTH / 2.52f, WINDOW_HEIGHT / 2.91f);
-        CP_Font_DrawText("Delete", (WINDOW_WIDTH / 4.0f) * 2.76, WINDOW_HEIGHT / 2.91f);
+        CP_Font_DrawText("Load existing save", WINDOW_WIDTH / 2.555f, WINDOW_HEIGHT / 2.91f);
+        CP_Font_DrawText("Delete", (WINDOW_WIDTH / 4.05f) * 2.76, WINDOW_HEIGHT / 2.91f);
 
         break;
     case 0:
-        CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
+        CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
         CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 3.0f,
             WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);    
         CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
@@ -80,7 +80,7 @@ void Main_Menu_Update(void)
     switch (checkSaveExists(saveFile2))
     {
     case 1:
-        CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
+        CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
         //load game button
         CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f,
             WINDOW_WIDTH / 4.0f, WINDOW_HEIGHT / 12.0f);
@@ -89,11 +89,11 @@ void Main_Menu_Update(void)
             WINDOW_WIDTH / 8.0f, WINDOW_HEIGHT / 12.0f);
 
         CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-        CP_Font_DrawText("Load existing save", WINDOW_WIDTH / 2.52f, WINDOW_HEIGHT / 1.95f);
-        CP_Font_DrawText("Delete", (WINDOW_WIDTH / 4.0f) * 2.76, WINDOW_HEIGHT / 1.95f);
+        CP_Font_DrawText("Load existing save", WINDOW_WIDTH / 2.555f, WINDOW_HEIGHT / 1.95f);
+        CP_Font_DrawText("Delete", (WINDOW_WIDTH / 4.05f) * 2.76, WINDOW_HEIGHT / 1.95f);
         break;
     case 0:
-        CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
+        CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
         CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f,
             WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);
         CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
@@ -123,14 +123,15 @@ void Main_Menu_Update(void)
         saveSlot = 2;
         CP_Engine_SetNextGameState(Game_Init, Game_Update, Game_Exit);
     }
+
     
     //Back button
-    CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
+    CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
     CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 1.5f,
         WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);
     CP_Font_Set(myFont);
     CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-    CP_Font_DrawText("Back", WINDOW_WIDTH / 2.10f, WINDOW_HEIGHT / 1.48f);
+    CP_Font_DrawText("Back", WINDOW_WIDTH / 2.12f, WINDOW_HEIGHT / 1.48f);
     if (IsAreaClicked(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 1.5f,
         WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
     {

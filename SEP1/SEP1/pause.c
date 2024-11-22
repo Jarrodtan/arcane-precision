@@ -36,10 +36,10 @@ void pause(void)
 		CP_Settings_Fill(CP_Color_Create(240, 230, 140, 255));
 		CP_Graphics_DrawRect(WINDOW_WIDTH / 4.0f, WINDOW_HEIGHT / 4.0f, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f);// for pause menu
 
-		CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
+		CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
 		CP_Graphics_DrawRect(WINDOW_WIDTH / 2.4f, WINDOW_HEIGHT / 2.4f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);// for menu button
 
-		CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
+		CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
 		CP_Graphics_DrawRect(WINDOW_WIDTH / 2.4f, WINDOW_HEIGHT / 1.9f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);// for how to play button
 
 		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
@@ -79,7 +79,7 @@ void howToPlay(void)
 	{
 		CP_Image_Draw(tut_page1, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f, 1065.0f, 600.0f, 255);
 
-		CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
+		CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
 		CP_Graphics_DrawRect((WINDOW_WIDTH / 2.8f) * 1.66, (WINDOW_HEIGHT / 4.0f) * 3.35f, WINDOW_WIDTH / 20.0f, WINDOW_HEIGHT / 12.0f);// button for next page
 		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 		CP_Graphics_DrawTriangle( //next page triangle
@@ -100,7 +100,7 @@ void howToPlay(void)
 	{
 		
 		CP_Image_Draw(tut_page2, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f, 1065.0f, 600.0f, 255);
-		CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
+		CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
 		CP_Graphics_DrawRect(WINDOW_WIDTH / 2.8f, (WINDOW_HEIGHT / 4.0f) * 3.35f, WINDOW_WIDTH / 20.0f, WINDOW_HEIGHT / 12.0f);// button for prev page
 		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 		CP_Graphics_DrawTriangle( //prev page triangle
@@ -109,7 +109,7 @@ void howToPlay(void)
 			(WINDOW_WIDTH / 2.8f) * 1.02f, (WINDOW_HEIGHT / 4.0f) * 3.52f  // Tip vertex
 		);
 
-		CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
+		CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
 		CP_Graphics_DrawRect(WINDOW_WIDTH / 2.4f, (WINDOW_HEIGHT / 4.0f) * 3.35f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);// return to pause menu button
 		CP_Settings_TextSize(50.0f);
 		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
@@ -141,7 +141,7 @@ void tutorial(void)
 		
 		CP_Image_Draw(tut_page1, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f, 1065.0f, 600.0f, 255);
 
-		CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
+		CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
 		CP_Graphics_DrawRect((WINDOW_WIDTH / 2.8f) * 1.66, (WINDOW_HEIGHT / 4.0f) * 3.35f, WINDOW_WIDTH / 20.0f, WINDOW_HEIGHT / 12.0f);// button for next page
 		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 		CP_Graphics_DrawTriangle( //next page triangle
@@ -163,7 +163,7 @@ void tutorial(void)
 	{
 		
 		CP_Image_Draw(tut_page2, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f, 1065.0f, 600.0f, 255);
-		CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
+		CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
 		CP_Graphics_DrawRect(WINDOW_WIDTH / 2.8f, (WINDOW_HEIGHT / 4.0f) * 3.35f, WINDOW_WIDTH / 20.0f, WINDOW_HEIGHT / 12.0f);// button for prev page
 		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 		CP_Graphics_DrawTriangle( //prev page triangle
@@ -172,7 +172,7 @@ void tutorial(void)
 			(WINDOW_WIDTH / 2.8f) * 1.02f, (WINDOW_HEIGHT / 4.0f) * 3.52f  // Tip vertex
 		);
 		//return to mainmenu
-		CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
+		CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
 		CP_Graphics_DrawRect(WINDOW_WIDTH / 2.4f, (WINDOW_HEIGHT / 4.0f) * 3.35f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);// return to pause menu button
 		CP_Settings_TextSize(50.0f);
 		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
