@@ -16,6 +16,7 @@ struct player {
     float invincibilityTimer;      // Tracks remaining invincibility time
     float invincibilityDuration;  // Duration of invincibility (e.g., 1.5 seconds)
     int score;
+    float hitboxSize;
 };
 
 struct manabar {

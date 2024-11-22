@@ -5,10 +5,10 @@ enum effects { //expand this when needed
 	heal = 0,
 	dmg = 1, 
 	movespeed = 2,
-	cooldownDown = 3,
-	attackSpdUp = 4,
+	attackSpdUp = 3,
+	hitboxSizeUp = 4,
 	manaBuildUp = 5,
-	attackSizeUp = 6
+	cooldownDown = 6,
 };
 
 struct itemDrops {

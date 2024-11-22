@@ -20,6 +20,7 @@ typedef struct {
     int score;
     int roomsPassed;
     int lastEntered;
+    float hitboxSize;
 }playerStats;
 
 typedef struct {

@@ -29,7 +29,7 @@ void initialize_itemDrop(struct itemDrops *item,CP_Vector position) {
 	item->right.x = item->position.x + 20;
 	item->right.y = item->position.y + 10;
 	item->active = 1;
-	item->effect = CP_Random_RangeInt(0, 6); //change here when adding more effects CP_Random_RangeInt(0,6)
+	item->effect = 6;//CP_Random_RangeInt(0, 6); //change here when adding more effects CP_Random_RangeInt(0,6)
 	item->radius = 30;
 	switch (item->effect) // add on different color
 	{
@@ -42,16 +42,16 @@ void initialize_itemDrop(struct itemDrops *item,CP_Vector position) {
 	case movespeed:
 		item->effectColor = CP_Color_Create(0, 0, 255, 255);
 		break;
+	case hitboxSizeUp:
+		item->effectColor = CP_Color_Create(255, 255, 107, 255);
+		break;
 	case cooldownDown:
 		item->effectColor = CP_Color_Create(0, 255, 255, 255);
-		break;
-	case attackSpdUp:
-		item->effectColor = CP_Color_Create(255, 255, 107, 255);
 		break;
 	case manaBuildUp:
 		item->effectColor = CP_Color_Create(90, 34, 139, 255);
 		break;
-	case attackSizeUp:
+	case attackSpdUp:
 		item->effectColor = CP_Color_Create(249, 105, 14, 255);
 		break;
 	}
@@ -90,10 +90,16 @@ void update_item(struct itemDrops *item, struct player *player)
 					player->attackSpeed += 50.0f;
 					break;
 				case manaBuildUp:
+					if (player->manaBuildSpeed <= 3.0f)
+					{
 					player->manaBuildSpeed += 0.50f;
+					}
 					break;
-				case attackSizeUp:
-					player->attackSize += 5.0f;
+				case hitboxSizeUp:
+					if (player->hitboxSize <= 2.0f)
+					{
+					player->hitboxSize += 0.2f;
+					}
 					break;
 				}
 

@@ -11,14 +11,14 @@
 #define WINDOW_HEIGHT 900.0f
 
 
-struct walls topWall = { 0,0,WINDOW_WIDTH,10 };
-struct walls rightWall = { WINDOW_WIDTH, 0, -10, WINDOW_HEIGHT };
-struct walls botWall = { WINDOW_WIDTH, WINDOW_HEIGHT, -WINDOW_WIDTH, -10 };
-struct walls leftWall = { 0, WINDOW_HEIGHT, 10, -WINDOW_HEIGHT };
-struct walls topDoor = { (WINDOW_WIDTH / 2) - 100, 0, 200, 10 };
-struct walls rightDoor = { WINDOW_WIDTH - 10, (WINDOW_HEIGHT / 2) - 100 , 10, 200 };
-struct walls botDoor = { (WINDOW_WIDTH / 2) - 100, WINDOW_HEIGHT - 10, 200, 10 };
-struct walls leftDoor = { 0,(WINDOW_HEIGHT / 2) - 100, 10, 200 };
+struct walls topWall = { 0,0,WINDOW_WIDTH,50 };
+struct walls rightWall = { WINDOW_WIDTH, 0, -50, WINDOW_HEIGHT };
+struct walls botWall = { WINDOW_WIDTH, WINDOW_HEIGHT, -WINDOW_WIDTH, -50 };
+struct walls leftWall = { 0, WINDOW_HEIGHT, 50, -WINDOW_HEIGHT };
+struct walls topDoor = { (WINDOW_WIDTH / 2) - 100, 0, 200, 50 };
+struct walls rightDoor = { WINDOW_WIDTH - 50, (WINDOW_HEIGHT / 2) - 100 , 50, 200 };
+struct walls botDoor = { (WINDOW_WIDTH / 2) - 100, WINDOW_HEIGHT - 50, 200, 50 };
+struct walls leftDoor = { 0,(WINDOW_HEIGHT / 2) - 100, 50, 200 };
 
 extern struct player player;
 extern struct manabar maxManabar;
@@ -220,6 +220,6 @@ void draw_screen(void) {
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 	sprintf_s(roomsDisplay, sizeof(roomsDisplay), "Room Passed: %d", roomsPassed);
 	sprintf_s(scoreDisplay, sizeof(scoreDisplay), "Score: %d", player.score);
-	CP_Font_DrawText(roomsDisplay, WINDOW_WIDTH - 250, 50);
-	CP_Font_DrawText(scoreDisplay, WINDOW_WIDTH - 250, 100);
+	CP_Font_DrawText(roomsDisplay, WINDOW_WIDTH - 250, 85);
+	CP_Font_DrawText(scoreDisplay, WINDOW_WIDTH - 250, 115);
 }

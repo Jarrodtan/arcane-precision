@@ -236,8 +236,8 @@ void enemy_code(void)
 					}
 				}
 				// Deactivate bullet if it goes off-screen
-				if (enemies[i].bullets[o].position.x - enemies[i].bullets[o].diameter / 2 < 10 || enemies[i].bullets[o].position.x + enemies[i].bullets[o].diameter / 2 > WINDOW_WIDTH - 10 ||
-					enemies[i].bullets[o].position.y - enemies[i].bullets[o].diameter / 2 < 10 || enemies[i].bullets[o].position.y + enemies[i].bullets[o].diameter / 2 > WINDOW_HEIGHT - 10) {
+				if (enemies[i].bullets[o].position.x - enemies[i].bullets[o].diameter / 2 < 50 || enemies[i].bullets[o].position.x + enemies[i].bullets[o].diameter / 2 > WINDOW_WIDTH - 50 ||
+					enemies[i].bullets[o].position.y - enemies[i].bullets[o].diameter / 2 < 50 || enemies[i].bullets[o].position.y + enemies[i].bullets[o].diameter / 2 > WINDOW_HEIGHT - 50) {
 					enemies[i].bullets[o].active = 0;
 				}
 			}
@@ -252,8 +252,9 @@ void enemy_code(void)
 				if (playerAttack.selSpell == ICESHARDS)
 				{
 					enemies[i].isFrozen = 1;
-					enemies[i].freezeTimer = 2.0f; // Freeze 2 seconds
+					enemies[i].freezeTimer = 3.0f; // Freeze 3 seconds
 					enemies[i].speed = 0; // Stop movement
+					enemies[i].lives -= 1;
 				}
 				else {
 					enemies[i].lives -= playerAttack.damage;
@@ -267,7 +268,7 @@ void enemy_code(void)
 
 					//initialise item drops
 					int r = CP_Random_RangeInt(1, 2); // change here for higher/lower odds of spawning items
-					printf("%d\n", r);//for debugging
+					//printf("%d\n", r);//for debugging
 					if (r == 1) //RNG for spawning item, 1 in 2 chances
 					{
 						for (int u = 0; u < MAX_ITEMS; u++)

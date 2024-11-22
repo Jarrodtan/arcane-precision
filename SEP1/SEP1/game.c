@@ -202,8 +202,8 @@ void Game_Init(void)
 	player.diameter = 60.0f;
 	player.direction = 1;
 	player.active = 1;
-	player.invincibilityTimer = 0.0f;
-	player.invincibilityDuration = 1.5f;
+	player.invincibilityTimer = 2.0f;
+	player.invincibilityDuration = 2.0f;
 	
 	if (isNewGame == true) //set default stats if its a new game.
 	{
@@ -219,13 +219,14 @@ void Game_Init(void)
 		player.score = 0;
 		roomsPassed = 0;
 		lastEntered = 0;
+		player.hitboxSize = 1.0f;
 	}
 	else  // load stats if its not a new game
 	{
 		tut = false;
-	playerStats stats = { player.moveSpeed,player.lives,
-		player.manaBuildSpeed,player.cooldownSpeed, player.attackDamage,
-		player.attackSize, player.attackSpeed, player.score, roomsPassed, lastEntered };
+		playerStats stats = { player.moveSpeed,player.lives,
+			player.manaBuildSpeed,player.cooldownSpeed, player.attackDamage,
+			player.attackSize, player.attackSpeed, player.score, roomsPassed, lastEntered,player.hitboxSize};
 		switch (saveSlot)
 		{
 		case 1:
@@ -280,12 +281,12 @@ void Game_Init(void)
 	//Mana HitBox
 	manaHitbox.x = maxManabar.x;
 	manaHitbox.y = maxManabar.y;
-	manaHitbox.width = 20;
+	manaHitbox.width = 20*player.hitboxSize;
 	manaHitbox.height = maxManabar.height;
 
 	//player hearts
-	playerHearts.x = WINDOW_WIDTH / 30.0f;
-	playerHearts.y = WINDOW_HEIGHT / 24.0f;
+	playerHearts.x = WINDOW_WIDTH / 20.0f;
+	playerHearts.y = WINDOW_HEIGHT / 12.0f;
 	playerHearts.size = 15.0f;
 	playerHearts.spacing = 50;
 
@@ -294,7 +295,7 @@ void Game_Init(void)
 		item[i].active = 0;
 	}
 
-	printf("rooms passed: %d\n", roomsPassed);
+	//printf("rooms passed: %d\n", roomsPassed);
 
 	//for object spawn
 	for (int i = 0; i < currentObstacleCount; i++) {
@@ -483,8 +484,8 @@ void Game_Update(void)
 					CP_Graphics_DrawCircle(playerAttack[i].position.x, playerAttack[i].position.y, playerAttack[i].diameter);
 
 					//set active to 0 when attack goes off-screen
-					if (playerAttack[i].position.x - (playerAttack[i].diameter / 2) < 10 || playerAttack[i].position.x + (playerAttack[i].diameter / 2) > WINDOW_WIDTH - 10 ||
-						playerAttack[i].position.y - (playerAttack[i].diameter / 2) < 10 || playerAttack[i].position.y + (playerAttack[i].diameter / 2) > WINDOW_HEIGHT - 10)
+					if (playerAttack[i].position.x - (playerAttack[i].diameter / 2) < 50 || playerAttack[i].position.x + (playerAttack[i].diameter / 2) > WINDOW_WIDTH - 50 ||
+						playerAttack[i].position.y - (playerAttack[i].diameter / 2) < 50 || playerAttack[i].position.y + (playerAttack[i].diameter / 2) > WINDOW_HEIGHT - 50)
 					{
 						playerAttack[i].isActive = 0;
 					}

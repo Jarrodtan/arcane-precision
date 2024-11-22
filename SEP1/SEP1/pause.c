@@ -171,13 +171,13 @@ void tutorial(void)
 			(WINDOW_WIDTH / 2.8f) * 1.11f, (WINDOW_HEIGHT / 4.0f) * 3.62f, // Bottom vertex
 			(WINDOW_WIDTH / 2.8f) * 1.02f, (WINDOW_HEIGHT / 4.0f) * 3.52f  // Tip vertex
 		);
-		//return to mainmenu
+
 		CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
 		CP_Graphics_DrawRect(WINDOW_WIDTH / 2.4f, (WINDOW_HEIGHT / 4.0f) * 3.35f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);// return to pause menu button
 		CP_Settings_TextSize(50.0f);
 		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-		CP_Font_DrawText("Back", WINDOW_WIDTH / 2.11f, (WINDOW_HEIGHT / 4.0f) * 3.56f);
-		//return to mainmenu
+		CP_Font_DrawText("Start", WINDOW_WIDTH / 2.11f, (WINDOW_HEIGHT / 4.0f) * 3.56f);
+		//StartGame
 		if (IsAreaClicked(WINDOW_WIDTH / 2.0f, (WINDOW_HEIGHT / 4.0f) * 3.52f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f,
 			CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
 		{

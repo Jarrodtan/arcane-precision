@@ -36,7 +36,8 @@ void Credits_Update(void)
     CP_Font_DrawText("Tan Che Fong", WINDOW_WIDTH / 2.45f, WINDOW_HEIGHT / 2.3f);
     CP_Font_DrawText("Tan Wei Leong", WINDOW_WIDTH / 2.45f, WINDOW_HEIGHT / 1.95f);
     CP_Font_DrawText("Beverley Choy", WINDOW_WIDTH / 2.45f, WINDOW_HEIGHT / 1.7f);
-
+    CP_Image digipenLogo = CP_Image_Load("Assets/DigiPen_BLACK.png");
+    CP_Image_Draw(digipenLogo, WINDOW_WIDTH / 2.0f, (WINDOW_HEIGHT / 3.0f) * 2.1f, 450.0f, 150.0f, 255);
 
     // Back button
     CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
