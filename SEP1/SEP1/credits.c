@@ -39,7 +39,7 @@ void Credits_Update(void)
 
 
     // Back button
-    CP_Settings_Fill(CP_Color_Create(255, 100, 0, 255));
+    CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
     CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 1.2f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);
     CP_Font_Set(myFont);
     CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
