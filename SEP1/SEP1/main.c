@@ -10,7 +10,7 @@
 //---------------------------------------------------------
 
 #include "cprocessing.h"
-#include "startmenu.h"
+#include "splashscreen.h"
 
 
 // main() the starting point for the program
@@ -18,7 +18,7 @@
 // CP_Engine_Run() is the core function that starts the simulation
 int main(void)
 {
-	CP_Engine_SetNextGameState(Start_Menu_Init, Start_Menu_Update, Start_Menu_Exit);
+	CP_Engine_SetNextGameState(splashscreen_Init, splashscreen_Update,splashscreen_Exit);
 	CP_System_SetWindowSize(1600, 900);
 	CP_Engine_Run(0);
 	return 0;
