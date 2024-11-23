@@ -267,6 +267,7 @@ void enemy_code(void)
 					if (enemies[i].lives <= 0) 
 					{
 						enemies[i].active = 0;
+						enemies[i].isFrozen = 0;
 						player.score += 10;
 						enemyNumber--;
 

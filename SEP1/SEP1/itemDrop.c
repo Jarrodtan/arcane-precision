@@ -67,6 +67,32 @@ void update_item(struct itemDrops *item, struct player *player)
 		{
 			CP_Settings_Fill(item[u].effectColor);
 			CP_Graphics_DrawTriangle(item[u].top.x,item[u].top.y, item[u].left.x, item[u].left.y, item[u].right.x,item[u].right.y);
+			CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
+			CP_Settings_TextSize(20.0f);
+			switch (item[u].effect)
+			{
+			case heal:
+			CP_Font_DrawText("Heal 1 Heart", item[u].position.x - 45, item[u].position.y + 30);
+				break;
+			case dmg:
+				CP_Font_DrawText("Fire DMG Up", item[u].position.x - 45, item[u].position.y + 30);
+				break;
+			case movespeed:
+				CP_Font_DrawText("Move Speed Up", item[u].position.x - 55, item[u].position.y + 30);
+				break;
+			case cooldownDown:
+				CP_Font_DrawText("Cooldown Speed Up", item[u].position.x - 75, item[u].position.y + 30);
+				break;
+			case attackSpdUp:
+				CP_Font_DrawText("Attack Speed Up", item[u].position.x - 45, item[u].position.y + 30);
+				break;
+			case manaBuildUp:
+				CP_Font_DrawText("Mana Build Speed Up", item[u].position.x - 75, item[u].position.y + 30);
+				break;
+			case hitboxSizeUp:
+				CP_Font_DrawText("Hitbox Size Up", item[u].position.x - 50, item[u].position.y + 30);
+				break;
+			}
 			
 			//collision with player
 			if (CP_Vector_Distance(player->position, item[u].position) <= (player->diameter / 2) + (item[u].radius / 2))

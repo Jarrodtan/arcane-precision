@@ -15,6 +15,7 @@ struct walls topWall = { 0,0,WINDOW_WIDTH,50 };
 struct walls rightWall = { WINDOW_WIDTH, 0, -50, WINDOW_HEIGHT };
 struct walls botWall = { WINDOW_WIDTH, WINDOW_HEIGHT, -WINDOW_WIDTH, -50 };
 struct walls leftWall = { 0, WINDOW_HEIGHT, 50, -WINDOW_HEIGHT };
+
 struct walls topDoor = { (WINDOW_WIDTH / 2) - 100, 0, 200, 50 };
 struct walls rightDoor = { WINDOW_WIDTH - 50, (WINDOW_HEIGHT / 2) - 100 , 50, 200 };
 struct walls botDoor = { (WINDOW_WIDTH / 2) - 100, WINDOW_HEIGHT - 50, 200, 50 };
