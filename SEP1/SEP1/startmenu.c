@@ -3,13 +3,18 @@
 #include "mainmenu.h"
 #include "credits.h"
 #include "leaderboard.h"
+#include "settingsmenu.h"
+#include <stdbool.h>
 
 #define WINDOW_WIDTH 1600
 #define WINDOW_HEIGHT 900
 
 CP_Font myFont;
-
 float textSize;
+
+CP_Sound* backgroundMusic = NULL;
+float musicVolume = 0.5;
+bool musicPlaying = false;
 
 void Start_Menu_Init(void)
 {
@@ -19,6 +24,7 @@ void Start_Menu_Init(void)
     CP_Settings_TextSize(textSize);
     CP_TEXT_ALIGN_HORIZONTAL horizontal = CP_TEXT_ALIGN_H_CENTER;
     CP_TEXT_ALIGN_VERTICAL vertical = CP_TEXT_ALIGN_V_MIDDLE;
+    backgroundMusic = CP_Sound_Load("Assets/Music/menuMusic.mp3");
 }
 
 void Start_Menu_Update(void)
@@ -80,24 +86,30 @@ void Start_Menu_Update(void)
         CP_Engine_SetNextGameState(Credits_Init, Credits_Update, Credits_Exit);
     }
 
-    // Mute button
-    /*CP_Image soundOnIcon = CP_Image_Load("Assets/soundOn_icon.png");
-    CP_Image soundOffIcon = CP_Image_Load("Assets/soundOff_icon.png");
+    // Settings button
+    CP_Image soundOnIcon = CP_Image_Load("Assets/cog.png");
+    CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
+    CP_Graphics_DrawRect(WINDOW_WIDTH - 90.0f, WINDOW_HEIGHT - 60.0f,
+        WINDOW_WIDTH / 15.0f, WINDOW_HEIGHT / 12.0f);
     
-    CP_Image_Draw(soundOnIcon,WINDOW_WIDTH - 90.0f, WINDOW_HEIGHT - 50.0f,
+    CP_Image_Draw(soundOnIcon,WINDOW_WIDTH - 90.0f, WINDOW_HEIGHT - 60.0f,
         WINDOW_WIDTH / 15.0f, WINDOW_HEIGHT / 12.0f,255);
     if (IsAreaClicked(WINDOW_WIDTH - 90.0f, WINDOW_HEIGHT - 50.0f,
         WINDOW_WIDTH / 15.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
     {
-        CP_Image_Free(soundOnIcon);
-        CP_Image_Draw(soundOffIcon, WINDOW_WIDTH - 90.0f, WINDOW_HEIGHT - 50.0f,
-            WINDOW_WIDTH / 15.0f, WINDOW_HEIGHT / 12.0f, 255);
-        CP_Engine_Terminate();
-    }*/
+        CP_Engine_SetNextGameState(settingsscreen_Init, settingsscreen_Update, settingsscreen_Exit);
+    }
+
+    // plays music
+    if (!musicPlaying)
+    {
+        CP_Sound_PlayAdvanced(backgroundMusic, musicVolume, 1, TRUE, CP_SOUND_GROUP_0);
+        musicPlaying = true;
+    }
 
 }
 
 void Start_Menu_Exit(void)
 {
-
+    CP_Sound_Free(backgroundMusic);
 }

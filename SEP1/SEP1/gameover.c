@@ -121,6 +121,7 @@ void gameover_Update(void)
 		}
 		CP_Engine_SetNextGameState(Start_Menu_Init, Start_Menu_Update, Start_Menu_Exit);
 	}
+	CP_Sound_StopAll();
 }
 
 void gameover_Exit(void)

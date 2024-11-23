@@ -58,6 +58,10 @@ float slowTimeScale = 0.1f;
 bool isSlowed = false;
 enum Spells selectedSpell = FIREBALL;// Default spell
 
+CP_Sound* gameplayMusic = NULL;
+float gamemusicVolume = 0.5;
+bool gamemusicPlaying = false;
+
 
 
 struct player player;
@@ -183,6 +187,7 @@ static void initializeAttack(struct playerAttack* playerAttack, CP_Vector positi
 void Game_Init(void)
 {
 	pause_sign = CP_Image_Load("Assets/Pause Sign.png");
+	gameplayMusic = CP_Sound_Load("Assets/Music/dungeonMusic.mp3");
 	tut_page1 = CP_Image_Load("Assets/tutorial_page1.png");
 	tut_page2 = CP_Image_Load("Assets/tutorial_page2.png");
 	CP_Settings_RectMode(CP_POSITION_CORNER);
@@ -490,6 +495,13 @@ void Game_Update(void)
 					}
 				}
 			}
+
+			if (!gamemusicPlaying)
+			{
+				CP_Sound_PlayAdvanced(gameplayMusic, gamemusicVolume, 1, TRUE, CP_SOUND_GROUP_1);
+				gamemusicPlaying = true;
+			}
+
 			draw_screen();
 			enemy_code();
 			update_player(dt);
@@ -525,5 +537,6 @@ void Game_Exit(void)
 	hitboxSpawn = 0;
 	cooldown = 0;
 	CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 50));
+	CP_Sound_Free(gameplayMusic);
 
 }

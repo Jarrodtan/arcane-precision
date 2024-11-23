@@ -182,6 +182,7 @@ void tutorial(void)
 			CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
 		{
 			tut = false;
+			CP_Sound_StopAll();
 		}
 		//prev page
 		if (IsAreaClicked((WINDOW_WIDTH / 2.63f), (WINDOW_HEIGHT / 4.0f) * 3.52f, WINDOW_WIDTH / 20.0f, WINDOW_HEIGHT / 12.0f,
