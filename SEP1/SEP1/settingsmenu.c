@@ -1,7 +1,9 @@
 #include <cprocessing.h>
 #include <stdbool.h>
 #include "startmenu.h"
+#include "settingsmenu.h"
 #include "utils.h"
+#include "game.h"
 
 #define WINDOW_WIDTH 1600
 #define WINDOW_HEIGHT 900
@@ -44,6 +46,8 @@ void settingsscreen_Update(void)
     {
         CP_Engine_SetNextGameState(Start_Menu_Init, Start_Menu_Update, Start_Menu_Exit);
     }
+
+    CP_Font_DrawText("Adjust Music Volume", WINDOW_WIDTH/2.65f, WINDOW_HEIGHT/2.3f);
 
     float sliderX = WINDOW_WIDTH / 2.0f - ((WINDOW_WIDTH / 1.75f)/4.0f);
     float sliderY = WINDOW_HEIGHT/2.25f + ((WINDOW_HEIGHT / 2.0f)/4.0f);

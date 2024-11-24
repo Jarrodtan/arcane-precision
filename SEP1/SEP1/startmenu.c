@@ -24,7 +24,12 @@ void Start_Menu_Init(void)
     CP_Settings_TextSize(textSize);
     CP_TEXT_ALIGN_HORIZONTAL horizontal = CP_TEXT_ALIGN_H_CENTER;
     CP_TEXT_ALIGN_VERTICAL vertical = CP_TEXT_ALIGN_V_MIDDLE;
-    backgroundMusic = CP_Sound_Load("Assets/Music/menuMusic.mp3");
+
+    if (backgroundMusic == NULL) {
+        backgroundMusic = CP_Sound_Load("Assets/Music/menuMusic.mp3");
+    }
+
+    musicPlaying = false;
 }
 
 void Start_Menu_Update(void)
@@ -103,6 +108,7 @@ void Start_Menu_Update(void)
     // plays music
     if (!musicPlaying)
     {
+        CP_Sound_StopGroup(CP_SOUND_GROUP_0);
         CP_Sound_PlayAdvanced(backgroundMusic, musicVolume, 1, TRUE, CP_SOUND_GROUP_0);
         musicPlaying = true;
     }
@@ -111,5 +117,5 @@ void Start_Menu_Update(void)
 
 void Start_Menu_Exit(void)
 {
-    CP_Sound_Free(backgroundMusic);
+    
 }

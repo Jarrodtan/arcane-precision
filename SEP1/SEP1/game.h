@@ -1,5 +1,6 @@
 #pragma once
 #include "cprocessing.h"
+#include "settingsmenu.h"
 
 struct player {
     CP_Vector position;

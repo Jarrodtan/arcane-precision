@@ -20,6 +20,7 @@ int page;
 float item_x;
 float item_y;
 
+
 void pause(void) 
 {
 
@@ -64,6 +65,7 @@ void pause(void)
 			CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
 		{
 			CP_Engine_SetNextGameState(Start_Menu_Init, Start_Menu_Update, Start_Menu_Exit);
+			CP_Sound_StopAll();
 		}
 	}
 	CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 50));

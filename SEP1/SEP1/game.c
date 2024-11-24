@@ -12,6 +12,7 @@
 #include "stdlib.h"
 #include "obstacle.h"
 #include "itemDrop.h"
+#include "settingsmenu.h"
 
 
 #define WINDOW_WIDTH 1600.0f
@@ -59,7 +60,6 @@ bool isSlowed = false;
 enum Spells selectedSpell = FIREBALL;// Default spell
 
 CP_Sound* gameplayMusic = NULL;
-float gamemusicVolume = 0.5;
 bool gamemusicPlaying = false;
 
 
@@ -187,9 +187,16 @@ static void initializeAttack(struct playerAttack* playerAttack, CP_Vector positi
 void Game_Init(void)
 {
 	pause_sign = CP_Image_Load("Assets/Pause Sign.png");
-	gameplayMusic = CP_Sound_Load("Assets/Music/dungeonMusic.mp3");
 	tut_page1 = CP_Image_Load("Assets/tutorial_page1.png");
 	tut_page2 = CP_Image_Load("Assets/tutorial_page2.png");
+
+	if (gameplayMusic == NULL)
+	{
+		gameplayMusic = CP_Sound_Load("Assets/Music/dungeonMusic.mp3");
+	}
+
+	//gamemusicPlaying = false;
+
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	manaBarColor = CP_Color_Create(0, 0, 150, 255);
 	manaColor = CP_Color_Create(0, 0, 255, 255);
@@ -498,7 +505,7 @@ void Game_Update(void)
 
 			if (!gamemusicPlaying)
 			{
-				CP_Sound_PlayAdvanced(gameplayMusic, gamemusicVolume, 1, TRUE, CP_SOUND_GROUP_1);
+				CP_Sound_PlayAdvanced(gameplayMusic, musicVolume, 1, TRUE, CP_SOUND_GROUP_1);
 				gamemusicPlaying = true;
 			}
 
@@ -537,6 +544,4 @@ void Game_Exit(void)
 	hitboxSpawn = 0;
 	cooldown = 0;
 	CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 50));
-	CP_Sound_Free(gameplayMusic);
-
 }

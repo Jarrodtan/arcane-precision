@@ -137,7 +137,7 @@ void Main_Menu_Update(void)
     {
         CP_Engine_SetNextGameState(Start_Menu_Init, Start_Menu_Update, Start_Menu_Exit);
     }
-
+    CP_Sound_StopGroup(CP_SOUND_GROUP_0);
 }
 
 void Main_Menu_Exit(void)
