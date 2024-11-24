@@ -5,6 +5,7 @@
 #include "leaderboard.h"
 #include "settingsmenu.h"
 #include <stdbool.h>
+#include "startmenu.h"
 
 #define WINDOW_WIDTH 1600
 #define WINDOW_HEIGHT 900
@@ -35,7 +36,7 @@ void Start_Menu_Init(void)
 void Start_Menu_Update(void)
 {
     // Draw background image
-    CP_Image backgroundImage = CP_Image_Load("Assets/Arcane_Precision_BG.png");
+    CP_Image backgroundImage = CP_Image_Load("Assets/Arcane_Precision_BG_Final.png");
     CP_Image_Draw(backgroundImage, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f, WINDOW_WIDTH, WINDOW_HEIGHT,255);
 
     CP_Graphics_ClearBackground(CP_Color_Create(50, 50, 50, 0));
