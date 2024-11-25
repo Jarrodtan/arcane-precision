@@ -54,6 +54,12 @@
     <ClCompile Include="itemDrop.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="splashscreen.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="settingsmenu.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -90,6 +96,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="itemDrop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="splashscreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="settingsmenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

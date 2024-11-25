@@ -105,7 +105,7 @@ static void drawSpellMenu(float x, float y, enum Spells selectedSpell) // create
 	float spellSelectHeight = 50.0f;
 	float spacing = 20.0f;
 	float startX = x - spellSelectWidth - (spacing / 2);
-	float startY = y + player.diameter / 2 + 60.0f;
+	float startY = y - player.diameter / 2 - 60.0f;
 
 	// highlight which spell is selected
 	CP_Color highlightColor = CP_Color_Create(255, 255, 0, 255);
@@ -520,13 +520,13 @@ void Game_Update(void)
 			//skill selection
 			if (isSlowed)
 			{
-				if (CP_Input_GetMouseX() >= (player.position.x - 100.0f) - (10.0f) && CP_Input_GetMouseX() <= player.position.x &&
-					CP_Input_GetMouseY() >= ((player.position.y + player.diameter / 2) + 60.0f) &&
-					CP_Input_GetMouseY() <= ((player.position.y + player.diameter / 2) + 110.0f))
+				if (CP_Input_GetMouseX() >= (player.position.x - 110.0f) && CP_Input_GetMouseX() <= player.position.x - 10.0f &&
+					CP_Input_GetMouseY() <= ((player.position.y - player.diameter / 2) - 10.0f) &&
+					CP_Input_GetMouseY() >= ((player.position.y - player.diameter / 2) - 60.0f))
 					selectedSpell = FIREBALL;
 				else if (CP_Input_GetMouseX() >= player.position.x + 10.0f && CP_Input_GetMouseX() <= player.position.x + 110.0f &&
-					CP_Input_GetMouseY() >= ((player.position.y + player.diameter / 2) + 60.0f) &&
-					CP_Input_GetMouseY() <= ((player.position.y + player.diameter / 2) + 110.0f))
+					CP_Input_GetMouseY() <= ((player.position.y - player.diameter / 2) - 10.0f) &&
+					CP_Input_GetMouseY() >= ((player.position.y - player.diameter / 2) - 60.0f))
 					selectedSpell = ICESHARDS;
 				drawSpellMenu(player.position.x, player.position.y, selectedSpell);
 			}
@@ -545,6 +545,6 @@ void Game_Exit(void)
 	game_pause = false;
 	hitboxSpawn = 0;
 	cooldown = 0;
-	gamemusicPlaying = false;
+	gamemusicPlaying = false; //define gamemusicPlaying to false for reinitialize
 	CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 50));
 }

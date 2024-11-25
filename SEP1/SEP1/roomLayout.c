@@ -43,6 +43,7 @@ extern CP_Font myFont;
 char roomsDisplay[256];
 char scoreDisplay[256];
 float textSize;
+extern enum Spells selectedSpell;
 
 
 void draw_Room()
@@ -149,7 +150,19 @@ void draw_screen(void) {
 	draw_Room();
 
 	//draw player 1
-	if (player.invincibilityTimer > 0)
+
+	// darw outline for spells
+	switch (selectedSpell)
+	{
+	case (FIREBALL):
+		CP_Settings_Fill(CP_Color_Create(240, 150, 0, 255)); // Draw Fire outline
+		break;
+	case (ICESHARDS):
+		CP_Settings_Fill(CP_Color_Create(39, 225, 245, 255)); // Draw Ice outline
+		break;
+	}
+		CP_Graphics_DrawCircle(player.position.x, player.position.y, player.diameter + 10.0f);
+	if (player.invincibilityTimer > 0) // Flash black and original color to signify Invincibility frame
 	{
 		if ((int)(player.invincibilityTimer * 10) % 2 == 0) {
 			CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));  // Black color
