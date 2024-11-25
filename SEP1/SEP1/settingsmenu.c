@@ -4,6 +4,7 @@
 #include "settingsmenu.h"
 #include "utils.h"
 #include "game.h"
+#include "pause.h"
 
 #define WINDOW_WIDTH 1600
 #define WINDOW_HEIGHT 900
@@ -25,6 +26,7 @@ void settingsscreen_Init(void)
     CP_Settings_TextSize(textSize);
     CP_TEXT_ALIGN_HORIZONTAL horizontal = CP_TEXT_ALIGN_H_CENTER;
     CP_TEXT_ALIGN_VERTICAL vertical = CP_TEXT_ALIGN_V_MIDDLE;
+
 }
 
 void settingsscreen_Update(void)
@@ -73,7 +75,6 @@ void settingsscreen_Update(void)
             }
         }
     }
-
 }
 
 void settingsscreen_Exit(void)

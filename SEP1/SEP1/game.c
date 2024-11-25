@@ -545,5 +545,6 @@ void Game_Exit(void)
 	game_pause = false;
 	hitboxSpawn = 0;
 	cooldown = 0;
+	gamemusicPlaying = false;
 	CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 50));
 }

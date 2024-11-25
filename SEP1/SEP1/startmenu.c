@@ -93,13 +93,9 @@ void Start_Menu_Update(void)
     }
 
     // Settings button
-    CP_Image soundOnIcon = CP_Image_Load("Assets/cog.png");
-    CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
-    CP_Graphics_DrawRect(WINDOW_WIDTH - 90.0f, WINDOW_HEIGHT - 60.0f,
-        WINDOW_WIDTH / 15.0f, WINDOW_HEIGHT / 12.0f);
-    
-    CP_Image_Draw(soundOnIcon,WINDOW_WIDTH - 90.0f, WINDOW_HEIGHT - 60.0f,
-        WINDOW_WIDTH / 15.0f, WINDOW_HEIGHT / 12.0f,255);
+    CP_Image settingbuttonIcon = CP_Image_Load("Assets/settings_icon.png"); 
+    CP_Image_Draw(settingbuttonIcon,WINDOW_WIDTH - 90.0f, WINDOW_HEIGHT - 60.0f,
+        WINDOW_WIDTH / 15.0f, WINDOW_HEIGHT / 17.0f,255);
     if (IsAreaClicked(WINDOW_WIDTH - 90.0f, WINDOW_HEIGHT - 50.0f,
         WINDOW_WIDTH / 15.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
     {
