@@ -14,7 +14,6 @@
 #include "itemDrop.h"
 #include "settingsmenu.h"
 
-
 #define WINDOW_WIDTH 1600.0f
 #define WINDOW_HEIGHT 900.0f
 #define MAX_BULLETS 100  // Maximum bullets in array
@@ -341,6 +340,9 @@ void Game_Update(void)
 			break;
 		}
 	}
+	// draw dungeon floor
+	CP_Image floorImage = CP_Image_Load("Assets/DungeonTiles.png");
+	CP_Image_Draw(floorImage, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 255);
 
 	// Obstacle spawn (BEV)
 	UpdateObstacles(roomsPassed, player.position, player.diameter);
@@ -350,7 +352,7 @@ void Game_Update(void)
 			HandleCollision(&player.position, player.diameter, obstacle[i], obstacle_diameter);
 		}
 	}
-
+	
 	// Pause & Resume game
 	if (CP_Input_KeyTriggered(KEY_ESCAPE)) {
 		switch (game_pause) {
