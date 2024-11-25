@@ -24,7 +24,7 @@
 extern bool isNewGame;
 extern bool game_pause;
 extern bool how_To;
-bool tut;
+extern bool settings;
 extern const char* saveFile1;
 extern const char* saveFile2;
 extern int saveSlot;
@@ -59,9 +59,8 @@ bool isSlowed = false;
 enum Spells selectedSpell = FIREBALL;// Default spell
 
 CP_Sound* gameplayMusic = NULL;
-bool gamemusicPlaying = false;
-
-
+bool gamemusicPlaying;
+extern float musicVolume;
 
 struct player player;
 struct manabar maxManabar;
@@ -160,7 +159,7 @@ void saveGame(void)
 	isNewGame = false;
 	playerStats stats = { player.moveSpeed,player.lives,
 				player.manaBuildSpeed,player.cooldownSpeed, player.attackDamage,
-				player.attackSize, player.attackSpeed,player.score, roomsPassed, lastEntered};
+				player.attackSize, player.attackSpeed,player.score, roomsPassed,difficulty, lastEntered, player.hitboxSize};
 	switch (saveSlot)
 	{
 	case 1:
@@ -182,9 +181,10 @@ static void initializeAttack(struct playerAttack* playerAttack, CP_Vector positi
 	playerAttack->selSpell = spellType;
 }
 
-//===================================================GAME_INIT==================================================================================
+//===================================================GAME_INIT=================================================================================================================
 void Game_Init(void)
 {
+	//gamemusicPlaying = false;
 	pause_sign = CP_Image_Load("Assets/Pause Sign.png");
 	tut_page1 = CP_Image_Load("Assets/tutorial_page1.png");
 	tut_page2 = CP_Image_Load("Assets/tutorial_page2.png");
@@ -193,8 +193,6 @@ void Game_Init(void)
 	{
 		gameplayMusic = CP_Sound_Load("Assets/Music/dungeonMusic.mp3");
 	}
-
-	//gamemusicPlaying = false;
 
 	CP_Settings_RectMode(CP_POSITION_CORNER);
 	manaBarColor = CP_Color_Create(0, 0, 150, 255);
@@ -237,7 +235,7 @@ void Game_Init(void)
 		tut = false;
 		playerStats stats = { player.moveSpeed,player.lives,
 			player.manaBuildSpeed,player.cooldownSpeed, player.attackDamage,
-			player.attackSize, player.attackSpeed, player.score, roomsPassed, lastEntered,player.hitboxSize};
+			player.attackSize, player.attackSpeed, player.score, roomsPassed, difficulty, lastEntered,player.hitboxSize};
 		switch (saveSlot)
 		{
 		case 1:
@@ -256,6 +254,7 @@ void Game_Init(void)
 		player.attackSpeed = stats.attackSpeed;
 		player.score = stats.score;
 		roomsPassed = stats.roomsPassed;
+		difficulty = stats.difficulty;
 		lastEntered = stats.lastEntered;
 	}
 	switch (lastEntered) //player positioning and spawn points based on room last entered.
@@ -305,8 +304,6 @@ void Game_Init(void)
 	{
 		item[i].active = 0;
 	}
-
-	//printf("rooms passed: %d\n", roomsPassed);
 
 	//for object spawn
 	for (int i = 0; i < currentObstacleCount; i++) {
@@ -359,6 +356,7 @@ void Game_Update(void)
 		case true:
 			game_pause = false;
 			how_To = false;
+			settings = false;
 			break;
 		case false:
 			game_pause = true;
@@ -507,10 +505,11 @@ void Game_Update(void)
 
 			if (!gamemusicPlaying)
 			{
-				CP_Sound_PlayAdvanced(gameplayMusic, musicVolume, 1, TRUE, CP_SOUND_GROUP_1);
+				CP_Sound_StopGroup(CP_SOUND_GROUP_0);
+				CP_Sound_PlayAdvanced(gameplayMusic, musicVolume, 1, TRUE, CP_SOUND_GROUP_0);
 				gamemusicPlaying = true;
 			}
-
+			//printf("is playing? : %d",gamemusicPlaying);
 			draw_screen();
 			enemy_code();
 			update_player(dt);

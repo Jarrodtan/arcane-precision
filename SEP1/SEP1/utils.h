@@ -10,6 +10,7 @@ typedef struct {
     float attackSpeed;
     int score;
     int roomsPassed;
+    int difficulty;
     int lastEntered;
     float hitboxSize;
 }playerStats;

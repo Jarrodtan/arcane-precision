@@ -77,6 +77,8 @@ void init_enemy(void)
 	// Find an available enemy slot in the array
 	//for loop enemyNumber
 	//generate rng for enemy position
+	printf("rooms passed: %d\n", roomsPassed);
+	printf("difficulty: %d\n", difficulty);
 	for (int i = 0; i < enemyNumber; i++) 
 	{
 		CP_Vector enemyPosition = CP_Vector_Set(CP_Random_RangeFloat(150.0f, WINDOW_WIDTH - 150.0f), CP_Random_RangeFloat(300.0f, WINDOW_HEIGHT - 300.0f));

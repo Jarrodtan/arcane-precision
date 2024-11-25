@@ -2,23 +2,24 @@
 #include "stdio.h"
 #include "startmenu.h"
 #include "utils.h"
+#include "stdbool.h"
 
 #define WINDOW_WIDTH 1600.0f
 #define WINDOW_HEIGHT 900.0f
 
 extern CP_Font myFont;
+extern bool creditsScreen;
 float textSize;
-void Credits_Init(void)
+
+
+void Credits(void)
 {
     CP_Settings_RectMode(CP_POSITION_CENTER);
     textSize = 50.0f;
     CP_Settings_TextSize(textSize);
     CP_TEXT_ALIGN_HORIZONTAL horizontal = CP_TEXT_ALIGN_H_CENTER;
     CP_TEXT_ALIGN_VERTICAL vertical = CP_TEXT_ALIGN_V_MIDDLE;
-}
 
-void Credits_Update(void)
-{
     CP_Graphics_ClearBackground(CP_Color_Create(50, 50, 50, 0));
 
     // Credits
@@ -35,11 +36,7 @@ void Credits_Update(void)
     if (IsAreaClicked(WINDOW_WIDTH / 1.2f, WINDOW_HEIGHT / 6.0f,
         WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
     {
-        CP_Engine_SetNextGameState(Start_Menu_Init, Start_Menu_Update, Start_Menu_Exit);
+        creditsScreen = false;
     }
 }
 
-void Credits_Exit(void)
-{
-
-}

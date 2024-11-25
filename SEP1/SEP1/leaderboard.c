@@ -4,6 +4,7 @@
 #include "stdio.h"
 #include "string.h"
 #include "game.h"
+#include "stdbool.h"
 
 #define WINDOW_WIDTH 1600.0f
 #define WINDOW_HEIGHT 900.0f
@@ -14,6 +15,7 @@ CP_Font myFont;
 float textSize;
 extern struct player player;
 extern const char* leaderboardSave;
+extern bool leaderboardScreen;
 
 int count;
 float startX;
@@ -21,8 +23,11 @@ float startY;
 float lineSpacing;
 leaderboard ldrboard[MAX_LEADERBOARD];
 
-void Leaderboard_Init(void)
+
+
+void Leaderboard(void)
 {
+
     CP_Settings_RectMode(CP_POSITION_CENTER);
     myFont = CP_Font_Load("Assets/Exo2-Regular.ttf");
     textSize = 50.0f;
@@ -36,13 +41,6 @@ void Leaderboard_Init(void)
     startX = WINDOW_WIDTH / 2.68f;
     startY = WINDOW_HEIGHT / 8.5f;  // Start higher on the screen
     lineSpacing = textSize + 20.0f; // Space between each entry line
-
-}
-
-
-void Leaderboard_Update(void)
-{
-
 
     CP_Graphics_ClearBackground(CP_Color_Create(50, 50, 50, 0));
 
@@ -70,11 +68,6 @@ void Leaderboard_Update(void)
     if (IsAreaClicked(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 1.075f,
         WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
     {
-        CP_Engine_SetNextGameState(Start_Menu_Init, Start_Menu_Update, Start_Menu_Exit);
+        leaderboardScreen = false;
     }
-}
-
-void Leaderboard_Exit(void)
-{
-
 }

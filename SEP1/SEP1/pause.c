@@ -5,6 +5,7 @@
 #include "pause.h"
 #include "stdbool.h"
 #include "startmenu.h"
+#include "settingsmenu.h"
 
 #define WINDOW_WIDTH 1600.0f
 #define WINDOW_HEIGHT 900.0f
@@ -15,6 +16,7 @@ bool game_pause;
 bool how_To;
 extern CP_Font myFont;
 extern bool tut;
+extern bool settings;
 float textSize;
 int page;
 float item_x;
@@ -23,13 +25,15 @@ float item_y;
 
 void pause(void) 
 {
-
 	if (how_To == true)
 	{
 		howToPlay();
 	}
+	else if (settings == true)
+	{
+		settingsScreen();
+	}
 	else {
-
 		//dim background and show pause sign
 		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 100));
 		CP_Graphics_DrawRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT); //for dimming pause menu
@@ -66,6 +70,16 @@ void pause(void)
 		{
 			CP_Engine_SetNextGameState(Start_Menu_Init, Start_Menu_Update, Start_Menu_Exit);
 			CP_Sound_StopAll();
+		}
+		// Settings button
+		CP_Image settingbuttonIcon = CP_Image_Load("Assets/settings_icon.png");
+		CP_Image_Draw(settingbuttonIcon, WINDOW_WIDTH - 90.0f, WINDOW_HEIGHT - 60.0f,
+			WINDOW_WIDTH / 15.0f, WINDOW_HEIGHT / 9.0f, 255);
+		if (IsAreaClicked(WINDOW_WIDTH - 90.0f, WINDOW_HEIGHT - 50.0f,
+			WINDOW_WIDTH / 15.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
+		{
+			settings = true;
+
 		}
 	}
 	CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 50));

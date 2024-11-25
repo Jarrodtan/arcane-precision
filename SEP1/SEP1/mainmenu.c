@@ -3,17 +3,20 @@
 #include "game.h"
 #include "startmenu.h"
 #include "stdbool.h"
+
 #define WINDOW_WIDTH 1600
 #define WINDOW_HEIGHT 900
 CP_Font myFont;
 float textSize;
 int saveSlot;
 bool isNewGame;
+extern bool newLoadScreen;
 
 extern const char *saveFile1;
 extern const char *saveFile2;
 
-void Main_Menu_Init(void)
+
+void newGameLoadGame(void)
 {
     CP_Settings_RectMode(CP_POSITION_CENTER);
     myFont = CP_Font_Load("Assets/Exo2-Regular.ttf");
@@ -21,10 +24,7 @@ void Main_Menu_Init(void)
     CP_Settings_TextSize(textSize);
     CP_TEXT_ALIGN_HORIZONTAL horizontal = CP_TEXT_ALIGN_H_CENTER;
     CP_TEXT_ALIGN_VERTICAL vertical = CP_TEXT_ALIGN_V_MIDDLE;
-}
-
-void Main_Menu_Update(void)
-{
+ 
     CP_Graphics_ClearBackground(CP_Color_Create(50, 50, 50, 0));
 
 
@@ -135,12 +135,7 @@ void Main_Menu_Update(void)
     if (IsAreaClicked(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 1.5f,
         WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
     {
-        CP_Engine_SetNextGameState(Start_Menu_Init, Start_Menu_Update, Start_Menu_Exit);
+        newLoadScreen = false;
     }
-    CP_Sound_StopGroup(CP_SOUND_GROUP_0);
-}
-
-void Main_Menu_Exit(void)
-{
-
+  
 }
