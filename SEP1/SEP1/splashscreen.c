@@ -21,11 +21,18 @@ void splashscreen_Init(void)
 void splashscreen_Update(void)
 {
     CP_Image_Draw(splashImage, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 255);
+
+    if (CP_Input_MouseClicked())
+    {
+        CP_Engine_SetNextGameState(Start_Menu_Init, Start_Menu_Update, Start_Menu_Exit);
+
+    }
+
     // Calculate the time since the splash screen was displayed
     float elapsedTime = CP_System_GetMillis() - splashStartTime;
 
     // If 2 seconds (2000 milliseconds) have passed, transition to the start menu
-    if (elapsedTime >= 2000.0f)
+    if (elapsedTime >= 4000.0f)
     {
         CP_Engine_SetNextGameState(Start_Menu_Init, Start_Menu_Update, Start_Menu_Exit);
     }

@@ -256,6 +256,7 @@ void Game_Init(void)
 		roomsPassed = stats.roomsPassed;
 		difficulty = stats.difficulty;
 		lastEntered = stats.lastEntered;
+		player.hitboxSize = stats.hitboxSize;
 	}
 	switch (lastEntered) //player positioning and spawn points based on room last entered.
 	{
@@ -473,6 +474,7 @@ void Game_Update(void)
 			}
 			else if (mana <= 0) //mana is off cooldown
 			{
+				mana = 0;
 				cooldown = 0;
 			}
 			//moving player projectiles
