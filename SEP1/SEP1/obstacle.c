@@ -252,7 +252,8 @@ void UpdateObstacles(int roomsPassed, CP_Vector player_position, float playerDia
     }
     // Drawing Obstacles
     for (int i = 0; i < currentObstacleCount; i++) {
-        CP_Settings_Fill(CP_Color_Create(128, 128, 128, 255));
+        CP_Settings_Fill(CP_Color_Create(99, 112, 110, 255));
+
         CP_Graphics_DrawRect(obstacle[i].x, obstacle[i].y, obstacle_diameter, obstacle_diameter);
     }
 }

@@ -74,7 +74,7 @@ void Start_Menu_Update(void)
         CP_Graphics_DrawRect(WINDOW_WIDTH / 6.5f, WINDOW_HEIGHT / 3.0f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);
         CP_Font_Set(myFont);
         CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-        CP_Font_DrawText("Play Game", WINDOW_WIDTH / 12.0f, WINDOW_HEIGHT / 2.86f);
+        CP_Font_DrawText("Play Game", WINDOW_WIDTH / 12.2f, WINDOW_HEIGHT / 2.86f);
         if (IsAreaClicked(WINDOW_WIDTH / 6.5f, WINDOW_HEIGHT / 3.0f,
             WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
         {
@@ -122,9 +122,9 @@ void Start_Menu_Update(void)
 
         // Settings button
         CP_Image settingbuttonIcon = CP_Image_Load("Assets/settings_icon.png");
-        CP_Image_Draw(settingbuttonIcon, WINDOW_WIDTH - 90.0f, WINDOW_HEIGHT - 60.0f,
+        CP_Image_Draw(settingbuttonIcon, WINDOW_WIDTH - 120.0f, WINDOW_HEIGHT - 120.0f,
             WINDOW_WIDTH / 15.0f, WINDOW_HEIGHT / 9.0f, 255);
-        if (IsAreaClicked(WINDOW_WIDTH - 90.0f, WINDOW_HEIGHT - 50.0f,
+        if (IsAreaClicked(WINDOW_WIDTH - 120.0f, WINDOW_HEIGHT - 100.0f,
             WINDOW_WIDTH / 15.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
         {
             settings = true;

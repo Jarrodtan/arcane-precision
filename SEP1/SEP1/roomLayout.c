@@ -233,6 +233,6 @@ void draw_screen(void) {
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 	sprintf_s(roomsDisplay, sizeof(roomsDisplay), "Room Passed: %d", roomsPassed);
 	sprintf_s(scoreDisplay, sizeof(scoreDisplay), "Score: %d", player.score);
-	CP_Font_DrawText(roomsDisplay, WINDOW_WIDTH - 250, 85);
-	CP_Font_DrawText(scoreDisplay, WINDOW_WIDTH - 250, 115);
+	CP_Font_DrawText(roomsDisplay, WINDOW_WIDTH - 260, 85);
+	CP_Font_DrawText(scoreDisplay, WINDOW_WIDTH - 260, 115);
 }

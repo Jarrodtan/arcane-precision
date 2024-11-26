@@ -14,11 +14,11 @@ float textSize;
 
 void Credits(void)
 {
-    CP_Settings_RectMode(CP_POSITION_CENTER);
+   /* CP_Settings_RectMode(CP_POSITION_CENTER);
     textSize = 50.0f;
     CP_Settings_TextSize(textSize);
     CP_TEXT_ALIGN_HORIZONTAL horizontal = CP_TEXT_ALIGN_H_CENTER;
-    CP_TEXT_ALIGN_VERTICAL vertical = CP_TEXT_ALIGN_V_MIDDLE;
+    CP_TEXT_ALIGN_VERTICAL vertical = CP_TEXT_ALIGN_V_MIDDLE;*/
 
     CP_Graphics_ClearBackground(CP_Color_Create(50, 50, 50, 0));
 

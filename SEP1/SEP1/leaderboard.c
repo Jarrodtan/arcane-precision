@@ -28,24 +28,24 @@ leaderboard ldrboard[MAX_LEADERBOARD];
 void Leaderboard(void)
 {
 
-    CP_Settings_RectMode(CP_POSITION_CENTER);
-    myFont = CP_Font_Load("Assets/Exo2-Regular.ttf");
-    textSize = 50.0f;
-    CP_Settings_TextSize(textSize);
-    CP_TEXT_ALIGN_HORIZONTAL horizontal = CP_TEXT_ALIGN_H_CENTER;
-    CP_TEXT_ALIGN_VERTICAL vertical = CP_TEXT_ALIGN_V_MIDDLE;
+    //CP_Settings_RectMode(CP_POSITION_CENTER);
+    //myFont = CP_Font_Load("Assets/Exo2-Regular.ttf");
+    //textSize = 50.0f;
+    //CP_Settings_TextSize(textSize);
+    //CP_TEXT_ALIGN_HORIZONTAL horizontal = CP_TEXT_ALIGN_H_CENTER;
+    //CP_TEXT_ALIGN_VERTICAL vertical = CP_TEXT_ALIGN_V_MIDDLE;
 
     count = loadLeaderboard(ldrboard, leaderboardSave);
 
     // Define starting position and spacing between leaderboard entries
-    startX = WINDOW_WIDTH / 2.68f;
+    startX = WINDOW_WIDTH / 2.80f;
     startY = WINDOW_HEIGHT / 8.5f;  // Start higher on the screen
-    lineSpacing = textSize + 20.0f; // Space between each entry line
+    lineSpacing = textSize + 18.0f; // Space between each entry line
 
-    CP_Graphics_ClearBackground(CP_Color_Create(50, 50, 50, 0));
+    CP_Graphics_ClearBackground(CP_Color_Create(6, 38, 38, 0));
 
     CP_Settings_Fill(CP_Color_Create(240, 230, 140, 255));
-    CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.25f, WINDOW_WIDTH / 3.5f, WINDOW_HEIGHT / 1.25f);
+    CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.25f, WINDOW_WIDTH / 3.0f, WINDOW_HEIGHT / 1.25f);
 
     // Iterate over each leaderboard entry and display it
     for (int i = 0; i < count; i++) {

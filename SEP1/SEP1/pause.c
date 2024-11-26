@@ -42,20 +42,20 @@ void pause(void)
 		CP_Graphics_DrawRect(WINDOW_WIDTH / 4.0f, WINDOW_HEIGHT / 4.0f, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f);// for pause menu
 
 		CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
-		CP_Graphics_DrawRect(WINDOW_WIDTH / 2.4f, WINDOW_HEIGHT / 2.4f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);// for menu button
+		CP_Graphics_DrawRect(WINDOW_WIDTH / 2.47f, WINDOW_HEIGHT / 2.4f, WINDOW_WIDTH / 5.2f, WINDOW_HEIGHT / 12.0f);// for how to play button
 
 		CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
-		CP_Graphics_DrawRect(WINDOW_WIDTH / 2.4f, WINDOW_HEIGHT / 1.9f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);// for how to play button
+		CP_Graphics_DrawRect(WINDOW_WIDTH / 2.4f, WINDOW_HEIGHT / 1.9f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);// for menu button
 
 		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 		CP_Settings_TextSize(50.0f);
-		CP_Font_DrawText("How To Play", WINDOW_WIDTH / 2.33f, WINDOW_HEIGHT / 2.11f);
-		CP_Font_DrawText("Main Menu", WINDOW_WIDTH / 2.3f, WINDOW_HEIGHT / 1.72f);
+		CP_Font_DrawText("How To Play", WINDOW_WIDTH / 2.43f, WINDOW_HEIGHT / 2.11f);
+		CP_Font_DrawText("Main Menu", WINDOW_WIDTH / 2.36f, WINDOW_HEIGHT / 1.72f);
 		CP_Image_Draw(pause_sign, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 3.0f, 100.0f, 100.0f, 255);
 
 		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 		CP_Settings_TextSize(50.0f);
-		CP_Font_DrawText("Press escape key to continue!", WINDOW_WIDTH / 3.0f, WINDOW_HEIGHT / 1.4f);
+		CP_Font_DrawText("Press escape key to continue!", WINDOW_WIDTH / 3.2f, WINDOW_HEIGHT / 1.4f);
 
 		//return to mainmenu
 		if (IsAreaClicked(WINDOW_WIDTH / 1.99f, WINDOW_HEIGHT / 2.18f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f,
@@ -73,9 +73,9 @@ void pause(void)
 		}
 		// Settings button
 		CP_Image settingbuttonIcon = CP_Image_Load("Assets/settings_icon.png");
-		CP_Image_Draw(settingbuttonIcon, WINDOW_WIDTH - 90.0f, WINDOW_HEIGHT - 60.0f,
+		CP_Image_Draw(settingbuttonIcon, WINDOW_WIDTH - 120.0f, WINDOW_HEIGHT - 120.0f,
 			WINDOW_WIDTH / 15.0f, WINDOW_HEIGHT / 9.0f, 255);
-		if (IsAreaClicked(WINDOW_WIDTH - 90.0f, WINDOW_HEIGHT - 50.0f,
+		if (IsAreaClicked(WINDOW_WIDTH - 120.0f, WINDOW_HEIGHT - 120.0f,
 			WINDOW_WIDTH / 15.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
 		{
 			settings = true;
@@ -192,7 +192,7 @@ void tutorial(void)
 		CP_Graphics_DrawRect(WINDOW_WIDTH / 2.4f, (WINDOW_HEIGHT / 4.0f) * 3.35f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);// return to pause menu button
 		CP_Settings_TextSize(50.0f);
 		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-		CP_Font_DrawText("Start", WINDOW_WIDTH / 2.11f, (WINDOW_HEIGHT / 4.0f) * 3.56f);
+		CP_Font_DrawText("Start", WINDOW_WIDTH / 2.14f, (WINDOW_HEIGHT / 4.0f) * 3.56f);
 		//StartGame
 		if (IsAreaClicked(WINDOW_WIDTH / 2.0f, (WINDOW_HEIGHT / 4.0f) * 3.52f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f,
 			CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)

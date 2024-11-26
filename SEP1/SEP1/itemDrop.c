@@ -72,25 +72,25 @@ void update_item(struct itemDrops *item, struct player *player)
 			switch (item[u].effect)
 			{
 			case heal:
-			CP_Font_DrawText("Heal 1 Heart", item[u].position.x - 45, item[u].position.y + 30);
+			CP_Font_DrawText("Heal 1 Heart", item[u].position.x - 48, item[u].position.y + 30);
 				break;
 			case dmg:
-				CP_Font_DrawText("Fire DMG Up", item[u].position.x - 45, item[u].position.y + 30);
+				CP_Font_DrawText("Fire DMG Up", item[u].position.x - 58, item[u].position.y + 30);
 				break;
 			case movespeed:
-				CP_Font_DrawText("Move Speed Up", item[u].position.x - 55, item[u].position.y + 30);
+				CP_Font_DrawText("Move Speed Up", item[u].position.x - 62, item[u].position.y + 30);
 				break;
 			case cooldownDown:
-				CP_Font_DrawText("Cooldown Speed Up", item[u].position.x - 75, item[u].position.y + 30);
+				CP_Font_DrawText("Cooldown Speed Up", item[u].position.x - 80, item[u].position.y + 30);
 				break;
 			case attackSpdUp:
-				CP_Font_DrawText("Attack Speed Up", item[u].position.x - 45, item[u].position.y + 30);
+				CP_Font_DrawText("Attack Speed Up", item[u].position.x - 66, item[u].position.y + 30);
 				break;
 			case manaBuildUp:
-				CP_Font_DrawText("Mana Build Speed Up", item[u].position.x - 75, item[u].position.y + 30);
+				CP_Font_DrawText("Mana Build Speed Up", item[u].position.x - 86, item[u].position.y + 30);
 				break;
 			case hitboxSizeUp:
-				CP_Font_DrawText("Hitbox Size Up", item[u].position.x - 50, item[u].position.y + 30);
+				CP_Font_DrawText("Hitbox Size Up", item[u].position.x - 58, item[u].position.y + 30);
 				break;
 			}
 			
@@ -107,7 +107,10 @@ void update_item(struct itemDrops *item, struct player *player)
 					player->attackDamage += 1;
 					break;
 				case movespeed:
-					player->moveSpeed += 50;
+					if (player->moveSpeed <= 1000)
+					{
+						player->moveSpeed += 50;
+					}
 					break;
 				case cooldownDown:
 					player->cooldownSpeed += 5.00f;
@@ -118,21 +121,17 @@ void update_item(struct itemDrops *item, struct player *player)
 				case manaBuildUp:
 					if (player->manaBuildSpeed <= 150.0f)
 					{
-					player->manaBuildSpeed += 5.00f;
+						player->manaBuildSpeed += 5.00f;
 					}
 					break;
 				case hitboxSizeUp:
 					if (player->hitboxSize <= 2.0f)
 					{
-					player->hitboxSize += 0.2f;
+						player->hitboxSize += 0.2f;
 					}
 					break;
 				}
-
 			}
-	
 		}
 	}
 }
-
-
