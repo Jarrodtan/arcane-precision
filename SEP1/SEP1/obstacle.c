@@ -183,7 +183,7 @@ void HandleProjectileCollision(struct enemyAttack* bullet) {
 
 bool CheckPlayerBulletCollision(CP_Vector playerBullet_position, float playerBulletDiameter, CP_Vector obstacle, float obstacleSize) {
     // calculate the bullet's position with the radius
-    float playerBulletRadius = playerBulletDiameter / 2.0f;
+    float playerBulletRadius = playerBulletDiameter / 5.0f;
     float playerBulletLeft = playerBullet_position.x - playerBulletRadius;
     float playerBulletRight = playerBullet_position.x + playerBulletRadius;
     float playerBulletTop = playerBullet_position.y - playerBulletRadius;
@@ -252,7 +252,7 @@ void UpdateObstacles(int roomsPassed, CP_Vector player_position, float playerDia
     }
     // Drawing Obstacles
     for (int i = 0; i < currentObstacleCount; i++) {
-        CP_Settings_Fill(CP_Color_Create(150, 255, 100, 255));
+        CP_Settings_Fill(CP_Color_Create(128, 128, 128, 255));
         CP_Graphics_DrawRect(obstacle[i].x, obstacle[i].y, obstacle_diameter, obstacle_diameter);
     }
 }
