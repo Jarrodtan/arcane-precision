@@ -20,13 +20,7 @@ void splashscreen_Init(void)
 
 void splashscreen_Update(void)
 {
-    if (!splashDrawn)
-    {
-        // Draw the splash screen image at the center of the window
-        CP_Image_Draw(splashImage, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 255);
-        splashDrawn = true; // Set flag to true after drawing
-    }
-
+    CP_Image_Draw(splashImage, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f, WINDOW_WIDTH, WINDOW_HEIGHT, 255);
     // Calculate the time since the splash screen was displayed
     float elapsedTime = CP_System_GetMillis() - splashStartTime;
 
