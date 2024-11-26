@@ -135,7 +135,7 @@ void Start_Menu_Update(void)
         if (!musicPlaying)
         {
             CP_Sound_StopGroup(CP_SOUND_GROUP_0);
-            CP_Sound_PlayAdvanced(backgroundMusic, musicVolume, 1, TRUE, CP_SOUND_GROUP_0);
+            CP_Sound_PlayAdvanced(backgroundMusic, musicVolume, 1, TRUE, CP_SOUND_GROUP_0); // set music volume, pitch and loop
             musicPlaying = true;
         }
     }
