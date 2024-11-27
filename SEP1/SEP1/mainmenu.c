@@ -39,7 +39,7 @@ void newGameLoadGame(void)
         CP_Graphics_DrawRect((WINDOW_WIDTH / 4.0f)*2.89, WINDOW_HEIGHT / 3.0f,
             WINDOW_WIDTH / 8.0f, WINDOW_HEIGHT / 12.0f);
         CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-        CP_Font_DrawText("Load existing save", WINDOW_WIDTH / 2.63f, WINDOW_HEIGHT / 2.88f);
+        CP_Font_DrawText("Load Saved Game", WINDOW_WIDTH / 2.63f, WINDOW_HEIGHT / 2.88f);
         CP_Font_DrawText("Delete", (WINDOW_WIDTH / 4.07f) * 2.76, WINDOW_HEIGHT / 2.91f);
 
         break;
@@ -48,7 +48,7 @@ void newGameLoadGame(void)
         CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 3.0f,
             WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);    
         CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-        CP_Font_DrawText("New game", WINDOW_WIDTH / 2.32f, WINDOW_HEIGHT / 2.86f);
+        CP_Font_DrawText("New Game", WINDOW_WIDTH / 2.32f, WINDOW_HEIGHT / 2.86f);
         break;
     }   
     //delete button
@@ -89,7 +89,7 @@ void newGameLoadGame(void)
             WINDOW_WIDTH / 8.0f, WINDOW_HEIGHT / 12.0f);
 
         CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-        CP_Font_DrawText("Load existing save", WINDOW_WIDTH / 2.63f, WINDOW_HEIGHT / 1.94f);
+        CP_Font_DrawText("Load Saved Game", WINDOW_WIDTH / 2.63f, WINDOW_HEIGHT / 1.94f);
         CP_Font_DrawText("Delete", (WINDOW_WIDTH / 4.07f) * 2.76, WINDOW_HEIGHT / 1.95f);
         break;
     case 0:
@@ -97,7 +97,7 @@ void newGameLoadGame(void)
         CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f,
             WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);
         CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-        CP_Font_DrawText("New game", WINDOW_WIDTH / 2.32f, WINDOW_HEIGHT / 1.94f);
+        CP_Font_DrawText("New Game", WINDOW_WIDTH / 2.32f, WINDOW_HEIGHT / 1.94f);
         break;
     }
     //delete button

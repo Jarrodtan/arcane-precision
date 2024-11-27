@@ -1,7 +1,7 @@
 //---------------------------------------------------------
 // file:	main.c
-// author:	[NAME]
-// email:	[DIGIPEN EMAIL ADDRESS]
+// author:	[Toh Jing Han]
+// email:	[jinghan.toh@digipen.edu]
 //
 // brief:	Main entry point for the sample project
 //			of the CProcessing library
@@ -13,9 +13,6 @@
 #include "splashscreen.h"
 
 
-// main() the starting point for the program
-// CP_Engine_SetNextGameState() tells CProcessing which functions to use for init, update and exit
-// CP_Engine_Run() is the core function that starts the simulation
 int main(void)
 {
 	CP_Engine_SetNextGameState(splashscreen_Init, splashscreen_Update,splashscreen_Exit);

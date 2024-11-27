@@ -1,25 +1,17 @@
 #include "cprocessing.h"
-#include "mainmenu.h"
-#include "stdlib.h"
 #include "utils.h"
 #include "itemDrop.h"
 #include "game.h"
 #include "enemy.h"
-#include <math.h>
-#include <stdio.h>
 
 #define WINDOW_WIDTH 1600.0f
 #define WINDOW_HEIGHT 900.0f
 #define MAX_ITEMS 100
 
-extern float dt;
-extern int roomsPassed;
-
-
 
 struct itemDrops item[MAX_ITEMS];
 
-
+//initializes items dropped when enemy dies.
 void initialize_itemDrop(struct itemDrops *item,CP_Vector position) {
 	item->position = position;
 	item->top.x = item->position.x;
@@ -29,9 +21,9 @@ void initialize_itemDrop(struct itemDrops *item,CP_Vector position) {
 	item->right.x = item->position.x + 20;
 	item->right.y = item->position.y + 10;
 	item->active = 1;
-	item->effect = CP_Random_RangeInt(0, 6); //change here when adding more effects CP_Random_RangeInt(0,6)
+	item->effect = CP_Random_RangeInt(0, 6); //randomizes effects when initialize
 	item->radius = 30;
-	switch (item->effect) // add on different color
+	switch (item->effect) // add on different color according to which effect the item does
 	{
 	case heal:
 		item->effectColor = CP_Color_Create(0, 255, 0, 255);
@@ -58,18 +50,18 @@ void initialize_itemDrop(struct itemDrops *item,CP_Vector position) {
 }
 
 
-
+//update drawing of item
 void update_item(struct itemDrops *item, struct player *player)
 {
 	for (int u = 0; u < MAX_ITEMS; u++)
 	{
-		if (item[u].active == 1)
+		if (item[u].active == 1) //checking if item in array is active
 		{
 			CP_Settings_Fill(item[u].effectColor);
 			CP_Graphics_DrawTriangle(item[u].top.x,item[u].top.y, item[u].left.x, item[u].left.y, item[u].right.x,item[u].right.y);
 			CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 			CP_Settings_TextSize(20.0f);
-			switch (item[u].effect)
+			switch (item[u].effect)// draw text below item accordingly to effect
 			{
 			case heal:
 			CP_Font_DrawText("Heal 1 Heart", item[u].position.x - 48, item[u].position.y + 30);
@@ -98,7 +90,7 @@ void update_item(struct itemDrops *item, struct player *player)
 			if (CP_Vector_Distance(player->position, item[u].position) <= (player->diameter / 2) + (item[u].radius / 2))
 			{
 				item[u].active = 0;
-				switch (item[u].effect) //add on different effects on player
+				switch (item[u].effect) //add on different effects on player depending on effects
 				{
 				case heal:
 					player->lives++;
@@ -107,7 +99,7 @@ void update_item(struct itemDrops *item, struct player *player)
 					player->attackDamage += 1;
 					break;
 				case movespeed:
-					if (player->moveSpeed <= 1000)
+					if (player->moveSpeed <= 1000) // setting limit for balance
 					{
 						player->moveSpeed += 50;
 					}
@@ -119,13 +111,13 @@ void update_item(struct itemDrops *item, struct player *player)
 					player->attackSpeed += 50.0f;
 					break;
 				case manaBuildUp:
-					if (player->manaBuildSpeed <= 150.0f)
+					if (player->manaBuildSpeed <= 150.0f) // setting limit for balance
 					{
 						player->manaBuildSpeed += 5.00f;
 					}
 					break;
 				case hitboxSizeUp:
-					if (player->hitboxSize <= 2.0f)
+					if (player->hitboxSize <= 2.0f) // setting limit for balance
 					{
 						player->hitboxSize += 0.2f;
 					}

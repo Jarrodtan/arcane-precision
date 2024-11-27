@@ -42,15 +42,15 @@ void pause(void)
 		CP_Graphics_DrawRect(WINDOW_WIDTH / 4.0f, WINDOW_HEIGHT / 4.0f, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f);// for pause menu
 
 		CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
-		CP_Graphics_DrawRect(WINDOW_WIDTH / 2.47f, WINDOW_HEIGHT / 2.4f, WINDOW_WIDTH / 5.2f, WINDOW_HEIGHT / 12.0f);// for how to play button
+		CP_Graphics_DrawRect(WINDOW_WIDTH / 3.0f, WINDOW_HEIGHT / 2.4f, WINDOW_WIDTH / 3.0f, WINDOW_HEIGHT / 12.0f);// for how to play button
 
 		CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
-		CP_Graphics_DrawRect(WINDOW_WIDTH / 2.4f, WINDOW_HEIGHT / 1.9f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);// for menu button
+		CP_Graphics_DrawRect(WINDOW_WIDTH / 3.0f, WINDOW_HEIGHT / 1.9f, WINDOW_WIDTH / 3.0f, WINDOW_HEIGHT / 12.0f);// for menu button
 
 		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 		CP_Settings_TextSize(50.0f);
 		CP_Font_DrawText("How To Play", WINDOW_WIDTH / 2.43f, WINDOW_HEIGHT / 2.11f);
-		CP_Font_DrawText("Main Menu", WINDOW_WIDTH / 2.36f, WINDOW_HEIGHT / 1.72f);
+		CP_Font_DrawText("Return to Main Menu", WINDOW_WIDTH / 2.8f, WINDOW_HEIGHT / 1.72f);
 		CP_Image_Draw(pause_sign, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 3.0f, 100.0f, 100.0f, 255);
 
 		CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
@@ -58,14 +58,14 @@ void pause(void)
 		CP_Font_DrawText("Press escape key to continue!", WINDOW_WIDTH / 3.2f, WINDOW_HEIGHT / 1.4f);
 
 		//return to mainmenu
-		if (IsAreaClicked(WINDOW_WIDTH / 1.99f, WINDOW_HEIGHT / 2.18f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f,
+		if (IsAreaClicked(WINDOW_WIDTH / 1.99f, WINDOW_HEIGHT / 2.18f, WINDOW_WIDTH / 3.0f, WINDOW_HEIGHT / 12.0f,
 			CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
 		{
 			how_To = true;
 			page = 1;
 		}
 		//Go to how To Play screen
-		else if (IsAreaClicked(WINDOW_WIDTH / 1.99f, WINDOW_HEIGHT / 1.76f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f,
+		else if (IsAreaClicked(WINDOW_WIDTH / 1.99f, WINDOW_HEIGHT / 1.76f, WINDOW_WIDTH / 3.0f, WINDOW_HEIGHT / 12.0f,
 			CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
 		{
 			CP_Engine_SetNextGameState(Start_Menu_Init, Start_Menu_Update, Start_Menu_Exit);

@@ -1,3 +1,14 @@
+//---------------------------------------------------------
+// file:	game.c
+// author:	[Toh Jing Han]
+// email:	[jinghan.toh@digipen.edu]
+//
+// brief:	The game itself with some functuons from other files.
+//
+// Copyright © 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
+
 #include "utils.h"
 #include "game.h"
 #include "mainmenu.h"
@@ -53,7 +64,7 @@ int lastEntered;
 bool game_over;
 bool tut;
 
-//time manip
+//time manipulation value
 float slowTimeScale = 0.1f;
 bool isSlowed = false;
 enum Spells selectedSpell = FIREBALL;// Default spell

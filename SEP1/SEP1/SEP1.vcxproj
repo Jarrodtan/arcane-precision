@@ -16,6 +16,7 @@
     <ProjectGuid>{88dc2914-f41e-4629-93bb-654d77dbfc7f}</ProjectGuid>
     <RootNamespace>SEP1</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Arcane_Precision</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">

@@ -74,7 +74,7 @@ void Start_Menu_Update(void)
         CP_Graphics_DrawRect(WINDOW_WIDTH / 6.5f, WINDOW_HEIGHT / 3.0f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);
         CP_Font_Set(myFont);
         CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-        CP_Font_DrawText("Play Game", WINDOW_WIDTH / 12.2f, WINDOW_HEIGHT / 2.86f);
+        CP_Font_DrawText("Start Game", WINDOW_WIDTH / 12.2f, WINDOW_HEIGHT / 2.86f);
         if (IsAreaClicked(WINDOW_WIDTH / 6.5f, WINDOW_HEIGHT / 3.0f,
             WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
         {
@@ -100,11 +100,11 @@ void Start_Menu_Update(void)
             WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);
         CP_Font_Set(myFont);
         CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-        CP_Font_DrawText("Exit", WINDOW_WIDTH / 8.0f, WINDOW_HEIGHT / 1.47f);
+        CP_Font_DrawText("Credits", WINDOW_WIDTH / 9.5f, WINDOW_HEIGHT / 1.47f);
         if (IsAreaClicked(WINDOW_WIDTH / 6.5f, WINDOW_HEIGHT / 1.5f,
             WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
         {
-            CP_Engine_Terminate();
+            creditsScreen = true;
         }
 
         //Credits button
@@ -113,11 +113,11 @@ void Start_Menu_Update(void)
             WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);
         CP_Font_Set(myFont);
         CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-        CP_Font_DrawText("Credits", WINDOW_WIDTH / 9.5f, WINDOW_HEIGHT / 1.18f);
+        CP_Font_DrawText("Quit Game", WINDOW_WIDTH / 12.5f, WINDOW_HEIGHT / 1.18f);
         if (IsAreaClicked(WINDOW_WIDTH / 6.5f, WINDOW_HEIGHT / 1.2f,
             WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
         {
-            creditsScreen = true;
+             CP_Engine_Terminate();
         }
 
         // Settings button
