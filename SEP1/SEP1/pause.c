@@ -96,7 +96,7 @@ void howToPlay(void)
 		CP_Image_Draw(tut_page1, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f, 1065.0f, 600.0f, 255);
 
 		CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
-		CP_Graphics_DrawRect((WINDOW_WIDTH / 2.8f) * 1.66, (WINDOW_HEIGHT / 4.0f) * 3.35f, WINDOW_WIDTH / 20.0f, WINDOW_HEIGHT / 12.0f);// button for next page
+		CP_Graphics_DrawRect((WINDOW_WIDTH / 2.8f) * 1.66f, (WINDOW_HEIGHT / 4.0f) * 3.35f, WINDOW_WIDTH / 20.0f, WINDOW_HEIGHT / 12.0f);// button for next page
 		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 		CP_Graphics_DrawTriangle( //next page triangle
 			(WINDOW_WIDTH / 2.8f) * 1.69f, (WINDOW_HEIGHT / 4.0f) * 3.42f, // Top vertex
@@ -105,7 +105,7 @@ void howToPlay(void)
 		);
 
 		//next page
-		if (IsAreaClicked((WINDOW_WIDTH / 2.8f) * 1.725, (WINDOW_HEIGHT / 4.0f) * 3.52f, WINDOW_WIDTH / 20.0f, WINDOW_HEIGHT / 12.0f,
+		if (IsAreaClicked((WINDOW_WIDTH / 2.8f) * 1.725f, (WINDOW_HEIGHT / 4.0f) * 3.52f, WINDOW_WIDTH / 20.0f, WINDOW_HEIGHT / 12.0f,
 			CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
 		{
 			page = 2;
@@ -158,7 +158,7 @@ void tutorial(void)
 		CP_Image_Draw(tut_page1, WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f, 1065.0f, 600.0f, 255);
 
 		CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
-		CP_Graphics_DrawRect((WINDOW_WIDTH / 2.8f) * 1.66, (WINDOW_HEIGHT / 4.0f) * 3.35f, WINDOW_WIDTH / 20.0f, WINDOW_HEIGHT / 12.0f);// button for next page
+		CP_Graphics_DrawRect((WINDOW_WIDTH / 2.8f) * 1.66f, (WINDOW_HEIGHT / 4.0f) * 3.35f, WINDOW_WIDTH / 20.0f, WINDOW_HEIGHT / 12.0f);// button for next page
 		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 		CP_Graphics_DrawTriangle( //next page triangle
 			(WINDOW_WIDTH / 2.8f) * 1.69f, (WINDOW_HEIGHT / 4.0f) * 3.42f, // Top vertex
@@ -167,7 +167,7 @@ void tutorial(void)
 		);
 
 		//next page
-		if (IsAreaClicked((WINDOW_WIDTH / 2.8f) * 1.725, (WINDOW_HEIGHT / 4.0f) * 3.52f, WINDOW_WIDTH / 20.0f, WINDOW_HEIGHT / 12.0f,
+		if (IsAreaClicked((WINDOW_WIDTH / 2.8f) * 1.725f, (WINDOW_HEIGHT / 4.0f) * 3.52f, WINDOW_WIDTH / 20.0f, WINDOW_HEIGHT / 12.0f,
 			CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
 		{
 			page = 2;

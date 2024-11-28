@@ -23,12 +23,9 @@ void setVolume(float newVolume) // change volume based on slider
 
 void settingsScreen(void)
 {
+    textSize = 50.0f;
+    CP_Settings_TextSize(textSize);
     CP_Settings_RectMode(CP_POSITION_CORNER);
-    //myFont = CP_Font_Load("Assets/Exo2-Regular.ttf");
-    //textSize = 50.0f;
-    //CP_Settings_TextSize(textSize);
-    //CP_TEXT_ALIGN_HORIZONTAL horizontal = CP_TEXT_ALIGN_H_CENTER;
-    //CP_TEXT_ALIGN_VERTICAL vertical = CP_TEXT_ALIGN_V_MIDDLE;
     CP_Graphics_ClearBackground(CP_Color_Create(6, 38, 38, 0));
 
     CP_Settings_Fill(CP_Color_Create(0, 0, 0, 100));

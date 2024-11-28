@@ -103,7 +103,7 @@ void init_enemy(void)
 		{
 			if(AreCirclesIntersecting(player.position.x, player.position.y, player.diameter, enemyPosition.x, enemyPosition.y, 75.0f) == 1){ 
 				//if enemy is spawned too near the player, generate a new location for the enemy
-				CP_Vector enemyPosition = CP_Vector_Set(CP_Random_RangeFloat(150.0f, WINDOW_WIDTH - 150.0f), CP_Random_RangeFloat(300.0f, WINDOW_HEIGHT - 300.0f)); 
+				enemyPosition = CP_Vector_Set(CP_Random_RangeFloat(150.0f, WINDOW_WIDTH - 150.0f), CP_Random_RangeFloat(300.0f, WINDOW_HEIGHT - 300.0f)); 
 			}
 			int enemyType = CP_Random_RangeInt(1, 2);
 			if (enemyType == 1) 

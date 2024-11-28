@@ -46,6 +46,7 @@ CP_Color manaBarColor;
 CP_Color manaColor;
 CP_Color manaHitboxColor;
 CP_Vector player_position;
+CP_Sound gameplayMusic;
 extern CP_Image pause_sign;
 extern CP_Image tut_page1, tut_page2;
 extern CP_Vector obstacle[MAX_OBSTACLES];
@@ -69,7 +70,8 @@ float slowTimeScale = 0.1f;
 bool isSlowed = false;
 enum Spells selectedSpell = FIREBALL;// Default spell
 
-CP_Sound* gameplayMusic = NULL;
+const char* gameBGMFile = "Assets/Music/dungeonMusic.mp3";
+CP_Sound gameplayMusic = NULL;
 bool gamemusicPlaying;
 extern float musicVolume;
 
@@ -199,10 +201,11 @@ void Game_Init(void)
 	pause_sign = CP_Image_Load("Assets/Pause Sign.png");
 	tut_page1 = CP_Image_Load("Assets/tutorial_page1.png");
 	tut_page2 = CP_Image_Load("Assets/tutorial_page2.png");
+	
 
 	if (gameplayMusic == NULL)
 	{
-		gameplayMusic = CP_Sound_Load("Assets/Music/dungeonMusic.mp3");
+	 gameplayMusic = CP_Sound_Load(gameBGMFile);
 	}
 
 	CP_Settings_RectMode(CP_POSITION_CORNER);
@@ -519,7 +522,7 @@ void Game_Update(void)
 			if (!gamemusicPlaying)
 			{
 				CP_Sound_StopGroup(CP_SOUND_GROUP_0);
-				CP_Sound_PlayAdvanced(gameplayMusic, musicVolume, 1, TRUE, CP_SOUND_GROUP_0);
+				CP_Sound_PlayAdvanced(gameplayMusic, musicVolume, 1.0f, TRUE, CP_SOUND_GROUP_0);
 				gamemusicPlaying = true;
 			}
 			//printf("is playing? : %d",gamemusicPlaying);
@@ -527,7 +530,7 @@ void Game_Update(void)
 			enemy_code();
 			update_player(dt);
 			doorInteraction();
-			update_item(&item, &player);
+			update_item(item, &player);
 
 			//skill selection
 			if (isSlowed)

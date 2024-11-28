@@ -12,8 +12,8 @@
 
 CP_Font myFont;
 float textSize;
-
-CP_Sound* backgroundMusic = NULL;
+const char *mainBGMFile = "Assets/Music/menuMusic.mp3";
+CP_Sound backgroundMusic = NULL;
 
 bool musicPlaying;
 bool settings;
@@ -32,7 +32,7 @@ void Start_Menu_Init(void)
     CP_TEXT_ALIGN_VERTICAL vertical = CP_TEXT_ALIGN_V_MIDDLE;
 
     if (backgroundMusic == NULL) {
-        backgroundMusic = CP_Sound_Load("Assets/Music/menuMusic.mp3");
+        backgroundMusic = CP_Sound_Load(mainBGMFile);
     }
 
     settings = false;
@@ -74,7 +74,7 @@ void Start_Menu_Update(void)
         CP_Graphics_DrawRect(WINDOW_WIDTH / 6.5f, WINDOW_HEIGHT / 3.0f, WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);
         CP_Font_Set(myFont);
         CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-        CP_Font_DrawText("Start Game", WINDOW_WIDTH / 12.2f, WINDOW_HEIGHT / 2.86f);
+        CP_Font_DrawText("Start Game", WINDOW_WIDTH / 12.6f, WINDOW_HEIGHT / 2.86f);
         if (IsAreaClicked(WINDOW_WIDTH / 6.5f, WINDOW_HEIGHT / 3.0f,
             WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f, CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
         {

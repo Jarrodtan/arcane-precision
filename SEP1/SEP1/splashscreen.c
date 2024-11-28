@@ -12,6 +12,7 @@ static float splashStartTime;
 
 void splashscreen_Init(void)
 {
+    CP_System_SetWindowTitle("Arcane Precision");
     // Load image
     splashImage = CP_Image_Load("Assets/DigiPen_splashscreen.png");
     // Record the start time
@@ -32,7 +33,7 @@ void splashscreen_Update(void)
     float elapsedTime = CP_System_GetMillis() - splashStartTime;
 
     // If 2 seconds (2000 milliseconds) have passed, transition to the start menu
-    if (elapsedTime >= 2000.0f)
+    if (elapsedTime >= 5000.0f)
     {
         CP_Engine_SetNextGameState(Start_Menu_Init, Start_Menu_Update, Start_Menu_Exit);
     }

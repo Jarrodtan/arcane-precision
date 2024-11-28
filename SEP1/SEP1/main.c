@@ -6,7 +6,7 @@
 // brief:	Main entry point for the sample project
 //			of the CProcessing library
 //
-// Copyright © 2020 DigiPen, All rights reserved.
+// Copyright ? 2024 DigiPen, All rights reserved.
 //---------------------------------------------------------
 
 #include "cprocessing.h"

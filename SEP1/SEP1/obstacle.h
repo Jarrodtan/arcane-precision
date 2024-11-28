@@ -24,7 +24,7 @@ void HandleEnemyCollision(CP_Vector* enemy_position, float enemyDiameter, CP_Vec
 bool CheckBulletCollision(CP_Vector bullet_position, float bulletDiameter, CP_Vector obstacle, float obstacleSize);
 void HandleProjectileCollision(struct enemyAttack* bullet);
 bool CheckPlayerBulletCollision(CP_Vector playerBullet_position, float playerBulletDiameter, CP_Vector obstacle, float obstacleSize);
-void HandlePlayerProjectileCollision(struct playerAttack* bullet[]);
+void HandlePlayerProjectileCollision(struct playerAttack* bullet);
 void UpdateObstacles(int roomsPassed, CP_Vector player_position, float playerDiameter);
 
 #endif // OBSTACLE_H

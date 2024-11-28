@@ -3,6 +3,7 @@
 #include "game.h"
 #include "startmenu.h"
 #include "stdbool.h"
+#include "stdio.h"
 
 #define WINDOW_WIDTH 1600
 #define WINDOW_HEIGHT 900
@@ -15,18 +16,10 @@ extern bool newLoadScreen;
 extern const char *saveFile1;
 extern const char *saveFile2;
 
-
+//set screen state for selecting new game and load game
 void newGameLoadGame(void)
 {
-    //CP_Settings_RectMode(CP_POSITION_CENTER);
-    //myFont = CP_Font_Load("Assets/Exo2-Regular.ttf");
-    //textSize = 50.0f;
-    //CP_Settings_TextSize(textSize);
-    //CP_TEXT_ALIGN_HORIZONTAL horizontal = CP_TEXT_ALIGN_H_CENTER;
-    //CP_TEXT_ALIGN_VERTICAL vertical = CP_TEXT_ALIGN_V_MIDDLE;
- 
     CP_Graphics_ClearBackground(CP_Color_Create(6, 38, 38, 255));
-
 
     //save slot1
     CP_Font_Set(myFont);
@@ -40,7 +33,7 @@ void newGameLoadGame(void)
             WINDOW_WIDTH / 8.0f, WINDOW_HEIGHT / 12.0f);
         CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
         CP_Font_DrawText("Load Saved Game", WINDOW_WIDTH / 2.63f, WINDOW_HEIGHT / 2.88f);
-        CP_Font_DrawText("Delete", (WINDOW_WIDTH / 4.07f) * 2.76, WINDOW_HEIGHT / 2.91f);
+        CP_Font_DrawText("Delete", (WINDOW_WIDTH / 4.07f) * 2.76f, WINDOW_HEIGHT / 2.91f);
 
         break;
     case 0:
@@ -48,7 +41,7 @@ void newGameLoadGame(void)
         CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 3.0f,
             WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);    
         CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-        CP_Font_DrawText("New Game", WINDOW_WIDTH / 2.32f, WINDOW_HEIGHT / 2.86f);
+        CP_Font_DrawText("New Game", WINDOW_WIDTH / 2.35f, WINDOW_HEIGHT / 2.86f);
         break;
     }   
     //delete button
@@ -90,14 +83,14 @@ void newGameLoadGame(void)
 
         CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
         CP_Font_DrawText("Load Saved Game", WINDOW_WIDTH / 2.63f, WINDOW_HEIGHT / 1.94f);
-        CP_Font_DrawText("Delete", (WINDOW_WIDTH / 4.07f) * 2.76, WINDOW_HEIGHT / 1.95f);
+        CP_Font_DrawText("Delete", (WINDOW_WIDTH / 4.07f) * 2.76f, WINDOW_HEIGHT / 1.95f);
         break;
     case 0:
         CP_Settings_Fill(CP_Color_Create(255, 168, 5, 255));
         CP_Graphics_DrawRect(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f,
             WINDOW_WIDTH / 6.0f, WINDOW_HEIGHT / 12.0f);
         CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
-        CP_Font_DrawText("New Game", WINDOW_WIDTH / 2.32f, WINDOW_HEIGHT / 1.94f);
+        CP_Font_DrawText("New Game", WINDOW_WIDTH / 2.35f, WINDOW_HEIGHT / 1.94f);
         break;
     }
     //delete button
