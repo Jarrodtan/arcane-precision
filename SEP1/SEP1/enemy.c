@@ -1,3 +1,20 @@
+//---------------------------------------------------------
+// file:	enemy.c
+// author:	[ling]
+// email:	[eeling.khor@digipen.edu]
+//
+// brief:	Codes pertaining to enemy
+//			- enemy spawn
+//			- enemy movement, movement logic
+//			- enemy shooting, bullet logic
+//			- enemy taking damage to player attacks
+//			
+//
+// Copyright © 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
+
+
 #include "cprocessing.h"
 #include "mainmenu.h"
 #include "stdlib.h"
