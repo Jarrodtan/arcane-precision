@@ -70,7 +70,7 @@ void initialize_enemyMelee(struct enemy* enemyMelee, CP_Vector position) {
 void init_enemy(void) 
 {
 	if (roomsPassed % 5 == 0) 
-	{
+	{//calculate difficulty based on number of rooms passed
 		difficulty = (roomsPassed / 5) + 1;
 	}
 	enemyNumber = difficulty;
@@ -80,11 +80,12 @@ void init_enemy(void)
 	printf("rooms passed: %d\n", roomsPassed);
 	printf("difficulty: %d\n", difficulty);
 	for (int i = 0; i < enemyNumber; i++) 
-	{
+	{//enemy initialisation
 		CP_Vector enemyPosition = CP_Vector_Set(CP_Random_RangeFloat(150.0f, WINDOW_WIDTH - 150.0f), CP_Random_RangeFloat(300.0f, WINDOW_HEIGHT - 300.0f));
 		if (enemies[i].active == 0) 
 		{
 			if(AreCirclesIntersecting(player.position.x, player.position.y, player.diameter, enemyPosition.x, enemyPosition.y, 75.0f) == 1){ 
+				//if enemy is spawned too near the player, generate a new location for the enemy
 				CP_Vector enemyPosition = CP_Vector_Set(CP_Random_RangeFloat(150.0f, WINDOW_WIDTH - 150.0f), CP_Random_RangeFloat(300.0f, WINDOW_HEIGHT - 300.0f)); 
 			}
 			int enemyType = CP_Random_RangeInt(1, 2);
