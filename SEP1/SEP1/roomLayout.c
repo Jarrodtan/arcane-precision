@@ -1,3 +1,14 @@
+﻿//---------------------------------------------------------
+// file:	roomLayout.c
+// author:	[Toh Jing Han]
+// email:	[jinghan.toh@digipen.edu]
+//
+// brief:	roomLayout holds mosst of the drawing funtions required for the room layout and some interactions.
+//
+// Copyright © 2024 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
+
 #pragma once
 #include "cprocessing.h"
 #include "game.h"

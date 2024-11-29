@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -125,11 +125,18 @@ xcopy "$(SolutionDir)Extern\CProcessing\lib\x64\fmodL.dll" "$(OutDir)" /s /r /y 
     <ClInclude Include="mainmenu.h" />
     <ClInclude Include="obstacle.h" />
     <ClInclude Include="pause.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="roomLayout.h" />
     <ClInclude Include="settingsmenu.h" />
     <ClInclude Include="splashscreen.h" />
     <ClInclude Include="startmenu.h" />
     <ClInclude Include="utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\..\..\..\Downloads\Arcane_Precision.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Arcane_Precision.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

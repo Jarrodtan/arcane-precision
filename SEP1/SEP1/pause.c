@@ -1,3 +1,16 @@
+﻿//---------------------------------------------------------
+// file:	pause.c
+// primary author:	[Tan Wei Leong]
+// primary email:	[weileong.tan@digipen.edu]
+// 
+// secondary author: [TohJing Han]
+// secondary email:	[jinghan.toh@digipen.edu]
+// 
+// brief:	Pause file contains functions for pause and tutorial
+//
+// Copyright © 2024 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #include "cprocessing.h"
 #include "game.h"
 #include "mainmenu.h"
@@ -22,7 +35,7 @@ int page;
 float item_x;
 float item_y;
 
-
+//draws the pause screen and contains function for showing the howto screen
 void pause(void) 
 {
 	if (how_To == true)
@@ -57,14 +70,14 @@ void pause(void)
 		CP_Settings_TextSize(50.0f);
 		CP_Font_DrawText("Press escape key to continue!", WINDOW_WIDTH / 3.2f, WINDOW_HEIGHT / 1.4f);
 
-		//return to mainmenu
+		//draw how to page
 		if (IsAreaClicked(WINDOW_WIDTH / 1.99f, WINDOW_HEIGHT / 2.18f, WINDOW_WIDTH / 3.0f, WINDOW_HEIGHT / 12.0f,
 			CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
 		{
 			how_To = true;
 			page = 1;
 		}
-		//Go to how To Play screen
+		//Return to main menu screen
 		else if (IsAreaClicked(WINDOW_WIDTH / 1.99f, WINDOW_HEIGHT / 1.76f, WINDOW_WIDTH / 3.0f, WINDOW_HEIGHT / 12.0f,
 			CP_Input_GetMouseX(), CP_Input_GetMouseY()) == 1)
 		{
@@ -85,6 +98,7 @@ void pause(void)
 	CP_Graphics_ClearBackground(CP_Color_Create(200, 200, 200, 50));
 }
 
+//draw howToPlay screen
 void howToPlay(void)
 {
 	//dim background
@@ -146,6 +160,7 @@ void howToPlay(void)
 	
 }
 
+//draw tutorial screen
 void tutorial(void)
 {
 	//dim background and show pause sign

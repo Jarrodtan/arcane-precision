@@ -1,3 +1,14 @@
+﻿//---------------------------------------------------------
+// file:	leaderboard.c
+// author:	[Toh Jing Han]
+// email:	[jinghan.toh@digipen.edu]
+//
+// brief:	leaderboard.c holds the function to display the leaderboard in descending order.
+//
+// Copyright © 2024 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
+
 #include "cprocessing.h"
 #include "startmenu.h"
 #include "utils.h"

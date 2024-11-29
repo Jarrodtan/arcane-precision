@@ -1,3 +1,13 @@
+﻿//---------------------------------------------------------
+// file:	itemDrop.c
+// author:	[Toh Jing Han]
+// email:	[jinghan.toh@digipen.edu]
+//
+// brief:	itemDrop.c holds the functions for handling initializing of item ddrops, updating and collision handling
+//
+// Copyright © 2024 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #include "cprocessing.h"
 #include "utils.h"
 #include "itemDrop.h"

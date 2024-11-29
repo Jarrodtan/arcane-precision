@@ -1,3 +1,14 @@
+﻿//---------------------------------------------------------
+// file:	obstacle.c
+// author:	[Beverly Choy]
+// email:	[b.choy@digipen.edu]
+//
+// brief:	obstacle.c holds the functions for initializing, interacting and drawing of the obstacles
+//
+// Copyright © 2024 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
+
 #include <stdio.h>
 #include <stdbool.h> // Include for bool type
 #include <math.h>

@@ -1,3 +1,14 @@
+﻿//---------------------------------------------------------
+// file:	settingsmenu.c
+// author:	[Tan Che Fong]
+// email:	[chefong.tan@digipen.edu]
+//
+// brief:	settingsmenu holds the funtion to display settings for volume, which includes a slider for changing the volume
+//
+// Copyright © 2024 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
+
 #include <cprocessing.h>
 #include <stdbool.h>
 #include "startmenu.h"

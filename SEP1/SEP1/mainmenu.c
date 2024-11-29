@@ -1,3 +1,15 @@
+﻿//---------------------------------------------------------
+// file:	startmenu.c
+// author:	[Toh Jing Han]
+// email:	[jinghan.toh@digipen.edu]
+//
+// brief:	mainmenu.c holds the functions for loading the saved game or starting a new game, 
+// it was the first page on execution at the start, thus the naming of the file.
+//
+// Copyright © 2024 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
+
 #include "cprocessing.h"
 #include "utils.h"
 #include "game.h"

@@ -1,11 +1,15 @@
-//---------------------------------------------------------
+﻿//---------------------------------------------------------
 // file:	game.c
-// author:	[Toh Jing Han]
-// email:	[jinghan.toh@digipen.edu]
+// primary author:	[Toh Jing Han]
+// primary email:	[jinghan.toh@digipen.edu]
 //
+// secondary author:	[Tan Che Fong]
+// secondary email:		[chefong.tan@digipen.edu]
+// 
+// 
 // brief:	The game itself with some functuons from other files.
 //
-// Copyright � 2020 DigiPen, All rights reserved.
+// Copyright © 2024 DigiPen, All rights reserved.
 //---------------------------------------------------------
 
 

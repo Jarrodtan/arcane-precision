@@ -1,4 +1,4 @@
-//---------------------------------------------------------
+﻿//---------------------------------------------------------
 // file:	main.c
 // author:	[Toh Jing Han]
 // email:	[jinghan.toh@digipen.edu]
@@ -6,8 +6,9 @@
 // brief:	Main entry point for the sample project
 //			of the CProcessing library
 //
-// Copyright ? 2024 DigiPen, All rights reserved.
+// Copyright © 2024 DigiPen, All rights reserved.
 //---------------------------------------------------------
+
 
 #include "cprocessing.h"
 #include "splashscreen.h"

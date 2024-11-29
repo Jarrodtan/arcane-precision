@@ -1,3 +1,13 @@
+﻿//---------------------------------------------------------
+// file:	utils.c
+// author:	[Toh Jing Han]
+// email:	[jinghan.toh@digipen.edu]
+//
+// brief:	utils.c contains the basic utilities thats used throughout the program
+//
+// Copyright © 2024 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #include <math.h>
 #include "cprocessing.h"
 #include <stdio.h>
@@ -9,6 +19,7 @@ bool newGame;
 #define MAX_LEADERBOARD 10
 #define MAX_NAME_LENGTH 255
 
+//struct for saving and loading game
 typedef struct {
     float moveSpeed;
     int lives;
@@ -24,6 +35,7 @@ typedef struct {
     float hitboxSize;
 }playerStats;
 
+//struct for savingand loading score for leaderboard
 typedef struct {
     char playerName[MAX_NAME_LENGTH + 1];
     int score;
@@ -33,7 +45,7 @@ const char* saveFile1 = "save1.dat";
 const char* saveFile2 = "save2.dat";
 const char* leaderboardSave = "leaderboard.dat";
 
-
+//check if player has clicked within the area
 int IsAreaClicked(float area_center_x, float area_center_y, float area_width, float area_height, float click_x, float click_y)
 {
     if (click_x < (area_center_x + area_width / 2) && click_x >(area_center_x - area_width / 2) && click_y < (area_center_y + area_height / 2) && click_y > (area_center_y - area_height / 2))
@@ -49,6 +61,7 @@ int IsAreaClicked(float area_center_x, float area_center_y, float area_width, fl
     return 0;
 }
 
+//check if the 2 rects are intersecting
 int manaAreIntersecting(float s1_x, float w1, float s2_x, float w2)
 {
     if (s1_x+w1 >= s2_x && s1_x <= s2_x+w2) {
@@ -59,6 +72,7 @@ int manaAreIntersecting(float s1_x, float w1, float s2_x, float w2)
     }
 }
 
+//check if player diameter is intersecting with a rect
 int doorIntersect(float p_x, float p_y, float p_dia, float door_x, float door_y, float door_width, float door_height)
 {
     float player_diameter = (p_dia / 2)+10;
@@ -71,6 +85,7 @@ int doorIntersect(float p_x, float p_y, float p_dia, float door_x, float door_y,
     return 0;
 }
 
+//draw hearts with vertex
 void drawHearts(float x, float y, float size) {
     //Player Hearts
     CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
@@ -86,6 +101,7 @@ void drawHearts(float x, float y, float size) {
     CP_Graphics_EndShape();
 }
 
+//check if two circles are intersecting
 int AreCirclesIntersecting(float c1_x, float c1_y, float r1, float c2_x, float c2_y, float r2)
 {
     float distance = CP_Math_Distance(c1_x, c1_y, c2_x, c2_y);
@@ -99,6 +115,7 @@ int AreCirclesIntersecting(float c1_x, float c1_y, float r1, float c2_x, float c
     }
     return 0;
 }
+
 // Function to save the leaderboard to a file
 void saveLeaderboard(const leaderboard ldrboard[], int count, const char* ldrSave)
 {
@@ -130,7 +147,7 @@ int loadLeaderboard(leaderboard ldrboard[], const char* ldrSave)
 }
 
 
-// Comparator for sorting leaderboard by score in descending order
+// Compare and sort the score in descending order
 int compareScores(const void* a, const void* b) {
     leaderboard* playerA = (leaderboard*)a;
     leaderboard* playerB = (leaderboard*)b;
@@ -150,7 +167,8 @@ void updateLeaderboard(leaderboard ldrboard[], int* count, const char* playerNam
     else {
         // If the leaderboard is full, only add if the score is high enough
         if (playerScore > ldrboard[MAX_LEADERBOARD - 1].score) {
-            strncpy_s(ldrboard[MAX_LEADERBOARD - 1].playerName, MAX_NAME_LENGTH + 1, playerName, MAX_NAME_LENGTH);            ldrboard[MAX_LEADERBOARD - 1].playerName[MAX_NAME_LENGTH] = '\0'; // Ensure null-termination
+            strncpy_s(ldrboard[MAX_LEADERBOARD - 1].playerName, MAX_NAME_LENGTH + 1, playerName, MAX_NAME_LENGTH);            
+            ldrboard[MAX_LEADERBOARD - 1].playerName[MAX_NAME_LENGTH] = '\0';
             ldrboard[MAX_LEADERBOARD - 1].score = playerScore;
         }
     }
@@ -166,6 +184,7 @@ void updateLeaderboard(leaderboard ldrboard[], int* count, const char* playerNam
     saveLeaderboard(ldrboard, *count, ldrSave);
 }
 
+//saves the players stats based on struct typedef to file
 void savePlayerStats(playerStats* stats, const char* saveFileName) {
     FILE *file = fopen(saveFileName, "wb");
     if (file == NULL) {
@@ -177,7 +196,7 @@ void savePlayerStats(playerStats* stats, const char* saveFileName) {
     fclose(file);
 }
 
-// Function to load player stats from a file
+//load the players stats based on struct typedef from file
 void loadPlayerStats(playerStats* stats, const char* saveFileName) {
     
     FILE *file = fopen(saveFileName, "rb");
@@ -190,6 +209,7 @@ void loadPlayerStats(playerStats* stats, const char* saveFileName) {
     fclose(file);
 }
 
+//checks if the save exists for condition
 int checkSaveExists(const char* saveFileName)
 {
 FILE* file = fopen(saveFileName, "rb");

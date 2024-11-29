@@ -1,3 +1,14 @@
+﻿//---------------------------------------------------------
+// file:	gameover.c
+// author:	[Tan Wei leong]
+// email:	[weileong.tan@digipen.edu]
+//
+// brief:	gameover.c holds the functions for displaying the game over image, 
+// the score of the player and allow the player to enter their name for saving into leaderboard.
+//
+// Copyright © 2024 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #include "cprocessing.h"
 #include "startmenu.h"
 #include "utils.h"

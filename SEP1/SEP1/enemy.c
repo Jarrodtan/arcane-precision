@@ -1,6 +1,6 @@
-//---------------------------------------------------------
+﻿//---------------------------------------------------------
 // file:	enemy.c
-// author:	[ling]
+// author:	[khor Ee Ling]
 // email:	[eeling.khor@digipen.edu]
 //
 // brief:	Codes pertaining to enemy
@@ -10,7 +10,7 @@
 //			- enemy taking damage to player attacks
 //			
 //
-// Copyright � 2020 DigiPen, All rights reserved.
+// Copyright © 2024 DigiPen, All rights reserved.
 //---------------------------------------------------------
 
 

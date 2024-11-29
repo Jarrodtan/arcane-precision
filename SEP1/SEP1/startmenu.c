@@ -1,3 +1,14 @@
+﻿//---------------------------------------------------------
+// file:	startmenu.c
+// author:	[Tan Wei Leong]
+// email:	[weileong.tan@digipen.edu]
+//
+// brief:	startmenu.c is the screen thats shown after the splashscreen.
+//
+// Copyright © 2024 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
+
 #include "cprocessing.h"
 #include "utils.h"
 #include "mainmenu.h"

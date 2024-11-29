@@ -1,3 +1,14 @@
+﻿//---------------------------------------------------------
+// file:	splashscreen.c
+// author:	[Tan Wei Leong]
+// email:	[weileong.tan@digipen.edu]
+//
+// brief:	splashscreen is the screen thats shown on execution.
+//
+// Copyright © 2024 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
+
 #include "cprocessing.h"
 #include "startmenu.h"
 #include "stdbool.h"
