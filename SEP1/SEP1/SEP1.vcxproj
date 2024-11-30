@@ -133,10 +133,10 @@ xcopy "$(SolutionDir)Extern\CProcessing\lib\x64\fmodL.dll" "$(OutDir)" /s /r /y 
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\..\..\..\..\Downloads\Arcane_Precision.ico" />
+    <ResourceCompile Include="Arcane_Precision.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Arcane_Precision.rc" />
+    <Image Include="..\Assets\Arcane_Precision.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

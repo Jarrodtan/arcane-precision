@@ -3,16 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\Arcane_Precision.rc||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|solutionrelative:SEP1\\Arcane_Precision.rc||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\credits.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|solutionrelative:SEP1\\credits.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\Assets\\Arcane_Precision.ico||{177559E0-D141-11D0-92DF-00A0C9138C45}",
+      "RelativeMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|solutionrelative:Assets\\Arcane_Precision.ico||{177559E0-D141-11D0-92DF-00A0C9138C45}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\pause.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|solutionrelative:SEP1\\pause.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\game.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|solutionrelative:SEP1\\game.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\credits.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|solutionrelative:SEP1\\credits.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{88DC2914-F41E-4629-93BB-654D77DBFC7F}|SEP1\\SEP1.vcxproj|C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\splashscreen.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -66,11 +74,36 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 0,
+              "Title": "Arcane_Precision.rc",
+              "DocumentMoniker": "C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\Arcane_Precision.rc",
+              "RelativeDocumentMoniker": "SEP1\\Arcane_Precision.rc",
+              "ToolTip": "C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\Arcane_Precision.rc",
+              "RelativeToolTip": "SEP1\\Arcane_Precision.rc",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAAABwAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2024-11-30T13:33:05.663Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Arcane_Precision.ico -  [English (United States)] - Icon [256x256, 32 bit, PNG]",
+              "DocumentMoniker": "C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\Assets\\Arcane_Precision.ico",
+              "RelativeDocumentMoniker": "Assets\\Arcane_Precision.ico",
+              "ToolTip": "C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\Assets\\Arcane_Precision.ico -  [English (United States)] - Icon [256x256, 32 bit, PNG]",
+              "RelativeToolTip": "Assets\\Arcane_Precision.ico -  [English (United States)] - Icon [256x256, 32 bit, PNG]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001525|",
+              "WhenOpened": "2024-11-30T13:32:47.705Z",
+              "EditorCaption": " -  [English (United States)] - Icon [256x256, 32 bit, PNG]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
               "Title": "startmenu.c",
               "DocumentMoniker": "C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\startmenu.c",
               "RelativeDocumentMoniker": "SEP1\\startmenu.c",
@@ -78,12 +111,11 @@
               "RelativeToolTip": "SEP1\\startmenu.c",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-11-29T00:54:48.445Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-29T00:54:48.445Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "splashscreen.c",
               "DocumentMoniker": "C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\splashscreen.c",
               "RelativeDocumentMoniker": "SEP1\\splashscreen.c",
@@ -91,12 +123,11 @@
               "RelativeToolTip": "SEP1\\splashscreen.c",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-11-29T00:54:47.113Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-29T00:54:47.113Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "pause.c",
               "DocumentMoniker": "C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\pause.c",
               "RelativeDocumentMoniker": "SEP1\\pause.c",
@@ -109,7 +140,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "credits.c",
               "DocumentMoniker": "C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\credits.c",
               "RelativeDocumentMoniker": "SEP1\\credits.c",
@@ -122,7 +153,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "gameover.c",
               "DocumentMoniker": "C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\gameover.c",
               "RelativeDocumentMoniker": "SEP1\\gameover.c",
@@ -130,12 +161,11 @@
               "RelativeToolTip": "SEP1\\gameover.c",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-11-29T00:54:37.322Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-29T00:54:37.322Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "settingsmenu.c",
               "DocumentMoniker": "C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\settingsmenu.c",
               "RelativeDocumentMoniker": "SEP1\\settingsmenu.c",
@@ -143,12 +173,11 @@
               "RelativeToolTip": "SEP1\\settingsmenu.c",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-11-29T00:54:46.155Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-29T00:54:46.155Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "obstacle.c",
               "DocumentMoniker": "C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\obstacle.c",
               "RelativeDocumentMoniker": "SEP1\\obstacle.c",
@@ -156,12 +185,11 @@
               "RelativeToolTip": "SEP1\\obstacle.c",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAABjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-11-29T00:54:42.081Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-29T00:54:42.081Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "roomLayout.c",
               "DocumentMoniker": "C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\roomLayout.c",
               "RelativeDocumentMoniker": "SEP1\\roomLayout.c",
@@ -169,12 +197,11 @@
               "RelativeToolTip": "SEP1\\roomLayout.c",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAABsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-11-29T00:54:44.716Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-29T00:54:44.716Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 13,
               "Title": "utils.c",
               "DocumentMoniker": "C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\utils.c",
               "RelativeDocumentMoniker": "SEP1\\utils.c",
@@ -182,12 +209,11 @@
               "RelativeToolTip": "SEP1\\utils.c",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-11-29T00:54:49.954Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-29T00:54:49.954Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 14,
               "Title": "mainmenu.c",
               "DocumentMoniker": "C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\mainmenu.c",
               "RelativeDocumentMoniker": "SEP1\\mainmenu.c",
@@ -195,12 +221,11 @@
               "RelativeToolTip": "SEP1\\mainmenu.c",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-11-29T00:54:40.823Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-29T00:54:40.823Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 10,
               "Title": "leaderboard.c",
               "DocumentMoniker": "C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\leaderboard.c",
               "RelativeDocumentMoniker": "SEP1\\leaderboard.c",
@@ -208,12 +233,11 @@
               "RelativeToolTip": "SEP1\\leaderboard.c",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAALAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-11-29T00:54:39.138Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-29T00:54:39.138Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "itemDrop.c",
               "DocumentMoniker": "C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\itemDrop.c",
               "RelativeDocumentMoniker": "SEP1\\itemDrop.c",
@@ -221,12 +245,11 @@
               "RelativeToolTip": "SEP1\\itemDrop.c",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAABrAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-11-29T00:54:38.182Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-29T00:54:38.182Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "game.c",
               "DocumentMoniker": "C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\game.c",
               "RelativeDocumentMoniker": "SEP1\\game.c",
@@ -234,12 +257,11 @@
               "RelativeToolTip": "SEP1\\game.c",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-11-29T00:54:36.339Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-29T00:54:36.339Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "enemy.c",
               "DocumentMoniker": "C:\\Users\\tohji\\Desktop\\SIT\\Tri 1 2024\\CSD1401 - Software Engineering Project 1\\GAM\\SEP1\\SEP1\\enemy.c",
               "RelativeDocumentMoniker": "SEP1\\enemy.c",
@@ -247,8 +269,7 @@
               "RelativeToolTip": "SEP1\\enemy.c",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-11-29T00:54:34.901Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-29T00:54:34.901Z"
             }
           ]
         }
