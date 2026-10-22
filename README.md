@@ -1,6 +1,6 @@
 # Arcane Precision
 
-A top-down dungeon game written in **C** with DigiPen's CProcessing framework by team *SyntaxError* for the CSD1401 module (Fall 2024) at DigiPen Institute of Technology Singapore (SIT-DigiPen).
+A top-down dungeon game written in **C** with DigiPen's CProcessing framework by team *SyntaxError* for the GAM100 module (Fall 2024) at DigiPen Institute of Technology Singapore (SIT-DigiPen).
 
 Fight your way through dungeon rooms full of enemies and obstacles, pick up item drops, and get your score onto the leaderboard.
 
