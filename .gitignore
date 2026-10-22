@@ -1,0 +1,20 @@
+# Visual Studio
+.vs/
+x64/
+x86/
+Debug/
+Release/
+*.user
+*.aps
+*.suo
+*.ipch
+*.pdb
+*.ilk
+*.obj
+*.exe
+*.log
+*.tlog
+
+# Local save data and backups
+*.dat
+*.zip
